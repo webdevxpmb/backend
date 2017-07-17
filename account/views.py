@@ -52,8 +52,9 @@ class UserProfileList(generics.ListCreateAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
     search_fields = ('name', 'npm')
-
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 class UserProfileDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)

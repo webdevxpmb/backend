@@ -1,16 +1,19 @@
-from kenalan.models import Token
-from kenalan.serializers import TokenSerializer
-from django.contrib.auth.models import User
+from account.permissions import IsElemen
+from kenalan.models import Token, Kenalan, KenalanDetail, KenalanStatus
+from kenalan.serializers import TokenSerializer, KenalanSerializer
+from account.models import UserProfile
 from django.utils.crypto import get_random_string
 
 from rest_framework.exceptions import APIException, PermissionDenied
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 
 import json
 import datetime
 
+
 @api_view(['GET'])
+# @permission_classes((IsElemen, ))
 def generate_token(request):
     try:
         user = request.user
@@ -54,6 +57,7 @@ def check_user(user):
         raise APIException
 
 @api_view(['GET'])
+@permission_classes((IsElemen, ))
 def delete_expired_token(request):
     try:
         now = datetime.datetime.now().replace(tzinfo=None)
@@ -70,3 +74,28 @@ def delete_all_expired_token():
         expired_token.delete()
     except Exception as e:
         pass
+
+@api_view(['GET'])
+def create_kenalan_by_token(request, token):
+    try:
+        if not check_token(token):
+            token = Token.objects.get(token=token)
+            user_elemen = token.user
+            user_maba = request.user
+            elemen_profile = UserProfile.objects.get(user=user_elemen)
+
+            kenalan = Kenalan.objects.create(user_elemen=user_elemen, user_maba=user_maba)
+            # create initial detail
+            kenalan_status = KenalanStatus.objects.get(id=2)
+            kenalan_detail = KenalanDetail.objects.create(kenalan=kenalan,
+                                                          status=kenalan_status,
+                                                          name=elemen_profile.name)
+
+            content = KenalanSerializer(kenalan, context={'request': request})
+            return Response(content.data, status=200)
+            
+        else:
+            return Response({'data': 'invalid token'})
+
+    except Exception as e:
+        raise

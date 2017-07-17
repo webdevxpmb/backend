@@ -17,18 +17,22 @@ urlpatterns = format_suffix_patterns([
         views.KenalanDetail.as_view(), name='kenalan-detail'),
    
     url(r'^kenalan-status/$',
-        views.KenalanStatusList.as_view(), name='kenalan-status-list'),
+        views.KenalanStatusList.as_view(), name='kenalanstatus-list'),
     url(r'^kenalan-status/(?P<pk>[0-9]+)/$',
-        views.KenalanStatusDetail.as_view(), name='kenalan-status-detail'),
+        views.KenalanStatusDetail.as_view(), name='kenalanstatus-detail'),
    
     url(r'^kenalan-detail/$',
-        views.KenalanDetailList.as_view(), name='kenalan-detail-list'),
+        views.KenalanDetailList.as_view(), name='kenalandetail-list'),
     url(r'^kenalan-detail/(?P<pk>[0-9]+)/$',
-        views.KenalanDetailDetail.as_view(), name='kenalan-detail-detail'),
+        views.KenalanDetailDetail.as_view(), name='kenalandetail-detail'),
 
     url(r'^generate-token/$',
         utils.generate_token, name='generate-token'),
     url(r'^delete-expired-token/$',
-        utils.delete_expired_token, name='delete-expired-token')
+        utils.delete_expired_token, name='delete-expired-token'),
+
+    url(r'^create-kenalan/(?P<token>\w{6})/$',
+        utils.create_kenalan_by_token, name='create kenalan')    
+
 
 ])

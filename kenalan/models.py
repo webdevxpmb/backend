@@ -29,8 +29,8 @@ class Kenalan(models.Model):
     """
     Description: Model Description
     """
-    user1 = models.ForeignKey(User, related_name='user1')
-    user2 = models.ForeignKey(User, related_name='user2')
+    user_elemen = models.ForeignKey(User, related_name='user_elemen')
+    user_maba = models.ForeignKey(User, related_name='user_maba')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -51,14 +51,14 @@ class KenalanDetail(models.Model):
     """
     Description: Model Description
     """
-    kenalan = models.ForeignKey(Kenalan)
+    kenalan = models.ForeignKey(Kenalan, related_name='detail')
     status = models.ForeignKey(KenalanStatus)
-    name = models.CharField(max_length=50)
-    phone_number = models.CharField(max_length=20)
+    name = models.CharField(max_length=50, null=True)
+    phone_number = models.CharField(max_length=20, null=True)
     birth_place = models.CharField(max_length=50, null=True)
     birth_date = models.DateField(null=True)
-    asal_sma = models.CharField(max_length=50)
-    story = models.TextField()
+    asal_sma = models.CharField(max_length=50, null=True)
+    story = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
