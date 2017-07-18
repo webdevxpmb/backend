@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 def default_end_time():
     now = timezone.now()
-    end_time = now + timedelta(minutes=1)
+    end_time = now + timedelta(minutes=5)
     return end_time 
 
 class Token(models.Model):
@@ -25,19 +25,6 @@ class Token(models.Model):
         ordering = ['token']
 
 
-class Kenalan(models.Model):
-    """
-    Description: Model Description
-    """
-    user_elemen = models.ForeignKey(User, related_name='user_elemen')
-    user_maba = models.ForeignKey(User, related_name='user_maba')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        ordering = ['created_at']
-
-
 class KenalanStatus(models.Model):
     """
     Description: Model Description
@@ -47,12 +34,26 @@ class KenalanStatus(models.Model):
     class Meta:
         pass
 
-class KenalanDetail(models.Model):
+
+class Kenalan(models.Model):
+    """
+    Description: Model Description
+    """
+    user_elemen = models.ForeignKey(User, related_name='user_elemen')
+    user_maba = models.ForeignKey(User, related_name='user_maba')
+    status = models.ForeignKey(KenalanStatus, default=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['created_at']
+
+
+class DetailKenalan(models.Model):
     """
     Description: Model Description
     """
     kenalan = models.ForeignKey(Kenalan, related_name='detail')
-    status = models.ForeignKey(KenalanStatus)
     name = models.CharField(max_length=50, null=True)
     phone_number = models.CharField(max_length=20, null=True)
     birth_place = models.CharField(max_length=50, null=True)

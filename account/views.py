@@ -9,17 +9,20 @@ from account.serializers import(
     AngkatanSerializer, UserProfileSerializer,
 )
 from rest_framework import generics, permissions
-from account.permissions import IsOwnerOrReadOnly
+from account.permissions import(
+    IsOwner,
+    IsAkademis,
+    IsElemen,
+    IsMaba,
+)
 
 # Create your views here.
 
 class UserList(generics.ListAPIView):
-    permission_classes = (IsOwnerOrReadOnly,)
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsOwnerOrReadOnly,)
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -52,9 +55,9 @@ class UserProfileList(generics.ListCreateAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
     search_fields = ('name', 'npm')
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
 
 class UserProfileDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsOwner,)
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
