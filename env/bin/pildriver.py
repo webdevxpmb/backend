@@ -1,4 +1,4 @@
-#!/home/t-fachrur.rozi/Dropbox/Kuliah/PMB/backend/env/bin/python3
+#!/Users/satriabagus/Documents/PMB/backend/env/bin/python3.6
 """PILdriver, an image-processing calculator using PIL.
 
 An instance of class PILDriver is essentially a software stack machine

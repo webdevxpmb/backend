@@ -1,4 +1,4 @@
-#!/home/t-fachrur.rozi/Dropbox/Kuliah/PMB/backend/env/bin/python3
+#!/Users/satriabagus/Documents/PMB/backend/env/bin/python3.6
 from __future__ import print_function
 import base64
 import os

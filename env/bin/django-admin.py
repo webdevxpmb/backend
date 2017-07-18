@@ -1,4 +1,4 @@
-#!/home/t-fachrur.rozi/Dropbox/Kuliah/PMB/backend/env/bin/python3
+#!/Users/satriabagus/Documents/PMB/backend/env/bin/python3.6
 from django.core import management
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-#!/home/t-fachrur.rozi/Dropbox/Kuliah/PMB/backend/env/bin/python3
+#!/Users/satriabagus/Documents/PMB/backend/env/bin/python3.6
 #
 # The Python Imaging Library
 # $Id$

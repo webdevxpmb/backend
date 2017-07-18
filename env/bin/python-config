@@ -1,4 +1,4 @@
-#!/home/t-fachrur.rozi/Dropbox/Kuliah/PMB/backend/env/bin/python
+#!/Users/satriabagus/Documents/PMB/backend/env/bin/python
 
 import sys
 import getopt

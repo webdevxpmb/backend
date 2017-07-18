@@ -40,7 +40,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/t-fachrur.rozi/Dropbox/Kuliah/PMB/backend/env"
+VIRTUAL_ENV="/Users/satriabagus/Documents/PMB/backend/env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
