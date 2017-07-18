@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'django_cas_ng',
     'django_crontab',
+    'corsheaders',
 
 
 ]
@@ -56,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 
@@ -198,3 +200,5 @@ CRONJOBS = [
     ('* * * * *', 'kenalan.utils.delete_all_expired_token')
 ]
 
+
+CORS_ORIGIN_WHITELIST = ['localhost:3000']

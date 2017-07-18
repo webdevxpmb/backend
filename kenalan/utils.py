@@ -1,5 +1,5 @@
 from account.permissions import IsElemen
-from kenalan.models import Token, Kenalan, KenalanDetail, KenalanStatus
+from kenalan.models import Token, Kenalan, KenalanStatus, DetailKenalan
 from kenalan.serializers import TokenSerializer, KenalanSerializer
 from account.models import UserProfile
 from django.utils.crypto import get_random_string
@@ -10,6 +10,11 @@ from rest_framework.decorators import api_view, permission_classes
 
 import json
 import datetime
+
+ROLE_ELEMEN = 'elemen'
+ROLE_AKADEMIS = 'admin'
+ROLE_MABA = 'mahasiswa baru'
+
 
 
 @api_view(['GET'])
@@ -84,13 +89,12 @@ def create_kenalan_by_token(request, token):
             user_maba = request.user
             elemen_profile = UserProfile.objects.get(user=user_elemen)
 
-            kenalan = Kenalan.objects.create(user_elemen=user_elemen, user_maba=user_maba)
-            # create initial detail
             kenalan_status = KenalanStatus.objects.get(id=2)
-            kenalan_detail = KenalanDetail.objects.create(kenalan=kenalan,
-                                                          status=kenalan_status,
-                                                          name=elemen_profile.name)
-
+            kenalan = Kenalan.objects.create(user_elemen=user_elemen, 
+                                             user_maba=user_maba, 
+                                             status=kenalan_status)
+            # create initial detail
+            kenalan_detail = DetailKenalan.objects.create(kenalan=kenalan, name=elemen_profile.name)
             content = KenalanSerializer(kenalan, context={'request': request})
             return Response(content.data, status=200)
             
@@ -99,3 +103,36 @@ def create_kenalan_by_token(request, token):
 
     except Exception as e:
         raise
+
+def is_maba(request):
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+        role = user_profile.role
+        if role.role_name == ROLE_MABA:
+            return True
+        else:
+            return False
+    except Exception as e:
+        return False
+
+def is_elemen(request):
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+        role = user_profile.role
+        if role.role_name == ROLE_ELEMEN:
+            return True
+        else:
+            return False
+    except Exception as e:
+        return False
+
+def is_akademis(request):
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+        role = user_profile.role
+        if role.role_name == ROLE_AKADEMIS:
+            return True
+        else:
+            return False
+    except Exception as e:
+        return False
