@@ -1,5 +1,3 @@
-
-
 from kenalan.models import (
     Token, Kenalan, KenalanStatus, DetailKenalan
 )

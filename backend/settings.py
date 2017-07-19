@@ -41,11 +41,10 @@ INSTALLED_APPS = [
     'django_filters',
     'kenalan.apps.KenalanConfig',
     'account.apps.AccountConfig',
+    'dashboard.apps.DashboardConfig'
     'django_cas_ng',
     'django_crontab',
     'corsheaders',
-
-
 ]
 
 
