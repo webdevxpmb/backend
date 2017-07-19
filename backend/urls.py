@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('account.urls')),
     url(r'^', include('kenalan.urls')),
+    url(r'^', include('website.urls')),
     url(r'^login/$', views.login, name='cas_ng_login'),
     url(r'^logout$', views.logout, name='cas_ng_logout'),
     url(r'^callback$', views.callback, name='cas_ng_proxy_callback'),
