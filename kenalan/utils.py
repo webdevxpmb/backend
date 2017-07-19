@@ -1,14 +1,13 @@
-from account.permissions import IsElemen
 from kenalan.models import Token, Kenalan, KenalanStatus, DetailKenalan
 from kenalan.serializers import TokenSerializer, KenalanSerializer
 from account.models import UserProfile
+from account.permissions import IsElemen, IsMaba
 from django.utils.crypto import get_random_string
-
-from rest_framework.exceptions import APIException, PermissionDenied
+from django.db import IntegrityError
+from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 
-import json
 import datetime
 
 ROLE_ELEMEN = 'elemen'
@@ -16,57 +15,30 @@ ROLE_AKADEMIS = 'admin'
 ROLE_MABA = 'mahasiswa baru'
 
 
-
 @api_view(['GET'])
-# @permission_classes((IsElemen, ))
+@permission_classes((IsElemen,))
 def generate_token(request):
     try:
         user = request.user
         if not check_user(user):
             token = get_token()
-
             content = Token.objects.create(token=token, user=user)
             content = TokenSerializer(content, context={'request': request})
-
             return Response(content.data)
-
         else:
             content = Token.objects.get(user=user)
             content = TokenSerializer(content, context={'request': request})
-
             return Response(content.data, status=200)
     except Exception as e:
         raise Response(status=400)
 
 
-def get_token():
-    token = get_random_string(length=6, allowed_chars='1234567890')
-    if check_token(token):
-        return token    
-    else:
-        return get_token()
-
-
-def check_token(token):
-    try:
-        token_count = Token.objects.filter(token=token).count()
-        return token_count == 0
-    except Exception as e:
-        raise APIException
-
-def check_user(user):
-    try:
-        token_count = Token.objects.filter(user=user).count()
-        return token_count >= 1
-    except Exception as e:
-        raise APIException
-
 @api_view(['GET'])
-@permission_classes((IsElemen, ))
+@permission_classes((IsElemen,))
 def delete_expired_token(request):
     try:
         now = datetime.datetime.now().replace(tzinfo=None)
-        expired_token = Token.objects.filter(user=request.user ,end_time__lt=now)
+        expired_token = Token.objects.filter(user=request.user, end_time__lt=now)
         expired_token.delete()
         return Response(status=200)
     except Exception as e:
@@ -80,7 +52,9 @@ def delete_all_expired_token():
     except Exception as e:
         pass
 
+
 @api_view(['GET'])
+@permission_classes((IsMaba,))
 def create_kenalan_by_token(request, token):
     try:
         if not check_token(token):
@@ -94,30 +68,57 @@ def create_kenalan_by_token(request, token):
                                              user_maba=user_maba, 
                                              status=kenalan_status)
             # create initial detail
-            kenalan_detail = DetailKenalan.objects.create(kenalan=kenalan, name=elemen_profile.name)
+            DetailKenalan.objects.create(kenalan=kenalan, name=elemen_profile.name)
             content = KenalanSerializer(kenalan, context={'request': request})
             return Response(content.data, status=200)
             
         else:
             return Response({'data': 'invalid token'})
 
-    except Exception as e:
-        raise
+    except IntegrityError:
+        return Response({"you already make connection to this user"}, status=400)
 
-def is_maba(request):
+
+def get_token():
+    token = get_random_string(length=6, allowed_chars='1234567890')
+    if check_token(token):
+        return token
+    else:
+        return get_token()
+
+
+def check_token(token):
     try:
-        user_profile = UserProfile.objects.get(user=request.user)
+        token_count = Token.objects.filter(token=token).count()
+        return token_count == 0
+    except Exception as e:
+        raise APIException
+
+
+def check_user(user):
+    try:
+        token_count = Token.objects.filter(user=user).count()
+        return token_count >= 1
+    except Exception as e:
+        raise APIException
+
+
+def is_maba(user):
+    try:
+        user_profile = UserProfile.objects.get(user=user)
         role = user_profile.role
         if role.role_name == ROLE_MABA:
             return True
         else:
             return False
     except Exception as e:
+        print(e)
         return False
 
-def is_elemen(request):
+
+def is_elemen(user):
     try:
-        user_profile = UserProfile.objects.get(user=request.user)
+        user_profile = UserProfile.objects.get(user=user)
         role = user_profile.role
         if role.role_name == ROLE_ELEMEN:
             return True
@@ -126,9 +127,10 @@ def is_elemen(request):
     except Exception as e:
         return False
 
-def is_akademis(request):
+
+def is_akademis(user):
     try:
-        user_profile = UserProfile.objects.get(user=request.user)
+        user_profile = UserProfile.objects.get(user=user)
         role = user_profile.role
         if role.role_name == ROLE_AKADEMIS:
             return True
@@ -136,3 +138,4 @@ def is_akademis(request):
             return False
     except Exception as e:
         return False
+

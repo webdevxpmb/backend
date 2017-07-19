@@ -197,7 +197,7 @@ CAS_REDIRECT_URL = 'http://localhost:8000/user'
 
 
 CRONJOBS = [
-    ('* * * * *', 'kenalan.utils.delete_all_expired_token')
+    ('*/10 * * * *', 'kenalan.utils.delete_all_expired_token')
 ]
 
 

@@ -1,5 +1,4 @@
-from django.contrib.auth.models import User
-from django.utils import timezone
+
 
 from kenalan.models import (
     Token, Kenalan, KenalanStatus, DetailKenalan
@@ -10,7 +9,7 @@ from kenalan.serializers import(
     KenalanStatusSerializer, DetailKenalanSerializer,
 )
 
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, exceptions
 
 from kenalan.utils import(
     is_maba,
@@ -19,11 +18,10 @@ from kenalan.utils import(
 )
 
 from account.permissions import(
-    IsOwner,
-    IsAkademis,
-    IsElemen,
-    IsMaba,
+    IsPmbAdmin,
+    IsDetailKenalanOwner,
 )
+
 
 class TokenList(generics.ListAPIView):
     queryset = Token.objects.all()
@@ -34,63 +32,93 @@ class TokenList(generics.ListAPIView):
 '''
 Kenalan Views
 '''
+
+
 class KenalanList(generics.ListAPIView):
     serializer_class = KenalanSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):
-        if is_maba(self.request):
+        if is_maba(self.request.user):
             queryset = Kenalan.objects.all().filter(user_maba=self.request.user)
-        elif is_elemen(self.request):
+        elif is_elemen(self.request.user):
             queryset = Kenalan.objects.all().filter(user_elemen=self.request.user)
         else:
             queryset = Kenalan.objects.all()
 
         return queryset
+
 
 class KenalanDetail(generics.RetrieveUpdateAPIView):
     serializer_class = KenalanSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):
-        if is_maba(self.request):
+        if is_maba(self.request.user):
             queryset = Kenalan.objects.all().filter(user_maba=self.request.user)
-        elif is_elemen(self.request):
+        elif is_elemen(self.request.user):
             queryset = Kenalan.objects.all().filter(user_elemen=self.request.user)
         else:
             queryset = Kenalan.objects.all()
             
         return queryset
 
-    def put(self, request, pk, format=None):
-        kenalan = self.get_object(pk)
-        if is_elemen(request) or is_akademis(request):
-            serializer = KenalanSerializer(kenalan, data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=400)
+    def put(self, request, *args, **kwargs):
+        if is_elemen(request.user) or is_akademis(request.user):
+            return self.update(request, *args, **kwargs)
         else:
-            raise PermissionDenied({"message":"You don't have permission to access"})
+            raise exceptions.PermissionDenied
+
+    def patch(self, request, *args, **kwargs):
+        if is_elemen(request.user) or is_akademis(request.user):
+            return self.update(request, *args, **kwargs)
+        else:
+            raise exceptions.PermissionDenied
 
 
 class KenalanStatusList(generics.ListAPIView):
     queryset = KenalanStatus.objects.all()
     serializer_class = KenalanStatusSerializer
-    # permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (IsPmbAdmin,)
+
 
 class KenalanStatusDetail(generics.RetrieveAPIView):
     queryset = KenalanStatus.objects.all()
     serializer_class = KenalanStatusSerializer
-    # permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (IsPmbAdmin,)
+
 
 class DetailKenalanList(generics.ListAPIView):
     queryset = DetailKenalan.objects.all()
     serializer_class = DetailKenalanSerializer
-    # permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        if is_maba(self.request.user):
+            queryset = DetailKenalan.objects.all().filter(kenalan__user_maba=self.request.user)
+        elif is_elemen(self.request.user):
+            queryset = DetailKenalan.objects.all().filter(kenalan__user_elemen=self.request.user)
+        else:
+            queryset = DetailKenalan.objects.all()
+        return queryset
+
 
 class DetailKenalanDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = DetailKenalan.objects.all()
     serializer_class = DetailKenalanSerializer
-    # permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (IsDetailKenalanOwner,)
+
+    def put(self, request, *args, **kwargs):
+        if is_maba(request.user):
+            return self.update(request, *args, **kwargs)
+        else:
+            raise exceptions.PermissionDenied
+
+    def patch(self, request, *args, **kwargs):
+        if is_maba(request.user):
+            return self.update(request, *args, **kwargs)
+        else:
+            raise exceptions.PermissionDenied
+
+
     
