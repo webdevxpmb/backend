@@ -101,22 +101,22 @@ class Task(models.Model):
         pass
 
 
-    class Task(models.Model):
-        """
-        Description: Model Description
-        """
-        name = models.CharField(max_length=50, null=True)
-        description = models.TextField(null=True)
-        author = models.ForeignKey(User, related_name="task")
-        location = models.CharField(max_length=50)
-        start_time = models.DateTimeField()
-        end_time = models.DateTimeField()
-        type = models.CharField(max_length=50, null=True)
-        submission = models.ForeignKey(Submission, related_name="task")
-        attendee = models.IntegerField(null=True)
-        expected_attendee = models.IntegerField(null=True)
-        created_at = models.DateTimeField(auto_now_add=True)
-        updated_at = models.DateTimeField(auto_now=True)
+class Events(models.Model):
+    """
+    Description: Model Description
+    """
+    name = models.CharField(max_length=50, null=True)
+    description = models.TextField(null=True)
+    author = models.ForeignKey(User, related_name="event")
+    location = models.CharField(max_length=50)
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    type = models.CharField(max_length=50, null=True)
+    submission = models.ForeignKey(Submission, related_name="event")
+    attendee = models.IntegerField(null=True)
+    expected_attendee = models.IntegerField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-        class Meta:
-            pass
+    class Meta:
+        pass
