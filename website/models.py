@@ -35,7 +35,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, related_name="post")
     summary =  models.CharField(max_length=255, null=True)
     content = models.TextField(null=True)
-    post_type = models.ForeignKey(PostType, related_name="post_type")
+    post_type = models.ForeignKey(PostType, related_name="post")
     attachment = models.ForeignKey(Attachment, related_name="post_attachment")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
