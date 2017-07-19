@@ -10,7 +10,9 @@ class Attachment(models.Model):
     """
     filename = models.CharField(max_length=50, null=True)
     url = models.FileField(upload_to="uploads/", null=True)
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
     class Meta:
         pass
 
@@ -19,6 +21,8 @@ class PostType(models.Model):
     Description: Model Description
     """
     post_type = models.CharField(max_length=50,null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         pass
