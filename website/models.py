@@ -12,7 +12,7 @@ class Attachment(models.Model):
     url = models.FileField(upload_to="uploads/", null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         pass
 
