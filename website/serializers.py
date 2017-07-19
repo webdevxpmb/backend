@@ -6,19 +6,19 @@ from website.models import (
 )
 
 
-class AttachmentSerializer(serializers.HyperlinkedModelSerializer):
+class AttachmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Attachment
         fields = ('filename', 'url')
 
 
-class PostTypeSerializer(serializers.HyperlinkedModelSerializer):
+class PostTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostType
         fields = ('post_type')
 
 
-class PostSerializer(serializers.HyperlinkedModelSerializer):
+class PostSerializer(serializers.ModelSerializer):
     author = serializers.PrimaryKeyRelatedField(read_only=True)
     post_type = serializers.PrimaryKeyRelatedField(read_only=True)
     attachment = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
@@ -27,7 +27,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('title', 'author', 'summary', 'content', 'post_type', 'attachment')
 
 
-class CommentsSerializer(serializers.HyperlinkedModelSerializer):
+class CommentsSerializer(serializers.ModelSerializer):
     post = serializers.PrimaryKeyRelatedField(read_only=True)
     author = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
@@ -35,14 +35,14 @@ class CommentsSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('post', 'author', 'comment')
 
 
-class ElementWordSerializer(serializers.HyperlinkedModelSerializer):
+class ElementWordSerializer(serializers.ModelSerializer):
     author = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = ElementWord
         fields = ('author', 'testimony', 'approved')
 
 
-class SubmissionSerializer(serializers.HyperlinkedModelSerializer):
+class SubmissionSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
     attachment = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     class Meta:
@@ -50,7 +50,7 @@ class SubmissionSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('user', 'attachment')
 
 
-class TaskSerializer(serializers.HyperlinkedModelSerializer):
+class TaskSerializer(serializers.ModelSerializer):
     author = serializers.PrimaryKeyRelatedField(read_only=True)
     submission = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
@@ -61,7 +61,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 
-class EventsSerializer(serializers.HyperlinkedModelSerializer):
+class EventsSerializer(serializers.ModelSerializer):
     author = serializers.PrimaryKeyRelatedField(read_only=True)
     submission = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
