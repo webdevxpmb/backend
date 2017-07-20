@@ -1,6 +1,7 @@
-from django.conf.urls import url, include
+from django.conf.urls import url
 from rest_framework.urlpatterns import format_suffix_patterns
 from account import views, utils
+from rest_framework_jwt.views import obtain_jwt_token
 
 # API endpoints
 urlpatterns = format_suffix_patterns([
@@ -23,5 +24,9 @@ urlpatterns = format_suffix_patterns([
         views.UserProfileList.as_view(), name='userprofile-list'),
     url(r'^user-profile/(?P<pk>[0-9]+)/$',
         views.UserProfileDetail.as_view(), name='userprofile-detail'),
+
+    url(r'^api-token-auth/', obtain_jwt_token),
+
+    url(r'^jwt-token/', utils.configure_token, name='jwt-token'),
 
 ])
