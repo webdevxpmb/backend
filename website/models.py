@@ -4,30 +4,6 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-class Attachment(models.Model):
-    """
-    Description: Model Description
-    """
-    filename = models.CharField(max_length=50, null=True)
-    url = models.FileField(upload_to="uploads/", null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        pass
-
-class PostType(models.Model):
-    """
-    Description: Model Description
-    """
-    post_type = models.CharField(max_length=50,null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        pass
-
-
 class Post(models.Model):
     """
     Description: Model Description
@@ -36,8 +12,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, related_name="post")
     summary =  models.CharField(max_length=255, null=True)
     content = models.TextField(null=True)
-    post_type = models.ForeignKey(PostType, related_name="post")
-    attachment = models.ForeignKey(Attachment, related_name="post_attachment")
+    post_type = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -50,7 +25,7 @@ class Comments(models.Model):
     Description: Model Description
     """
     post = models.ForeignKey(Post, related_name="comments")
-    author = models.ForeignKey(User, related_name="author")
+    author = models.ForeignKey(User, related_name="comments")
     comment = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -63,7 +38,7 @@ class ElementWord(models.Model):
     """
     Description: Model Description
     """
-    author = models.ForeignKey(User, related_name="element_author")
+    author = models.ForeignKey(User, related_name="elementwords")
     testimony = models.TextField(null=True)
     approved = models.BooleanField( default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -71,19 +46,6 @@ class ElementWord(models.Model):
 
     class Meta:
         pass
-
-
-# class Submission(models.Model):
-#     """
-#     Description: Model Description
-#     """
-#     user = models.ForeignKey(User, related_name="submission")
-#     # attachment = models.ForeignKey(Attachment,related_name="submission")
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
-#
-#     class Meta:
-#         pass
 
 
 class Task(models.Model):
@@ -96,7 +58,6 @@ class Task(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     type = models.CharField(max_length=50,null=True)
-    # submission = models.ForeignKey(Submission, related_name="task")
     amount = models.IntegerField(null=True)
     expected_amount = models.IntegerField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -104,6 +65,17 @@ class Task(models.Model):
 
     class Meta:
         pass
+
+
+class Submission(models.Model):
+    """
+    Description: Model Description
+    """
+    user = models.ForeignKey(User, related_name="submissions")
+    task = models.ForeignKey(Task, related_name="submissions")
+    file = models.FileField(upload_to="uploads/", null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Events(models.Model):
@@ -117,9 +89,22 @@ class Events(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     type = models.CharField(max_length=50, null=True)
-    # submission = models.ForeignKey(Submission, related_name="event")
     attendee = models.IntegerField(null=True)
     expected_attendee = models.IntegerField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        pass
+
+
+class Attachment(models.Model):
+    """
+    Description: Model Description
+    """
+    filename = models.CharField(max_length=50, null=True)
+    url = models.FileField(upload_to="uploads/", null=True)
+    events = models.ForeignKey(Events, related_name="attachments", null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

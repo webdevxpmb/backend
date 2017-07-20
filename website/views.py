@@ -2,45 +2,16 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework import generics, permissions
 from website.serializers import (
-    AttachmentSerializer, PostTypeSerializer, PostSerializer,
+    AttachmentSerializer, PostSerializer,
     CommentsSerializer, ElementWordSerializer,
-    TaskSerializer, EventsSerializer
+    TaskSerializer, EventsSerializer, SubmissionSerializer
 )
 from website.models import (
-    Attachment, PostType, Post, Comments, ElementWord,
-    Task, Events
+    Attachment, Post, Comments, ElementWord,
+    Task, Events, Submission
 )
 
 # Create your views here.
-class CreateAttachments(generics.CreateAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
-    queryset = Attachment.objects.all()
-    serializer_class = AttachmentSerializer
-
-
-class AttachmentList(generics.ListAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
-    queryset = Attachment.objects.all()
-    serializer_class = AttachmentSerializer
-
-
-class AttachmentListDetail(generics.RetrieveUpdateAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
-    queryset = Attachment.objects.all()
-    serializer_class = AttachmentSerializer
-
-
-class CreatePostType(generics.CreateAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
-    queryset = PostType.objects.all()
-    serializer_class = PostTypeSerializer
-
-
-class PostTypeList(generics.ListAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
-    queryset = PostType.objects.all()
-    serializer_class = PostTypeSerializer
-
 
 class CreatePost(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -90,18 +61,6 @@ class ElementWordListDetail(generics.RetrieveUpdateAPIView):
     serializer_class = ElementWordSerializer
 
 
-# class CreateSubmission(generics.CreateAPIView):
-#     permission_classes = (permissions.IsAuthenticated,)
-#     queryset = Submission.objects.all()
-#     serializer_class = SubmissionSerializer
-
-
-# class SubmissionListDetail(generics.RetrieveUpdateDestroyAPIView):
-#     permission_classes = (permissions.IsAuthenticated,)
-#     queryset = Submission.objects.all()
-#     serializer_class = SubmissionSerializer
-
-
 class CreateTask(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = Task.objects.all()
@@ -120,6 +79,24 @@ class TaskListDetail(generics.RetrieveUpdateAPIView):
     serializer_class = TaskSerializer
 
 
+class CreateSubmission(generics.CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = Submission.objects.all()
+    serializer_class = SubmissionSerializer
+
+
+class SubmissionList(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = Submission.objects.all()
+    serializer_class = SubmissionSerializer
+
+
+class SubmissionListDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = Submission.objects.all()
+    serializer_class = SubmissionSerializer
+
+
 class CreateEvent(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = Events.objects.all()
@@ -136,3 +113,21 @@ class EventListDetail(generics.RetrieveUpdateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = Events.objects.all()
     serializer_class = EventsSerializer
+
+
+class CreateAttachments(generics.CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = Attachment.objects.all()
+    serializer_class = AttachmentSerializer
+
+
+class AttachmentList(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = Attachment.objects.all()
+    serializer_class = AttachmentSerializer
+
+
+class AttachmentListDetail(generics.RetrieveUpdateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = Attachment.objects.all()
+    serializer_class = AttachmentSerializer

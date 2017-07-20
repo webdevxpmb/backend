@@ -10,10 +10,6 @@ urlpatterns = format_suffix_patterns([
     url(r'^attachment/$',
         views.CreateAttachments.as_view(), name='create-attachment'),
 
-    url(r'post-type/$', views.CreatePostType.as_view() , name='create-post-type'),
-    url(r'post-types/$',
-        views.PostTypeList.as_view(), name='post-type-list'),
-
     url(r'post/$', views.CreatePost.as_view(), name='create-post'),
     url(r'posts/$', views.PostList.as_view(), name='post-list'),
     url(r'post/(?P<pk>[0-9]+)/$', views.PostListDetail.as_view(),
@@ -29,10 +25,11 @@ urlpatterns = format_suffix_patterns([
     url(r'element-word/(?P<pk>[0-9]+)/$', views.ElementWordListDetail.as_view(),
         name='element-word-list-detail'),
 
-    # url(r'submission/$', views.CreateSubmission.as_view(),
-    #     name='create-submission'),
-    # url(r'submission/(?P<pk>[0-9]+)/$', views.SubmissionListDetail.as_view(),
-    #     name='submission-list-detail'),
+    url(r'submission/$', views.CreateSubmission.as_view(),
+        name='create-submission'),
+    url(r'submissions/$', views.SubmissionList.as_view(), name="submission-list"),
+    url(r'submission/(?P<pk>[0-9]+)/$', views.SubmissionListDetail.as_view(),
+        name='submission-list-detail'),
 
     url(r'task/$', views.CreateTask.as_view(), name="create-task"),
     url(r'tasks/$', views.TaskList.as_view(), name="task-list"),

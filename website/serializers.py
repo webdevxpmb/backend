@@ -1,21 +1,11 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from website.models import (
-    Attachment, PostType, Post, Comments,
-    ElementWord, Task, Events
+    Attachment, Post, Comments,
+    ElementWord, Task, Events,
+    Submission
 )
 
-
-class AttachmentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Attachment
-        fields = ('id', 'filename', 'url')
-
-
-class PostTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PostType
-        fields = ('id', 'post_type')
 
 class PostSerializer(serializers.ModelSerializer):
     # author = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
@@ -23,7 +13,7 @@ class PostSerializer(serializers.ModelSerializer):
     # attachment = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     class Meta:
         model = Post
-        fields = ('id', 'title', 'author', 'summary', 'content', 'post_type', 'attachment')
+        fields = ('id', 'title', 'author', 'summary', 'content', 'post_type')
 
 
 class CommentsSerializer(serializers.ModelSerializer):
@@ -39,15 +29,6 @@ class ElementWordSerializer(serializers.ModelSerializer):
     class Meta:
         model = ElementWord
         fields = ('id', 'author', 'testimony', 'approved')
-        # read_only_fields = ('approved',)
-
-
-# class SubmissionSerializer(serializers.ModelSerializer):
-#     # user = serializers.PrimaryKeyRelatedField(read_only=True)
-#     # attachment = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
-#     class Meta:
-#         model = Submission
-#         fields = ('id', 'user', 'attachment')
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -61,6 +42,15 @@ class TaskSerializer(serializers.ModelSerializer):
         )
 
 
+class SubmissionSerializer(serializers.ModelSerializer):
+    # user = serializers.PrimaryKeyRelatedField(read_only=True)
+    # attachment = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
+    class Meta:
+        model = Submission
+        fields = ('id', 'user', 'task', 'file')
+
+
+
 class EventsSerializer(serializers.ModelSerializer):
     # author = serializers.PrimaryKeyRelatedField(read_only=True)
     # submission = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -70,3 +60,8 @@ class EventsSerializer(serializers.ModelSerializer):
                   'start_time', 'end_time', 'type',
                   'attendee', 'expected_attendee'
         )
+
+class AttachmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Attachment
+        fields = ('id', 'filename', 'url', 'events')
