@@ -3,6 +3,12 @@ from django.contrib.auth.models import User
 
 
 # Create your models here.
+class PostType(models.Model):
+    post_type = models.CharField(max_length=50)
+
+    class Meta:
+        pass
+
 
 class Post(models.Model):
     """
@@ -10,9 +16,9 @@ class Post(models.Model):
     """
     title = models.CharField(max_length=50, null=True)
     author = models.ForeignKey(User, related_name="post")
-    summary =  models.CharField(max_length=255, null=True)
-    content = models.TextField(null=True)
-    post_type = models.CharField(max_length=50)
+    summary =  models.CharField(max_length=255, blank=True, null=True)
+    content = models.TextField()
+    post_type = models.ForeignKey(PostType, related_name='post')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -26,7 +32,7 @@ class Comments(models.Model):
     """
     post = models.ForeignKey(Post, related_name="comments")
     author = models.ForeignKey(User, related_name="comments")
-    comment = models.TextField(null=True)
+    comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -38,11 +44,18 @@ class ElementWord(models.Model):
     """
     Description: Model Description
     """
-    author = models.ForeignKey(User, related_name="elementwords")
-    testimony = models.TextField(null=True)
-    approved = models.BooleanField( default=False)
+    author = models.ForeignKey(User, related_name="element_words")
+    testimony = models.TextField()
+    approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        pass
+
+
+class TaskType(models.Model):
+    task_type = models.CharField(max_length=50)
 
     class Meta:
         pass
@@ -54,10 +67,9 @@ class Task(models.Model):
     """
     name = models.CharField(max_length=50,null=True)
     description = models.TextField(null=True)
-    author = models.ForeignKey(User, related_name="task")
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    type = models.CharField(max_length=50,null=True)
+    task_type = models.ForeignKey(TaskType, related_name='tasks')
     amount = models.IntegerField(null=True)
     expected_amount = models.IntegerField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -84,11 +96,9 @@ class Events(models.Model):
     """
     name = models.CharField(max_length=50, null=True)
     description = models.TextField(null=True)
-    author = models.ForeignKey(User, related_name="event")
-    location = models.CharField(max_length=50)
+    location = models.CharField(max_length=255)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    type = models.CharField(max_length=50, null=True)
     attendee = models.IntegerField(null=True)
     expected_attendee = models.IntegerField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)

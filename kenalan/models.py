@@ -10,6 +10,7 @@ def default_end_time():
     end_time = now + timedelta(minutes=5)
     return end_time 
 
+
 class Token(models.Model):
     """
     Description: Model Description

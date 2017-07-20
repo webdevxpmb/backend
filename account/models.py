@@ -12,6 +12,7 @@ class Role(models.Model):
     class Meta:
         pass
 
+
 class Angkatan(models.Model):
     """
     Description: Model Description
@@ -21,6 +22,7 @@ class Angkatan(models.Model):
 
     class Meta:
         pass
+
 
 class UserProfile(models.Model):
     """

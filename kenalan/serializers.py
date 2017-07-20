@@ -10,11 +10,11 @@ from account.serializers import(
 )
 
 
-
 class TokenSerializer(serializers.ModelSerializer):
     class Meta:
         model = Token
         read_only_fields = ('token', 'user', 'start_time', 'end_time', 'created_at', 'updated_at')
+
 
 class KenalanSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,10 +22,12 @@ class KenalanSerializer(serializers.ModelSerializer):
         fields = ('detail_kenalan', 'id', 'user_elemen', 'user_maba', 'status')
         read_only_fields = ('detail_kenalan', 'user_elemen', 'user_maba')
 
+
 class KenalanStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = KenalanStatus
         fields = ('id', 'status')
+
 
 class DetailKenalanSerializer(serializers.ModelSerializer):
     class Meta:

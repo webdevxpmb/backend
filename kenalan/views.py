@@ -119,6 +119,3 @@ class DetailKenalanDetail(generics.RetrieveUpdateDestroyAPIView):
             return self.update(request, *args, **kwargs)
         else:
             raise exceptions.PermissionDenied
-
-
-    
