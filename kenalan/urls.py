@@ -6,15 +6,20 @@ from kenalan import views, utils
 urlpatterns = format_suffix_patterns([
     url(r'^token/$',
         views.TokenList.as_view(), name='token-list'),
-   
+
+    url(r'^kenalan/$',
+        views.KenalanList.as_view(), name='kenalan-list'),
+    url(r'^kenalan/(?P<pk>[0-9]+)/$',
+        views.KenalanDetail.as_view(), name='kenalan-detail'),
+
     url(r'^kenalan-status/$',
         views.KenalanStatusList.as_view(), name='kenalanstatus-list'),
     url(r'^kenalan-status/(?P<pk>[0-9]+)/$',
         views.KenalanStatusDetail.as_view(), name='kenalanstatus-detail'),
 
-    url(r'^kenalan-detail/$',
+    url(r'^detail-kenalan/$',
         views.DetailKenalanList.as_view(), name='detailkenalan-list'),
-    url(r'^kenalan-detail/(?P<pk>[0-9]+)/$',
+    url(r'^detail-kenalan/(?P<pk>[0-9]+)/$',
         views.DetailKenalanDetail.as_view(), name='detailkenalan-detail', ),
 
     url(r'^generate-token/$',
@@ -23,7 +28,7 @@ urlpatterns = format_suffix_patterns([
         utils.delete_expired_token, name='delete-expired-token'),
 
     url(r'^create-kenalan/(?P<token>\w{6})/$',
-        utils.create_kenalan_by_token, name='create kenalan')    
+        utils.create_kenalan_by_token, name='create-kenalan'),
 
 
 ])
