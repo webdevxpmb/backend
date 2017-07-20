@@ -1,8 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend
 from django.conf import settings
-from django.core.exceptions import ImproperlyConfigured
-from django.http import HttpResponse
+from django.core.exceptions import ImproperlyConfigured, PermissionDenied
+from rest_framework_jwt.settings import api_settings
 
 from django_cas_ng.signals import cas_user_authenticated
 from django_cas_ng.utils import get_cas_client
@@ -48,7 +48,7 @@ class CASBackend(ModelBackend):
             if created:
                 user = self.configure_user(user)
                 if settings.CAS_APPLY_ATTRIBUTES_TO_USER and attributes:
-                    user_profile = self.configure_user_profile(user, attributes)
+                    self.configure_user_profile(user, attributes)
         else:
             created = False
             try:
@@ -130,15 +130,16 @@ class CASBackend(ModelBackend):
                 angkatan = Angkatan.objects.get(id=6)
                 role = Role.objects.get(id=get_role_by_angkatan(angkatan))
 
-            user_profile = UserProfile.objects.create(user = user,
+            UserProfile.objects.create(user = user,
                                                       name = name,
                                                       npm = npm,
                                                       email = email,
                                                       angkatan = angkatan,
                                                       role = role,
                                                       )
-            return user_profile
         except Exception as e:
-            raise
+            raise PermissionDenied
+
+
 
 
