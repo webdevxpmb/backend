@@ -2,71 +2,71 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from website.models import (
     Attachment, PostType, Post, Comments,
-    ElementWord, Submission, Task, Events
+    ElementWord, Task, Events
 )
 
 
 class AttachmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Attachment
-        fields = ('filename', 'url')
+        fields = ('id', 'filename', 'url')
 
 
 class PostTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostType
-        fields = ('post_type')
-
+        fields = ('id', 'post_type')
 
 class PostSerializer(serializers.ModelSerializer):
-    author = serializers.PrimaryKeyRelatedField(read_only=True)
-    post_type = serializers.PrimaryKeyRelatedField(read_only=True)
-    attachment = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
+    # author = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    # post_type = serializers.PrimaryKeyRelatedField(queryset=PostType.objects.all())
+    # attachment = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     class Meta:
         model = Post
-        fields = ('title', 'author', 'summary', 'content', 'post_type', 'attachment')
+        fields = ('id', 'title', 'author', 'summary', 'content', 'post_type', 'attachment')
 
 
 class CommentsSerializer(serializers.ModelSerializer):
-    post = serializers.PrimaryKeyRelatedField(read_only=True)
-    author = serializers.PrimaryKeyRelatedField(read_only=True)
+    # post = serializers.PrimaryKeyRelatedField(read_only=True)
+    # author = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = Comments
-        fields = ('post', 'author', 'comment')
+        fields = ('id', 'post', 'author', 'comment')
 
 
 class ElementWordSerializer(serializers.ModelSerializer):
-    author = serializers.PrimaryKeyRelatedField(read_only=True)
+    # author = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = ElementWord
-        fields = ('author', 'testimony', 'approved')
+        fields = ('id', 'author', 'testimony', 'approved')
+        # read_only_fields = ('approved',)
 
 
-class SubmissionSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(read_only=True)
-    attachment = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
-    class Meta:
-        model = Submission
-        fields = ('user', 'attachment')
+# class SubmissionSerializer(serializers.ModelSerializer):
+#     # user = serializers.PrimaryKeyRelatedField(read_only=True)
+#     # attachment = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
+#     class Meta:
+#         model = Submission
+#         fields = ('id', 'user', 'attachment')
 
 
 class TaskSerializer(serializers.ModelSerializer):
-    author = serializers.PrimaryKeyRelatedField(read_only=True)
-    submission = serializers.PrimaryKeyRelatedField(read_only=True)
+    # author = serializers.PrimaryKeyRelatedField(read_only=True)
+    # submission = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = Task
-        fields = ('name', 'description', 'author', 'start_time',
-                  'end_time', 'type', 'submission', 'amount',
+        fields = ('id', 'name', 'description', 'author', 'start_time',
+                  'end_time', 'type', 'amount',
                   'expected_amount'
         )
 
 
 class EventsSerializer(serializers.ModelSerializer):
-    author = serializers.PrimaryKeyRelatedField(read_only=True)
-    submission = serializers.PrimaryKeyRelatedField(read_only=True)
+    # author = serializers.PrimaryKeyRelatedField(read_only=True)
+    # submission = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = Events
-        fields = ('name', 'description', 'author', 'location',
-                  'start_time', 'end_time', 'type', 'submission',
+        fields = ('id', 'name', 'description', 'author', 'location',
+                  'start_time', 'end_time', 'type',
                   'attendee', 'expected_attendee'
         )

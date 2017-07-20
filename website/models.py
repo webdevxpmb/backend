@@ -27,6 +27,7 @@ class PostType(models.Model):
     class Meta:
         pass
 
+
 class Post(models.Model):
     """
     Description: Model Description
@@ -72,17 +73,17 @@ class ElementWord(models.Model):
         pass
 
 
-class Submission(models.Model):
-    """
-    Description: Model Description
-    """
-    user = models.ForeignKey(User, related_name="submission")
-    attachment = models.ForeignKey(Attachment,related_name="submission")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        pass
+# class Submission(models.Model):
+#     """
+#     Description: Model Description
+#     """
+#     user = models.ForeignKey(User, related_name="submission")
+#     # attachment = models.ForeignKey(Attachment,related_name="submission")
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+#
+#     class Meta:
+#         pass
 
 
 class Task(models.Model):
@@ -95,7 +96,7 @@ class Task(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     type = models.CharField(max_length=50,null=True)
-    submission = models.ForeignKey(Submission, related_name="task")
+    # submission = models.ForeignKey(Submission, related_name="task")
     amount = models.IntegerField(null=True)
     expected_amount = models.IntegerField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -116,7 +117,7 @@ class Events(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     type = models.CharField(max_length=50, null=True)
-    submission = models.ForeignKey(Submission, related_name="event")
+    # submission = models.ForeignKey(Submission, related_name="event")
     attendee = models.IntegerField(null=True)
     expected_attendee = models.IntegerField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
