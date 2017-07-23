@@ -65,6 +65,8 @@ MIDDLEWARE = [
 
 
 ROOT_URLCONF = 'backend.urls'
+STATIC_ROOT = "/var/www/pmb-backend.herouapp.com/static/"
+STATIC_URL = '/static/'
 
 TEMPLATES = [
     {
