@@ -27,7 +27,7 @@ SECRET_KEY = '3-$(qogu0ez1jrip7^x#@b)d&xtv#2g8ej8j)2a^p%*5e8!v!p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['pmb-backend.herokuapp.com', ]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -164,8 +164,6 @@ CAS_SERVER_URL = 'https://sso.ui.ac.id/cas2/login'
 CAS_STORE_NEXT = True
 CAS_CREATE_USER = True
 CAS_APPLY_ATTRIBUTES_TO_USER = True
-CAS_REDIRECT_URL = 'http://pmb.cs.ui.ac.id/'
-
 
 CRONJOBS = [
     ('*/10 * * * *', 'kenalan.utils.delete_all_expired_token')
