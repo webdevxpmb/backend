@@ -26,7 +26,7 @@ def generate_token(request):
             content = TokenSerializer(content, context={'request': request})
             return Response(content.data, status=200)
     except Exception as e:
-        raise Response(status=400)
+        return Response(status=400)
 
 
 @api_view(['GET'])
