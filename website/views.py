@@ -1,4 +1,4 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, exceptions
 from website.serializers import (
     PostTypeSerializer, PostSerializer,
     CommentsSerializer, ElementWordSerializer,
@@ -12,16 +12,22 @@ from website.models import (
     ElementWord, TaskType, Task,
     Submission, Events, Attachment,
 )
+from account.permissions import (
+    IsPmbAdmin,
+    IsOwner,
+    IsMabaOrAdmin,
+    is_pmb_admin,
+)
 
 
 class PostTypeList(generics.ListCreateAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (IsPmbAdmin,)
     queryset = PostType.objects.all()
     serializer_class = PostTypeSerializer
 
 
 class PostTypeDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (IsPmbAdmin,)
     queryset = PostType.objects.all()
     serializer_class = PostTypeSerializer
 
@@ -45,7 +51,7 @@ class CommentList(generics.ListCreateAPIView):
 
 
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAuthenticated, )
+    permission_classes = (IsOwner, )
     queryset = Comments.objects.all()
     serializer_class = CommentsSerializer
 
@@ -57,19 +63,19 @@ class ElementWordList(generics.ListCreateAPIView):
 
 
 class ElementWordDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAuthenticated, )
+    permission_classes = (IsOwner, )
     queryset = ElementWord.objects.all()
     serializer_class = ElementWordSerializer
 
 
 class TaskTypeList(generics.ListCreateAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (IsPmbAdmin,)
     queryset = TaskType.objects.all()
     serializer_class = TaskTypeSerializer
 
 
 class TaskTypeDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (IsPmbAdmin,)
     queryset = TaskType.objects.all()
     serializer_class = TaskTypeSerializer
 
@@ -85,15 +91,33 @@ class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
+    def put(self, request, *args, **kwargs):
+        if is_pmb_admin(request.user):
+            return self.update(request, *args, **kwargs)
+        else:
+            raise exceptions.PermissionDenied
+
+    def patch(self, request, *args, **kwargs):
+        if is_pmb_admin(request.user):
+            return self.update(request, *args, **kwargs)
+        else:
+            raise exceptions.PermissionDenied
+
+    def destroy(self, request, *args, **kwargs):
+        if is_pmb_admin(request.user):
+            return self.destroy(request, *args, **args)
+        else:
+            raise exceptions.PermissionDenied
+
 
 class SubmissionList(generics.ListCreateAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
-    queryset = Submission.objects.all()
+    permission_classes = (IsMabaOrAdmin,)
     serializer_class = SubmissionSerializer
+    queryset = Submission.objects.all()
 
 
 class SubmissionDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (IsOwner,)
     queryset = Submission.objects.all()
     serializer_class = SubmissionSerializer
 
@@ -109,9 +133,27 @@ class EventDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Events.objects.all()
     serializer_class = EventsSerializer
 
+    def put(self, request, *args, **kwargs):
+        if is_pmb_admin(request.user):
+            return self.update(request, *args, **kwargs)
+        else:
+            raise exceptions.PermissionDenied
+
+    def patch(self, request, *args, **kwargs):
+        if is_pmb_admin(request.user):
+            return self.update(request, *args, **kwargs)
+        else:
+            raise exceptions.PermissionDenied
+
+    def destroy(self, request, *args, **kwargs):
+        if is_pmb_admin(request.user):
+            return self.destroy(request, *args, **args)
+        else:
+            raise exceptions.PermissionDenied
+
 
 class AttachmentList(generics.ListCreateAPIView):
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (IsPmbAdmin,)
     queryset = Attachment.objects.all()
     serializer_class = AttachmentSerializer
 

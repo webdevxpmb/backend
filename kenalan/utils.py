@@ -10,10 +10,6 @@ from rest_framework.decorators import api_view, permission_classes
 
 import datetime
 
-ROLE_ELEMEN = 'elemen'
-ROLE_AKADEMIS = 'admin'
-ROLE_MABA = 'mahasiswa baru'
-
 
 @api_view(['GET'])
 @permission_classes((IsElemen,))
@@ -101,41 +97,3 @@ def check_user(user):
         return token_count >= 1
     except Exception as e:
         raise APIException
-
-
-def is_maba(user):
-    try:
-        user_profile = UserProfile.objects.get(user=user)
-        role = user_profile.role
-        if role.role_name == ROLE_MABA:
-            return True
-        else:
-            return False
-    except Exception as e:
-        print(e)
-        return False
-
-
-def is_elemen(user):
-    try:
-        user_profile = UserProfile.objects.get(user=user)
-        role = user_profile.role
-        if role.role_name == ROLE_ELEMEN:
-            return True
-        else:
-            return False
-    except Exception as e:
-        return False
-
-
-def is_akademis(user):
-    try:
-        user_profile = UserProfile.objects.get(user=user)
-        role = user_profile.role
-        if role.role_name == ROLE_AKADEMIS:
-            return True
-        else:
-            return False
-    except Exception as e:
-        return False
-

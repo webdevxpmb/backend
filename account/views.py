@@ -10,7 +10,7 @@ from account.serializers import(
 )
 from rest_framework import generics, permissions
 from account.permissions import(
-    IsUserProfileOwner,
+    IsOwner,
     IsPmbAdmin,
 )
 

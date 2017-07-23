@@ -11,15 +11,12 @@ from kenalan.serializers import(
 
 from rest_framework import generics, permissions, exceptions
 
-from kenalan.utils import(
-    is_maba,
-    is_elemen,
-    is_akademis,
-)
-
 from account.permissions import(
     IsPmbAdmin,
     IsDetailKenalanOwner,
+    is_maba,
+    is_pmb_admin,
+    is_elemen,
 )
 
 
@@ -64,13 +61,13 @@ class KenalanDetail(generics.RetrieveUpdateAPIView):
         return queryset
 
     def put(self, request, *args, **kwargs):
-        if is_elemen(request.user) or is_akademis(request.user):
+        if is_elemen(request.user) or is_pmb_admin(request.user):
             return self.update(request, *args, **kwargs)
         else:
             raise exceptions.PermissionDenied
 
     def patch(self, request, *args, **kwargs):
-        if is_elemen(request.user) or is_akademis(request.user):
+        if is_elemen(request.user) or is_pmb_admin(request.user):
             return self.update(request, *args, **kwargs)
         else:
             raise exceptions.PermissionDenied
