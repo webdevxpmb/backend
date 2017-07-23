@@ -164,7 +164,7 @@ CAS_SERVER_URL = 'https://sso.ui.ac.id/cas2/login'
 CAS_STORE_NEXT = True
 CAS_CREATE_USER = True
 CAS_APPLY_ATTRIBUTES_TO_USER = True
-CAS_REDIRECT_URL = 'http://localhost:8000/jwt-token'
+CAS_REDIRECT_URL = 'http://pmb.cs.ui.ac.id/'
 
 
 CRONJOBS = [
