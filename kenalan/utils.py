@@ -3,6 +3,7 @@ from kenalan.serializers import TokenSerializer, KenalanSerializer
 from account.models import UserProfile
 from account.permissions import IsElemen, IsMaba
 from django.utils.crypto import get_random_string
+from django.core import exceptions
 from django.db import IntegrityError
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
@@ -73,6 +74,8 @@ def create_kenalan_by_token(request, token):
 
     except IntegrityError:
         return Response({"you already make connection to this user"}, status=400)
+    except exceptions:
+        return Response(status=400)
 
 
 def get_token():

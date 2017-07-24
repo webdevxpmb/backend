@@ -40,7 +40,7 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = ('id', 'name', 'description', 'start_time',
-                  'end_time', 'type', 'amount', 'expected_amount'
+                  'end_time', 'task_type', 'amount', 'expected_amount'
         )
 
 
@@ -54,7 +54,7 @@ class EventsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Events
         fields = ('id', 'name', 'description', 'location',
-                  'start_time', 'end_time', 'type',
+                  'start_time', 'end_time',
                   'attendee', 'expected_attendee'
         )
 

@@ -8,58 +8,57 @@ from account.serializers import(
     UserSerializer, RoleSerializer,
     AngkatanSerializer, UserProfileSerializer,
 )
-from rest_framework import generics, permissions
+from rest_framework import generics
 from account.permissions import(
     IsOwner,
     IsPmbAdmin,
 )
 
-# Create your views here.
-
 
 class UserList(generics.ListAPIView):
-    permission_classes = (permissions.IsAdminUser,)
+    permission_classes = (IsPmbAdmin,)
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAdminUser,)
+    permission_classes = (IsPmbAdmin,)
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
 class RoleList(generics.ListCreateAPIView):
-    permission_classes = (permissions.IsAdminUser,)
+    permission_classes = (IsPmbAdmin,)
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
 
 
 class RoleDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAdminUser,)
+    permission_classes = (IsPmbAdmin,)
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
 
 
 class AngkatanList(generics.ListCreateAPIView):
-    permission_classes = (permissions.IsAdminUser,)
+    permission_classes = (IsPmbAdmin,)
     queryset = Angkatan.objects.all()
     serializer_class = AngkatanSerializer
 
 
 class AngkatanDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAdminUser,)
+    permission_classes = (IsPmbAdmin,)
     queryset = Angkatan.objects.all()
     serializer_class = AngkatanSerializer
 
 
 class UserProfileList(generics.ListCreateAPIView):
+    permissions_classes = (IsPmbAdmin,)
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
     search_fields = ('name', 'npm')
 
 
 class UserProfileDetail(generics.RetrieveUpdateDestroyAPIView):
-    # permission_classes = (IsUserProfileOwner,)
+    permission_classes = (IsOwner,)
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
