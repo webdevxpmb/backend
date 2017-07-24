@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django_crontab',
     'corsheaders',
     'dj_database_url',
+    'rest_framework_docs',
 
 
 ]

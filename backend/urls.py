@@ -16,7 +16,6 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django_cas_ng import views
-from rest_framework.documentation import include_docs_urls
 
 urlpatterns = [
     # OAuth 2 endpoints:
@@ -27,5 +26,6 @@ urlpatterns = [
     url(r'^login/$', views.login, name='cas_ng_login'),
     url(r'^logout$', views.logout, name='cas_ng_logout'),
     url(r'^callback$', views.callback, name='cas_ng_proxy_callback'),
-    url(r'^docs/', include_docs_urls(title='pmb-backend api docsx')),
+    url(r'^docs/', include('rest_framework_docs.urls')),
+
 ]

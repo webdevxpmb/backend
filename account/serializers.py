@@ -20,12 +20,13 @@ class AngkatanSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username',)
+        fields = ('id', 'username')
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ('id', 'user', 'name', 'email', 'photo', 'about', 'linkedin', 'facebook', 'phone_number',
+        fields = ('id', 'user', 'name', 'role', 'npm', 'angkatan', 'email',
+                  'photo', 'about', 'linkedin', 'facebook', 'phone_number',
                   'birth_place', 'birth_date', 'created_at', 'updated_at')
         read_only_fields = ('role', 'npm', 'angkatan', 'user')
