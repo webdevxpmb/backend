@@ -3,9 +3,9 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from website import views
 
 urlpatterns = format_suffix_patterns([
-    url(r'^attachment/',
+    url(r'attachment/',
         views.AttachmentList.as_view(), name='attachment-list'),
-    url(r'^attachment/(?P<pk>[0-9]+)/$',
+    url(r'attachment/(?P<pk>[0-9]+)/$',
         views.AttachmentDetail.as_view(), name='attachment-detail'),
 
     url(r'post-type/$',
