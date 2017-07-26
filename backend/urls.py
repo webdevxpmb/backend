@@ -19,13 +19,13 @@ from django_cas_ng import views
 
 urlpatterns = [
     # OAuth 2 endpoints:
-    url(r'^admin/', admin.site.urls),
-    url(r'^', include('account.urls')),
-    url(r'^', include('kenalan.urls')),
-    url(r'^', include('website.urls')),
-    url(r'^login/$', views.login, name='cas_ng_login'),
-    url(r'^logout$', views.logout, name='cas_ng_logout'),
-    url(r'^callback$', views.callback, name='cas_ng_proxy_callback'),
-    url(r'^docs/', include('rest_framework_docs.urls')),
+    url(r'^pmb-api/admin/', admin.site.urls),
+    url(r'^pmb-api/', include('account.urls')),
+    url(r'^pmb-api/', include('kenalan.urls')),
+    url(r'^pmb-api/', include('website.urls')),
+    url(r'^pmb-api/login/$', views.login, name='cas_ng_login'),
+    url(r'^pmb-api/logout$', views.logout, name='cas_ng_logout'),
+    url(r'^pmb-api/callback$', views.callback, name='cas_ng_proxy_callback'),
+    url(r'^pmb-api/docs/', include('rest_framework_docs.urls')),
 
 ]

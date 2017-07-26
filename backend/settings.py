@@ -94,8 +94,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'USER': 'pmb',
+        'PASSWORD': 'webdevxpmb',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -195,7 +195,7 @@ JWT_AUTH = {
 
 
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
-STATIC_URL = '/static/'
+STATIC_URL = '/pmb-api/static/'
 
 # Extra places for collectstatic to find static files.
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
