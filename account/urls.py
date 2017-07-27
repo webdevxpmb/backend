@@ -2,8 +2,7 @@ from django.conf.urls import url
 from rest_framework.urlpatterns import format_suffix_patterns
 from account import views, utils
 from rest_framework_jwt.views import obtain_jwt_token
-from django.conf import settings
-from django.conf.urls.static import static
+
 
 
 # API endpoints
@@ -17,12 +16,12 @@ urlpatterns = format_suffix_patterns([
         views.RoleList.as_view(), name='role-list'),
     url(r'role/(?P<pk>[0-9]+)/$',
         views.RoleDetail.as_view(), name='role-detail'),
-   
+
     url(r'angkatan/$',
         views.AngkatanList.as_view(), name='angkatan-list'),
     url(r'angkatan/(?P<pk>[0-9]+)/$',
         views.AngkatanDetail.as_view(), name='angkatan-detail'),
-   
+
     url(r'user-profile/$',
         views.UserProfileList.as_view(), name='userprofile-list'),
     url(r'user-profile/(?P<pk>[0-9]+)/$',
@@ -33,5 +32,3 @@ urlpatterns = format_suffix_patterns([
     url(r'jwt-token/', utils.configure_token, name='jwt-token'),
 
 ])
-
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
