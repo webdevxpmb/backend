@@ -2,17 +2,22 @@ from django.contrib import admin
 
 # Register your models here.
 from website.models import (
-    ElementWord, Events, Task,
-    Submission, Post, Comments,
-    PostType, TaskType, Attachment,
+    ElementWord, Event, Task,
+    Submission, Post, Comment,
+    PostType,
+    Album, TaskStatistic,
+    EventStatistic, KenalanStatistic,
 )
 
 admin.site.register(ElementWord)
-admin.site.register(Events)
+admin.site.register(Event)
 admin.site.register(Task)
 admin.site.register(Submission)
 admin.site.register(Post)
-admin.site.register(Comments)
+admin.site.register(Comment)
 admin.site.register(PostType)
-admin.site.register(TaskType)
-admin.site.register(Attachment)
+admin.site.register(Album)
+admin.site.register(TaskStatistic)
+admin.site.register(EventStatistic)
+admin.site.register(KenalanStatistic)
+

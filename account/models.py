@@ -34,7 +34,7 @@ class UserProfile(models.Model):
     email = models.CharField(max_length=50)
     role = models.ForeignKey(Role)
     angkatan = models.ForeignKey(Angkatan)
-    photo = models.ImageField(upload_to='uploads/', blank=True, null=True)
+    photo = models.ImageField(upload_to='media', blank=True, null=True)
     about = models.TextField(blank=True, null=True)
     linkedin = models.CharField(max_length=50, blank=True, null=True)
     facebook = models.CharField(max_length=50, blank=True, null=True)

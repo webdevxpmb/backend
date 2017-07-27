@@ -3,15 +3,10 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from website import views
 
 urlpatterns = format_suffix_patterns([
-    url(r'attachment/',
-        views.AttachmentList.as_view(), name='attachment-list'),
-    url(r'attachment/(?P<pk>[0-9]+)/$',
-        views.AttachmentDetail.as_view(), name='attachment-detail'),
-
     url(r'post-type/$',
-        views.PostTypeList.as_view(), name='post-type-list'),
+        views.PostTypeList.as_view(), name='posttype-list'),
     url(r'post-type/(?P<pk>[0-9]+)/$',
-        views.PostTypeDetail.as_view(), name='post-type-detail'),
+        views.PostTypeDetail.as_view(), name='posttype-detail'),
 
     url(r'post/$',
         views.PostList.as_view(), name='post-list'),
@@ -24,19 +19,14 @@ urlpatterns = format_suffix_patterns([
         views.CommentDetail.as_view(), name='comment-detail'),
 
     url(r'element-word/$',
-        views.ElementWordList.as_view(), name='element-word-list'),
+        views.ElementWordList.as_view(), name='elementword-list'),
     url(r'element-word/(?P<pk>[0-9]+)/$',
-        views.ElementWordDetail.as_view(), name='element-word-detail'),
+        views.ElementWordDetail.as_view(), name='elementword-detail'),
 
     url(r'submission/$',
         views.SubmissionList.as_view(), name="submission-list"),
     url(r'submission/(?P<pk>[0-9]+)/$',
         views.SubmissionDetail.as_view(), name='submission-detail'),
-
-    url(r'task-type/$',
-        views.TaskTypeList.as_view(), name="task-type-list"),
-    url(r'task-type/(?P<pk>[0-9]+)/$',
-        views.TaskTypeDetail.as_view(), name='task-type-detail'),
 
     url(r'task/$',
         views.TaskList.as_view(), name="task-list"),
@@ -44,7 +34,30 @@ urlpatterns = format_suffix_patterns([
         views.TaskDetail.as_view(), name='task-detail'),
 
     url(r'event/$',
-        views.EventsList.as_view(), name="event-list"),
+        views.EventList.as_view(), name="event-list"),
     url(r'event/(?P<pk>[0-9]+)/$',
         views.EventDetail.as_view(), name='event-detail'),
+
+    url(r'album/$',
+        views.AlbumList.as_view(), name="album-list"),
+    url(r'album/(?P<pk>[0-9]+)/$',
+        views.AlbumDetail.as_view(), name='album-detail'),
+
+    url(r'task-statistic/$',
+        views.TaskStatisticList.as_view(), name="taskstatistic-list"),
+    url(r'task-statistic/(?P<pk>[0-9]+)/$',
+        views.TaskStatisticDetail.as_view(), name='taskstatistic-detail'),
+
+    url(r'kenalan-statistic/$',
+        views.KenalanStatisticList.as_view(), name="kenalanstatistic-list"),
+    url(r'kenalan-statistic/(?P<pk>[0-9]+)/$',
+        views.KenalanStatisticDetail.as_view(), name='kenalanstatistic-detail'),
+
+    url(r'event-statistic/$',
+        views.EventStatisticList.as_view(), name="eventstatistic-list"),
+    url(r'event-statistic/(?P<pk>[0-9]+)/$',
+        views.EventStatisticDetail.as_view(), name='eventstatistic-detail'),
+
+
+
 ])
