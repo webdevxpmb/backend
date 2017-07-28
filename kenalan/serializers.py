@@ -19,9 +19,6 @@ class KenalanStatusSerializer(serializers.ModelSerializer):
 
 
 class KenalanSerializer(serializers.ModelSerializer):
-    user_elemen = UserSerializer()
-    user_maba = UserSerializer()
-    status = KenalanStatusSerializer()
     class Meta:
         model = Kenalan
         fields = ('detail_kenalan', 'id', 'user_elemen', 'user_maba', 'status')

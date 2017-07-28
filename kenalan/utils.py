@@ -43,6 +43,7 @@ def delete_expired_token(request):
     except Exception as e:
         return Response(status=501)
 
+
 def delete_all_expired_token():
     try:
         now = datetime.datetime.now().replace(tzinfo=None)
