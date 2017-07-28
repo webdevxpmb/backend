@@ -14,8 +14,8 @@ from rest_framework import generics, permissions, exceptions
 from account.permissions import(
     IsPmbAdmin,
     IsDetailKenalanOwner,
+    IsKenalanOwner,
     is_maba,
-    is_pmb_admin,
     is_elemen,
 )
 
@@ -46,31 +46,11 @@ class KenalanList(generics.ListAPIView):
         return queryset
 
 
-class KenalanDetail(generics.RetrieveUpdateAPIView):
+class KenalanDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = KenalanSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (IsKenalanOwner,)
+    queryset = Kenalan.objects.all()
 
-    def get_queryset(self):
-        if is_maba(self.request.user):
-            queryset = Kenalan.objects.all().filter(user_maba=self.request.user)
-        elif is_elemen(self.request.user):
-            queryset = Kenalan.objects.all().filter(user_elemen=self.request.user)
-        else:
-            queryset = Kenalan.objects.all()
-            
-        return queryset
-
-    def put(self, request, *args, **kwargs):
-        if is_elemen(request.user) or is_pmb_admin(request.user):
-            return self.update(request, *args, **kwargs)
-        else:
-            raise exceptions.PermissionDenied
-
-    def patch(self, request, *args, **kwargs):
-        if is_elemen(request.user) or is_pmb_admin(request.user):
-            return self.update(request, *args, **kwargs)
-        else:
-            raise exceptions.PermissionDenied
 
 
 class KenalanStatusList(generics.ListAPIView):
@@ -100,19 +80,8 @@ class DetailKenalanList(generics.ListAPIView):
         return queryset
 
 
-class DetailKenalanDetail(generics.RetrieveUpdateDestroyAPIView):
+class DetailKenalanDetail(generics.RetrieveUpdateAPIView):
     queryset = DetailKenalan.objects.all()
     serializer_class = DetailKenalanSerializer
     permission_classes = (IsDetailKenalanOwner,)
 
-    def put(self, request, *args, **kwargs):
-        if is_maba(request.user):
-            return self.update(request, *args, **kwargs)
-        else:
-            raise exceptions.PermissionDenied
-
-    def patch(self, request, *args, **kwargs):
-        if is_maba(request.user):
-            return self.update(request, *args, **kwargs)
-        else:
-            raise exceptions.PermissionDenied

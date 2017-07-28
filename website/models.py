@@ -18,6 +18,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, related_name="post")
     summary = models.CharField(max_length=255, blank=True, null=True)
     content = models.TextField()
+    attachment_link = models.CharField(max_length=255, blank=True, null=True)
     post_type = models.ForeignKey(PostType, related_name='post')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

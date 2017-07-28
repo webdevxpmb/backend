@@ -40,8 +40,14 @@ class PostList(generics.ListCreateAPIView):
     serializer_class = PostSerializer
 
 
-class PostDetail(generics.RetrieveUpdateDestroyAPIView):
+class PostDetail(generics.RetrieveAPIView):
     permission_classes = (permissions.IsAuthenticated, )
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+
+class PostDetailUpdate(generics.RetrieveUpdateDestroyAPIView):
+    permissions_classes = (IsOwner, )
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
@@ -75,9 +81,9 @@ class TaskList(generics.ListCreateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
-    def create(self, request, *args, **kwargs):
-        if is_pmb_admin(request.user):
-            return self.create(request, *args, **kwargs)
+    def perform_create(self, serializer):
+        if is_pmb_admin(self.request.user):
+            serializer.save()
         else:
             raise exceptions.PermissionDenied
 
@@ -99,7 +105,7 @@ class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
         else:
             raise exceptions.PermissionDenied
 
-    def destroy(self, request, *args, **kwargs):
+    def delete(self, request, *args, **kwargs):
         if is_pmb_admin(request.user):
             return self.destroy(request, *args, **kwargs)
         else:
@@ -123,9 +129,9 @@ class EventList(generics.ListCreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
-    def create(self, request, *args, **kwargs):
-        if is_pmb_admin(request.user):
-            return self.create(request, *args, **kwargs)
+    def perform_create(self, serializer):
+        if is_pmb_admin(self.request.user):
+            serializer.save()
         else:
             raise exceptions.PermissionDenied
 
@@ -147,7 +153,7 @@ class EventDetail(generics.RetrieveUpdateDestroyAPIView):
         else:
             raise exceptions.PermissionDenied
 
-    def destroy(self, request, *args, **kwargs):
+    def delete(self, request, *args, **kwargs):
         if is_pmb_admin(request.user):
             return self.destroy(request, *args, **kwargs)
         else:
@@ -159,9 +165,9 @@ class AlbumList(generics.ListCreateAPIView):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
 
-    def create(self, request, *args, **kwargs):
-        if is_pmb_admin(request.user):
-            return self.create(request, *args, **kwargs)
+    def perform_create(self, serializer):
+        if is_pmb_admin(self.request.user):
+            serializer.save()
         else:
             raise exceptions.PermissionDenied
 
@@ -183,7 +189,7 @@ class AlbumDetail(generics.RetrieveUpdateDestroyAPIView):
         else:
             raise exceptions.PermissionDenied
 
-    def destroy(self, request, *args, **kwargs):
+    def delete(self, request, *args, **kwargs):
         if is_pmb_admin(request.user):
             return self.destroy(request, *args, **kwargs)
         else:
@@ -195,9 +201,9 @@ class EventStatisticList(generics.ListCreateAPIView):
     queryset = EventStatistic.objects.all()
     serializer_class = EventStatisticSerializer
 
-    def create(self, request, *args, **kwargs):
-        if is_pmb_admin(request.user):
-            return self.create(request, *args, **kwargs)
+    def perform_create(self, serializer):
+        if is_pmb_admin(self.request.user):
+            serializer.save()
         else:
             raise exceptions.PermissionDenied
 
@@ -219,7 +225,7 @@ class EventStatisticDetail(generics.RetrieveUpdateDestroyAPIView):
         else:
             raise exceptions.PermissionDenied
 
-    def destroy(self, request, *args, **kwargs):
+    def delete(self, request, *args, **kwargs):
         if is_pmb_admin(request.user):
             return self.destroy(request, *args, **kwargs)
         else:
@@ -231,9 +237,9 @@ class TaskStatisticList(generics.ListCreateAPIView):
     queryset = TaskStatistic.objects.all()
     serializer_class = TaskStatisticSerializer
 
-    def create(self, request, *args, **kwargs):
-        if is_pmb_admin(request.user):
-            return self.create(request, *args, **kwargs)
+    def perform_create(self, serializer):
+        if is_pmb_admin(self.request.user):
+            serializer.save()
         else:
             raise exceptions.PermissionDenied
 
@@ -255,7 +261,7 @@ class TaskStatisticDetail(generics.RetrieveUpdateDestroyAPIView):
         else:
             raise exceptions.PermissionDenied
 
-    def destroy(self, request, *args, **kwargs):
+    def delete(self, request, *args, **kwargs):
         if is_pmb_admin(request.user):
             return self.destroy(request, *args, **kwargs)
         else:
@@ -267,9 +273,9 @@ class KenalanStatisticList(generics.ListCreateAPIView):
     queryset = KenalanStatistic.objects.all()
     serializer_class = KenalanStatisticSerializer
 
-    def create(self, request, *args, **kwargs):
-        if is_pmb_admin(request.user):
-            return self.create(request, *args, **kwargs)
+    def perform_create(self, serializer):
+        if is_pmb_admin(self.request.user):
+            serializer.save()
         else:
             raise exceptions.PermissionDenied
 
@@ -291,7 +297,7 @@ class KenalanStatisticDetail(generics.RetrieveUpdateDestroyAPIView):
         else:
             raise exceptions.PermissionDenied
 
-    def destroy(self, request, *args, **kwargs):
+    def delete(self, request, *args, **kwargs):
         if is_pmb_admin(request.user):
             return self.destroy(request, *args, **kwargs)
         else:

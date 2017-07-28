@@ -15,7 +15,6 @@ def is_maba(user):
         else:
             return False
     except Exception as e:
-        print(e)
         return False
 
 

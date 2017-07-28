@@ -13,6 +13,7 @@ django-common-helpers==0.9.1
 django-cors-headers==2.1.0
 django-crontab==0.7.1
 django-filter==1.0.4
+django-smartfields==1.0.9
 djangorestframework==3.6.3
 djangorestframework-filters==0.10.1
 djangorestframework-jwt==1.10.0

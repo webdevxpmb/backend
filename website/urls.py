@@ -12,6 +12,8 @@ urlpatterns = format_suffix_patterns([
         views.PostList.as_view(), name='post-list'),
     url(r'post/(?P<pk>[0-9]+)/$',
         views.PostDetail.as_view(), name='post-detail'),
+    url(r'post-update/(?P<pk>[0-9]+)/$',
+        views.PostDetailUpdate.as_view(), name='postupdate-detail'),
 
     url(r'comment/$',
         views.CommentList.as_view(), name='comment-list'),
