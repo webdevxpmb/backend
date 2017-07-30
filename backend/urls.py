@@ -18,9 +18,11 @@ from django.contrib import admin
 from django_cas_ng import views
 from django.conf import settings
 from django.conf.urls.static import static
+from account.utils import SSOAuth
 
 urlpatterns = [
     # OAuth 2 endpoints:
+    url(r'^pmb-api/$', SSOAuth.as_view()),
     url(r'^pmb-api/admin/', admin.site.urls),
     url(r'^pmb-api', include('account.urls')),
     url(r'^pmb-api', include('kenalan.urls')),

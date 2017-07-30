@@ -1,9 +1,14 @@
 from django.core.exceptions import PermissionDenied
+from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.views import APIView
+from account.models import UserProfile
+from account.serializers import UserProfileSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework_jwt.settings import api_settings
 import json
+from rest_framework.renderers import JSONRenderer
 EMAIL_DOMAIN = '@ui.ac.id'
 ANGKATAN = {"2017": "2017", "2016": "omega", 
             "2015": "capung", "2014": "orion", 
@@ -60,4 +65,31 @@ def configure_token(request):
         data = {'user': request.user.username, 'token': token}
         return Response(data)
     except Exception as e:
-        raise
+        raise PermissionDenied
+
+
+class SSOAuth(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'index.html'
+
+    def get(self, request):
+        try:
+            jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+            jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
+            payload = jwt_payload_handler(request.user)
+            token = jwt_encode_handler(payload)
+
+            user_profile = UserProfile.objects.get(user=request.user)
+            name = user_profile.name
+            npm = user_profile.npm
+            email = user_profile.email
+            role = user_profile.role.role_name
+            angkatan = user_profile.angkatan.name
+
+            data = {'user_id': request.user.id, 'user': request.user.username, 'token': token, 'name': name,
+                    'npm': npm, 'email': email, 'role': role, 'angkatan': angkatan}
+            return Response(data)
+        except Exception as e:
+            raise
+

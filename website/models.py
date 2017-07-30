@@ -63,9 +63,12 @@ class Task(models.Model):
     description = models.TextField(blank=True, null=True)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    is_kenalan = models.BooleanField(default=False)
     attachment_link = models.CharField(max_length=255, blank=True, null=True)
-    expected_amount = models.IntegerField(null=True)
+    is_kenalan = models.BooleanField(default=False)
+    expected_amount_omega = models.SmallIntegerField(blank=True, null=True)
+    expected_amount_capung = models.SmallIntegerField(blank=True, null=True)
+    expected_amount_orion = models.SmallIntegerField(blank=True, null=True)
+    expected_amount_alumni = models.SmallIntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -114,7 +117,6 @@ class Album(models.Model):
 
 class TaskStatistic(models.Model):
     task = models.ForeignKey(Task, related_name='statistics')
-    expected_amount = models.SmallIntegerField(blank=True, null=True)
     amount = models.SmallIntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -138,10 +140,13 @@ class EventStatistic(models.Model):
 
 
 class UserStatistic(models.Model):
-    user = models.ForeignKey(User, related_name='user_statistics')
     name = models.CharField(max_length=255)
-    expected_amount = models.SmallIntegerField(default=0)
-    amount = models.SmallIntegerField(default=0)
+    user = models.ForeignKey(User)
+    task = models.ForeignKey(Task)
+    amount_omega = models.SmallIntegerField(blank=True, null=True)
+    amount_capung = models.SmallIntegerField(blank=True, null=True)
+    amount_orion = models.SmallIntegerField(blank=True, null=True)
+    amount_alumni = models.SmallIntegerField(blank=True, null=True)
 
     class Meta:
         pass

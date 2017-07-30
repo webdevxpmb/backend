@@ -38,8 +38,9 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = ('id', 'name', 'description', 'start_time',
-                  'end_time', 'is_kenalan', 'expected_amount',
-                  'created_at', 'updated_at')
+                  'end_time', 'is_kenalan', 'expected_amount_omega',
+                  'expected_amount_capung', 'expected_amount_orion',
+                  'expected_amount_alumni', 'created_at', 'updated_at')
 
 
 class SubmissionSerializer(serializers.ModelSerializer):
@@ -65,7 +66,7 @@ class AlbumSerializer(serializers.ModelSerializer):
 class TaskStatisticSerializer(serializers.ModelSerializer):
     class Meta:
         model = TaskStatistic
-        fields = ('id', 'task', 'expected_amount', 'amount', 'created_at', 'updated_at')
+        fields = ('id', 'task', 'amount', 'created_at', 'updated_at')
 
 
 class EventStatisticSerializer(serializers.ModelSerializer):
@@ -78,4 +79,5 @@ class EventStatisticSerializer(serializers.ModelSerializer):
 class UserStatisticSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserStatistic
-        fields = ('id', 'user', 'name', 'expected_amount', 'amount')
+        fields = ('id', 'user', 'name', 'task', 'amount_omega',
+                  'amount_capung', 'amount_orion', 'amount_alumni')
