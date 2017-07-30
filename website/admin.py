@@ -6,7 +6,7 @@ from website.models import (
     Submission, Post, Comment,
     PostType,
     Album, TaskStatistic,
-    EventStatistic, KenalanStatistic,
+    EventStatistic, UserStatistic,
 )
 
 admin.site.register(ElementWord)
@@ -19,5 +19,5 @@ admin.site.register(PostType)
 admin.site.register(Album)
 admin.site.register(TaskStatistic)
 admin.site.register(EventStatistic)
-admin.site.register(KenalanStatistic)
+admin.site.register(UserStatistic)
 

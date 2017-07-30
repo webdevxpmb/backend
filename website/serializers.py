@@ -4,7 +4,7 @@ from website.models import (
     Task, Event, Submission,
     PostType,
     Album, EventStatistic,
-    TaskStatistic, KenalanStatistic,
+    TaskStatistic, UserStatistic,
 
 )
 
@@ -65,7 +65,7 @@ class AlbumSerializer(serializers.ModelSerializer):
 class TaskStatisticSerializer(serializers.ModelSerializer):
     class Meta:
         model = TaskStatistic
-        fields = ('id', 'task', 'amount', 'created_at', 'updated_at')
+        fields = ('id', 'task', 'expected_amount', 'amount', 'created_at', 'updated_at')
 
 
 class EventStatisticSerializer(serializers.ModelSerializer):
@@ -75,7 +75,7 @@ class EventStatisticSerializer(serializers.ModelSerializer):
                   'absent', 'created_at', 'updated_at')
 
 
-class KenalanStatisticSerializer(serializers.ModelSerializer):
+class UserStatisticSerializer(serializers.ModelSerializer):
     class Meta:
-        model = KenalanStatistic
-        fields = ('id', 'user', 'task', 'expected_amount', 'amount')
+        model = UserStatistic
+        fields = ('id', 'user', 'name', 'expected_amount', 'amount')

@@ -57,7 +57,7 @@ class KenalanDetail(generics.RetrieveUpdateAPIView):
             raise PermissionDenied
 
 
-class KenalanStatusList(generics.ListAPIView):
+class KenalanStatusList(generics.ListCreateAPIView):
     queryset = KenalanStatus.objects.all()
     serializer_class = KenalanStatusSerializer
     permission_classes = (IsPmbAdmin,)

@@ -91,8 +91,8 @@ class Event(models.Model):
     name = models.CharField(max_length=255, null=True)
     description = models.TextField(blank=True, null=True)
     location = models.CharField(max_length=255)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_time = models.DateTimeField(blank=True, null=True)
+    end_time = models.DateTimeField(blank=True, null=True)
     attachment_link = models.CharField(max_length=255, blank=True, null=True)
     expected_attendee = models.IntegerField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -114,6 +114,7 @@ class Album(models.Model):
 
 class TaskStatistic(models.Model):
     task = models.ForeignKey(Task, related_name='statistics')
+    expected_amount = models.SmallIntegerField(blank=True, null=True)
     amount = models.SmallIntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -136,9 +137,9 @@ class EventStatistic(models.Model):
         pass
 
 
-class KenalanStatistic(models.Model):
-    user = models.ForeignKey(User, related_name='kenalan_statistics')
-    task = models.ForeignKey(Task)
+class UserStatistic(models.Model):
+    user = models.ForeignKey(User, related_name='user_statistics')
+    name = models.CharField(max_length=255)
     expected_amount = models.SmallIntegerField(default=0)
     amount = models.SmallIntegerField(default=0)
 

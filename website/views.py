@@ -4,7 +4,7 @@ from website.serializers import (
     CommentsSerializer, ElementWordSerializer,
     TaskSerializer, SubmissionSerializer, EventSerializer,
     AlbumSerializer, TaskStatisticSerializer, EventStatisticSerializer,
-    KenalanStatisticSerializer,
+    UserStatisticSerializer,
 )
 
 from website.models import (
@@ -12,7 +12,7 @@ from website.models import (
     ElementWord, Task, Submission,
     Event,
     Album, TaskStatistic,
-    KenalanStatistic, EventStatistic,
+    UserStatistic, EventStatistic,
 )
 from account.permissions import (
     IsPmbAdmin,
@@ -38,16 +38,11 @@ class PostList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, )
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    filter_fields = ('post_type',)
 
 
-class PostDetail(generics.RetrieveAPIView):
+class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated, )
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
-
-
-class PostDetailUpdate(generics.RetrieveUpdateDestroyAPIView):
-    permissions_classes = (IsOwner, )
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
@@ -56,6 +51,7 @@ class CommentList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, )
     queryset = Comment.objects.all()
     serializer_class = CommentsSerializer
+    filter_fields = ('post', )
 
 
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -115,13 +111,19 @@ class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
 class SubmissionList(generics.ListCreateAPIView):
     permission_classes = (IsMabaOrAdmin,)
     serializer_class = SubmissionSerializer
-    queryset = Submission.objects.all()
+
+    def get_queryset(self):
+        queryset = Submission.objects.filter(user=self.request.user)
+        return  queryset
 
 
-class SubmissionDetail(generics.RetrieveUpdateDestroyAPIView):
+class SubmissionDetail(generics.RetrieveUpdateAPIView):
     permission_classes = (IsOwner,)
-    queryset = Submission.objects.all()
     serializer_class = SubmissionSerializer
+
+    def get_queryset(self):
+        queryset = Submission.objects.filter(user=self.request.user)
+        return queryset
 
 
 class EventList(generics.ListCreateAPIView):
@@ -268,10 +270,13 @@ class TaskStatisticDetail(generics.RetrieveUpdateDestroyAPIView):
             raise exceptions.PermissionDenied
 
 
-class KenalanStatisticList(generics.ListCreateAPIView):
+class UserStatisticList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    queryset = KenalanStatistic.objects.all()
-    serializer_class = KenalanStatisticSerializer
+    serializer_class = UserStatisticSerializer
+
+    def get_queryset(self):
+        queryset = UserStatistic.objects.filter(user=self.request.user)
+        return queryset
 
     def perform_create(self, serializer):
         if is_pmb_admin(self.request.user):
@@ -280,10 +285,10 @@ class KenalanStatisticList(generics.ListCreateAPIView):
             raise exceptions.PermissionDenied
 
 
-class KenalanStatisticDetail(generics.RetrieveUpdateDestroyAPIView):
+class UserStatisticDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    queryset = KenalanStatistic.objects.all()
-    serializer_class = KenalanStatisticSerializer
+    queryset = UserStatistic.objects.all()
+    serializer_class = UserStatisticSerializer
 
     def put(self, request, *args, **kwargs):
         if is_pmb_admin(request.user):

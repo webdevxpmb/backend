@@ -3,16 +3,14 @@ from kenalan.serializers import TokenSerializer, KenalanSerializer
 from account.models import UserProfile
 from account.permissions import IsElemen, IsMaba
 from django.utils.crypto import get_random_string
-from django.core import exceptions
 from django.db import IntegrityError
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 
 import datetime
-import json
-
 PENDING_STATUS = 'pending'
+
 
 @api_view(['GET'])
 @permission_classes((IsElemen, ))
@@ -23,7 +21,7 @@ def generate_token(request):
             token = get_token()
             content = Token.objects.create(token=token, user=user)
             content = TokenSerializer(content, context={'request': request})
-            return Response(content.data)
+            return Response(content.data, status=201)
         else:
             content = Token.objects.get(user=user)
             content = TokenSerializer(content, context={'request': request})
@@ -70,7 +68,7 @@ def create_kenalan_by_token(request):
             # create initial detail
             DetailKenalan.objects.create(kenalan=kenalan, name=elemen_profile.name)
             content = KenalanSerializer(kenalan, context={'request': request})
-            return Response(content.data, status=200)
+            return Response(content.data, status=201)
             
         else:
             return Response({'data': 'invalid token'}, status=400)
