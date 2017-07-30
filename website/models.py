@@ -141,8 +141,8 @@ class EventStatistic(models.Model):
 
 class UserStatistic(models.Model):
     name = models.CharField(max_length=255)
-    user = models.ForeignKey(User, default=0)
-    task = models.ForeignKey(Task, default=0gi)
+    user = models.ForeignKey(User)
+    task = models.ForeignKey(Task)
     amount_omega = models.SmallIntegerField(blank=True, null=True)
     amount_capung = models.SmallIntegerField(blank=True, null=True)
     amount_orion = models.SmallIntegerField(blank=True, null=True)

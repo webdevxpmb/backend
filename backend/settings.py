@@ -211,6 +211,11 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
 
-SMARTFIELDS_KEEP_ORPHAN = False
-SMARTFIELDS_PLUPLOAD_URL = MEDIA_URL
+TEMPLATE_DIRS = (
+        os.path.join(BASE_DIR, 'templates'),
+)

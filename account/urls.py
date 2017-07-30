@@ -29,6 +29,6 @@ urlpatterns = format_suffix_patterns([
 
     url(r'api-token-auth/', obtain_jwt_token),
 
-    url(r'jwt-token/', utils.configure_token, name='jwt-token'),
+    url(r'jwt-token/', utils.SSOAuth.as_view(), name='jwt-token'),
 
 ])
