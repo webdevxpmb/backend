@@ -24,6 +24,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    role = RoleSerializer()
+    angkatan = AngkatanSerializer()
     class Meta:
         model = UserProfile
         fields = ('id', 'user', 'name', 'role', 'npm', 'angkatan', 'email',

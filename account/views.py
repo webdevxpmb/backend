@@ -8,7 +8,7 @@ from account.serializers import(
     UserSerializer, RoleSerializer,
     AngkatanSerializer, UserProfileSerializer,
 )
-from rest_framework import generics, filters
+from rest_framework import generics
 from account.permissions import(
     IsOwner,
     IsPmbAdmin,
@@ -51,7 +51,7 @@ class AngkatanDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = AngkatanSerializer
 
 
-class UserProfileList(generics.ListCreateAPIView):
+class UserProfileList(generics.ListAPIView):
     permission_classes = (IsPmbAdmin,)
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer

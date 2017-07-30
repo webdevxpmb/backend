@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'dj_database_url',
     'rest_framework_docs',
+    'smartfields',
 
 
 ]
@@ -94,8 +95,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'postgres',
-        'USER': 'pmb',
-        'PASSWORD': 'webdevxpmb',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -165,6 +166,7 @@ CAS_SERVER_URL = 'https://sso.ui.ac.id/cas2/login'
 CAS_STORE_NEXT = True
 CAS_CREATE_USER = True
 CAS_APPLY_ATTRIBUTES_TO_USER = True
+CAS_REDIRECT_URL = '/pmb-api/'
 
 CRONJOBS = [
     ('*/10 * * * *', 'kenalan.utils.delete_all_expired_token')
@@ -204,3 +206,5 @@ STATICFILES_DIRS = (
 )
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

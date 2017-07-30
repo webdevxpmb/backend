@@ -16,8 +16,9 @@ class Post(models.Model):
     """
     title = models.CharField(max_length=50, null=True)
     author = models.ForeignKey(User, related_name="post")
-    summary =  models.CharField(max_length=255, blank=True, null=True)
+    summary = models.CharField(max_length=255, blank=True, null=True)
     content = models.TextField()
+    attachment_link = models.CharField(max_length=255, blank=True, null=True)
     post_type = models.ForeignKey(PostType, related_name='post')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -26,7 +27,7 @@ class Post(models.Model):
         pass
 
 
-class Comments(models.Model):
+class Comment(models.Model):
     """
     Description: Model Description
     """
@@ -54,23 +55,16 @@ class ElementWord(models.Model):
         pass
 
 
-class TaskType(models.Model):
-    task_type = models.CharField(max_length=50)
-
-    class Meta:
-        pass
-
-
 class Task(models.Model):
     """
     Description: Model Description
     """
-    name = models.CharField(max_length=50,null=True)
-    description = models.TextField(null=True)
+    name = models.CharField(max_length=255, null=True)
+    description = models.TextField(blank=True, null=True)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    task_type = models.ForeignKey(TaskType, related_name='tasks')
-    amount = models.IntegerField(null=True)
+    is_kenalan = models.BooleanField(default=False)
+    attachment_link = models.CharField(max_length=255, blank=True, null=True)
     expected_amount = models.IntegerField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -85,21 +79,21 @@ class Submission(models.Model):
     """
     user = models.ForeignKey(User, related_name="submissions")
     task = models.ForeignKey(Task, related_name="submissions")
-    file = models.FileField(upload_to="uploads/", null=True)
+    file_link = models.CharField(max_length=255, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class Events(models.Model):
+class Event(models.Model):
     """
     Description: Model Description
     """
-    name = models.CharField(max_length=50, null=True)
-    description = models.TextField(null=True)
+    name = models.CharField(max_length=255, null=True)
+    description = models.TextField(blank=True, null=True)
     location = models.CharField(max_length=255)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-    attendee = models.IntegerField(null=True)
+    start_time = models.DateTimeField(blank=True, null=True)
+    end_time = models.DateTimeField(blank=True, null=True)
+    attachment_link = models.CharField(max_length=255, blank=True, null=True)
     expected_attendee = models.IntegerField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -108,15 +102,46 @@ class Events(models.Model):
         pass
 
 
-class Attachment(models.Model):
-    """
-    Description: Model Description
-    """
-    filename = models.CharField(max_length=50, null=True)
-    url = models.FileField(upload_to="uploads/", null=True)
-    events = models.ForeignKey(Events, related_name="attachments", null=True)
+class Album(models.Model):
+    name = models.CharField(max_length=255)
+    album_link = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        pass
+
+
+class TaskStatistic(models.Model):
+    task = models.ForeignKey(Task, related_name='statistics')
+    expected_amount = models.SmallIntegerField(blank=True, null=True)
+    amount = models.SmallIntegerField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        pass
+
+
+class EventStatistic(models.Model):
+    event = models.ForeignKey(Event)
+    attendee = models.SmallIntegerField(default=0)
+    on_time = models.SmallIntegerField(default=0)
+    late = models.SmallIntegerField(default=0)
+    permission = models.SmallIntegerField(default=0)
+    absent = models.SmallIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        pass
+
+
+class UserStatistic(models.Model):
+    user = models.ForeignKey(User, related_name='user_statistics')
+    name = models.CharField(max_length=255)
+    expected_amount = models.SmallIntegerField(default=0)
+    amount = models.SmallIntegerField(default=0)
 
     class Meta:
         pass

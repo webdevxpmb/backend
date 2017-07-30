@@ -3,17 +3,17 @@ from kenalan.serializers import TokenSerializer, KenalanSerializer
 from account.models import UserProfile
 from account.permissions import IsElemen, IsMaba
 from django.utils.crypto import get_random_string
-from django.core import exceptions
 from django.db import IntegrityError
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 
 import datetime
+PENDING_STATUS = 'pending'
 
 
 @api_view(['GET'])
-@permission_classes((IsElemen,))
+@permission_classes((IsElemen, ))
 def generate_token(request):
     try:
         user = request.user
@@ -21,7 +21,7 @@ def generate_token(request):
             token = get_token()
             content = Token.objects.create(token=token, user=user)
             content = TokenSerializer(content, context={'request': request})
-            return Response(content.data)
+            return Response(content.data, status=201)
         else:
             content = Token.objects.get(user=user)
             content = TokenSerializer(content, context={'request': request})
@@ -41,6 +41,7 @@ def delete_expired_token(request):
     except Exception as e:
         return Response(status=501)
 
+
 def delete_all_expired_token():
     try:
         now = datetime.datetime.now().replace(tzinfo=None)
@@ -50,31 +51,31 @@ def delete_all_expired_token():
         pass
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 @permission_classes((IsMaba,))
-def create_kenalan_by_token(request, token):
+def create_kenalan_by_token(request):
     try:
-        if not check_token(token):
-            token = Token.objects.get(token=token)
+        if not check_token(request.data["token"]):
+            token = Token.objects.get(token=request.data["token"])
             user_elemen = token.user
             user_maba = request.user
             elemen_profile = UserProfile.objects.get(user=user_elemen)
 
-            kenalan_status = KenalanStatus.objects.get(id=2)
+            kenalan_status = KenalanStatus.objects.get(status=PENDING_STATUS)
             kenalan = Kenalan.objects.create(user_elemen=user_elemen, 
                                              user_maba=user_maba, 
                                              status=kenalan_status)
             # create initial detail
             DetailKenalan.objects.create(kenalan=kenalan, name=elemen_profile.name)
             content = KenalanSerializer(kenalan, context={'request': request})
-            return Response(content.data, status=200)
+            return Response(content.data, status=201)
             
         else:
-            return Response({'data': 'invalid token'})
+            return Response({'data': 'invalid token'}, status=400)
 
     except IntegrityError:
         return Response({"you already make connection to this user"}, status=400)
-    except exceptions:
+    except Exception :
         return Response(status=400)
 
 

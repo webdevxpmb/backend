@@ -1,5 +1,4 @@
-
-
+from django.core.exceptions import PermissionDenied
 from kenalan.models import (
     Token, Kenalan, KenalanStatus, DetailKenalan
 )
@@ -9,14 +8,14 @@ from kenalan.serializers import(
     KenalanStatusSerializer, DetailKenalanSerializer,
 )
 
-from rest_framework import generics, permissions, exceptions
-
+from rest_framework import generics, permissions
 from account.permissions import(
     IsPmbAdmin,
     IsDetailKenalanOwner,
+    IsKenalanOwner,
     is_maba,
-    is_pmb_admin,
     is_elemen,
+    is_pmb_admin,
 )
 
 
@@ -48,38 +47,23 @@ class KenalanList(generics.ListAPIView):
 
 class KenalanDetail(generics.RetrieveUpdateAPIView):
     serializer_class = KenalanSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (IsKenalanOwner,)
+    queryset = Kenalan.objects.all()
 
-    def get_queryset(self):
-        if is_maba(self.request.user):
-            queryset = Kenalan.objects.all().filter(user_maba=self.request.user)
-        elif is_elemen(self.request.user):
-            queryset = Kenalan.objects.all().filter(user_elemen=self.request.user)
+    def perform_update(self, serializer):
+        if is_elemen(self.request.user) or is_pmb_admin(self.request.user):
+            serializer.save()
         else:
-            queryset = Kenalan.objects.all()
-            
-        return queryset
-
-    def put(self, request, *args, **kwargs):
-        if is_elemen(request.user) or is_pmb_admin(request.user):
-            return self.update(request, *args, **kwargs)
-        else:
-            raise exceptions.PermissionDenied
-
-    def patch(self, request, *args, **kwargs):
-        if is_elemen(request.user) or is_pmb_admin(request.user):
-            return self.update(request, *args, **kwargs)
-        else:
-            raise exceptions.PermissionDenied
+            raise PermissionDenied
 
 
-class KenalanStatusList(generics.ListAPIView):
+class KenalanStatusList(generics.ListCreateAPIView):
     queryset = KenalanStatus.objects.all()
     serializer_class = KenalanStatusSerializer
     permission_classes = (IsPmbAdmin,)
 
 
-class KenalanStatusDetail(generics.RetrieveAPIView):
+class KenalanStatusDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = KenalanStatus.objects.all()
     serializer_class = KenalanStatusSerializer
     permission_classes = (IsPmbAdmin,)
@@ -100,19 +84,14 @@ class DetailKenalanList(generics.ListAPIView):
         return queryset
 
 
-class DetailKenalanDetail(generics.RetrieveUpdateDestroyAPIView):
+class DetailKenalanDetail(generics.RetrieveUpdateAPIView):
     queryset = DetailKenalan.objects.all()
     serializer_class = DetailKenalanSerializer
     permission_classes = (IsDetailKenalanOwner,)
 
-    def put(self, request, *args, **kwargs):
-        if is_maba(request.user):
-            return self.update(request, *args, **kwargs)
+    def perform_update(self, serializer):
+        if is_maba(self.request.user) or is_pmb_admin(self.request.user):
+            serializer.save()
         else:
-            raise exceptions.PermissionDenied
+            raise PermissionDenied
 
-    def patch(self, request, *args, **kwargs):
-        if is_maba(request.user):
-            return self.update(request, *args, **kwargs)
-        else:
-            raise exceptions.PermissionDenied

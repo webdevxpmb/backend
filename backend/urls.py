@@ -16,16 +16,20 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django_cas_ng import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     # OAuth 2 endpoints:
     url(r'^pmb-api/admin/', admin.site.urls),
-    url(r'^pmb-api/', include('account.urls')),
-    url(r'^pmb-api/', include('kenalan.urls')),
-    url(r'^pmb-api/', include('website.urls')),
+    url(r'^pmb-api', include('account.urls')),
+    url(r'^pmb-api', include('kenalan.urls')),
+    url(r'^pmb-api', include('website.urls')),
     url(r'^pmb-api/login/$', views.login, name='cas_ng_login'),
     url(r'^pmb-api/logout$', views.logout, name='cas_ng_logout'),
     url(r'^pmb-api/callback$', views.callback, name='cas_ng_proxy_callback'),
     url(r'^pmb-api/docs/', include('rest_framework_docs.urls')),
 
 ]
+
+urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
