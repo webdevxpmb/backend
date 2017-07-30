@@ -7,6 +7,7 @@ from website.models import (
     TaskStatistic, UserStatistic,
 
 )
+from account.serializers import UserSerializer
 
 
 class PostTypeSerializer(serializers.ModelSerializer):
@@ -16,6 +17,7 @@ class PostTypeSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
+    post_type = PostTypeSerializer()
     class Meta:
         model = Post
         fields = ('id', 'title', 'author', 'summary', 'content',
@@ -23,12 +25,14 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class CommentsSerializer(serializers.ModelSerializer):
+    author = UserSerializer()
     class Meta:
         model = Comment
         fields = ('id', 'post', 'author', 'comment', 'created_at', 'updated_at')
 
 
 class ElementWordSerializer(serializers.ModelSerializer):
+    author = UserSerializer()
     class Meta:
         model = ElementWord
         fields = ('id', 'author', 'testimony', 'approved', 'created_at', 'updated_at')
@@ -38,11 +42,13 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = ('id', 'name', 'description', 'start_time',
-                  'end_time', 'is_kenalan', 'expected_amount',
-                  'created_at', 'updated_at')
+                  'end_time', 'is_kenalan', 'expected_amount_omega',
+                  'expected_amount_capung', 'expected_amount_orion',
+                  'expected_amount_alumni', 'created_at', 'updated_at')
 
 
 class SubmissionSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
     class Meta:
         model = Submission
         fields = ('id', 'user', 'task', 'file_link')
@@ -63,12 +69,14 @@ class AlbumSerializer(serializers.ModelSerializer):
 
 
 class TaskStatisticSerializer(serializers.ModelSerializer):
+    task = TaskSerializer()
     class Meta:
         model = TaskStatistic
-        fields = ('id', 'task', 'expected_amount', 'amount', 'created_at', 'updated_at')
+        fields = ('id', 'task', 'amount', 'created_at', 'updated_at')
 
 
 class EventStatisticSerializer(serializers.ModelSerializer):
+    event = EventSerializer
     class Meta:
         model = EventStatistic
         fields = ('id', 'event', 'attendee', 'on_time', 'late', 'permission',
@@ -76,6 +84,9 @@ class EventStatisticSerializer(serializers.ModelSerializer):
 
 
 class UserStatisticSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    task = TaskSerializer()
     class Meta:
         model = UserStatistic
-        fields = ('id', 'user', 'name', 'expected_amount', 'amount')
+        fields = ('id', 'user', 'name', 'task', 'amount_omega',
+                  'amount_capung', 'amount_orion', 'amount_alumni')

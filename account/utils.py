@@ -1,4 +1,6 @@
 from django.core.exceptions import PermissionDenied
+from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -60,4 +62,14 @@ def configure_token(request):
         data = {'user': request.user.username, 'token': token}
         return Response(data)
     except Exception as e:
-        raise
+        raise PermissionDenied
+
+
+class SSOAuth(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'index.html'
+
+    def get(self, request):
+        queryset = Profile.objects.all()
+        return Response({'profiles': queryset})
+

@@ -1,4 +1,6 @@
 from rest_framework import generics, permissions, exceptions
+from rest_framework.parsers import JSONParser
+from rest_framework.response import Response
 from website.serializers import (
     PostTypeSerializer, PostSerializer,
     CommentsSerializer, ElementWordSerializer,
@@ -26,12 +28,14 @@ class PostTypeList(generics.ListCreateAPIView):
     permission_classes = (IsPmbAdmin,)
     queryset = PostType.objects.all()
     serializer_class = PostTypeSerializer
+    parser_classes = (JSONParser,)
 
 
 class PostTypeDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsPmbAdmin,)
     queryset = PostType.objects.all()
     serializer_class = PostTypeSerializer
+    parser_classes = (JSONParser,)
 
 
 class PostList(generics.ListCreateAPIView):
@@ -39,12 +43,23 @@ class PostList(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     filter_fields = ('post_type',)
+    parser_classes = (JSONParser, )
+
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        data['author'] = request.user.id
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=201, headers=headers)
 
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated, )
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    parser_classes = (JSONParser,)
 
 
 class CommentList(generics.ListCreateAPIView):
