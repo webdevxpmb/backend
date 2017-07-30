@@ -1,0 +1,20 @@
+<html><body>
+<h1>Profiles</h1>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+  var user = {
+    token: "{{ token }}",
+    user_id:"{{ user_id }}",
+    username: "{{ user }}",
+    name: "{{ name }}",
+    npm: "{{ npm }}",
+    email: "{{ email }}",
+    role: "{{ role }}",
+    angkatan: "{{ angkatan }}",
+  };
+
+  window.opener.processLogin(user);
+  window.close();
+</script>
+</body>
+</html>

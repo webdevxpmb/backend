@@ -29,7 +29,7 @@ class UserProfile(models.Model):
     """
     Description: Model Description
     """
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     name = models.CharField(max_length=50)
     npm = models.CharField(max_length=10)
     email = models.CharField(max_length=50)
