@@ -26,8 +26,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
         read_only_fields = ('role', 'npm', 'angkatan', 'user')
 
 
+class SmallUserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ('id', 'user', 'name', 'role', 'npm', 'angkatan', 'email')
+
+
 class UserSerializer(serializers.ModelSerializer):
-    profile = UserProfileSerializer()
+    profile = SmallUserProfileSerializer()
     class Meta:
         model = User
         fields = ('id', 'username', 'profile')

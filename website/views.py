@@ -7,6 +7,7 @@ from website.serializers import (
     TaskSerializer, SubmissionSerializer, EventSerializer,
     AlbumSerializer, TaskStatisticSerializer, EventStatisticSerializer,
     UserStatisticSerializer, GetPostSerializer, GetCommentsSerializer,
+    GetElementWordSerializer,
 )
 
 from website.utils import StandardResultsSetPagination
@@ -23,6 +24,7 @@ from account.permissions import (
     IsOwner,
     IsMabaOrAdmin,
     is_pmb_admin,
+    IsElemenOrAdmin,
 )
 
 
@@ -82,13 +84,18 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
+        self.permission_classes = (IsOwner, )
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
+        request.data['author'] = request.user.id
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-
         return Response(GetPostSerializer(instance).data)
+
+    def delete(self, request, *args, **kwargs):
+        self.permission_classes = (IsOwner, )
+        return self.destroy(request, *args, **kwargs)
 
 
 class CommentList(generics.ListCreateAPIView):
@@ -125,15 +132,16 @@ class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentsSerializer
 
-    # def retrieve(self, request, *args, **kwargs):
-    #     self.permission_classes = (IsOwner, )
-    #     instance = self.get_object()
-    #     serializer = GetCommentsSerializer(instance)
-    #     return Response(serializer.data)
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = GetCommentsSerializer(instance)
+        return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
+        post = instance.post
+        request.data['post'] = post.id
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
@@ -145,6 +153,31 @@ class ElementWordList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, )
     queryset = ElementWord.objects.all()
     serializer_class = ElementWordSerializer
+    parser_classes = (JSONParser, )
+    pagination_class = StandardResultsSetPagination
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = GetElementWordSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = GetElementWordSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        self.permission_classes = (IsElemenOrAdmin, )
+        data = request.data
+        data['author'] = request.user.id
+        data['approved'] = False
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        instance = ElementWord.objects.get(id=serializer.data['id'])
+        response_serializer = GetElementWordSerializer(instance)
+        headers = self.get_success_headers(response_serializer.data)
+        return Response(response_serializer.data, status=201, headers=headers)
 
 
 class ElementWordDetail(generics.RetrieveUpdateDestroyAPIView):

@@ -41,12 +41,20 @@ class CommentsSerializer(serializers.ModelSerializer):
 class GetCommentsSerializer(serializers.ModelSerializer):
     post = GetPostSerializer()
     author = UserSerializer()
+
     class Meta:
         model = Comment
         fields = ('id', 'post', 'author', 'comment', 'created_at', 'updated_at')
 
 
 class ElementWordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ElementWord
+        fields = ('id', 'author', 'testimony', 'approved', 'created_at', 'updated_at')
+
+
+class GetElementWordSerializer(serializers.ModelSerializer):
+    author = UserSerializer()
     class Meta:
         model = ElementWord
         fields = ('id', 'author', 'testimony', 'approved', 'created_at', 'updated_at')
