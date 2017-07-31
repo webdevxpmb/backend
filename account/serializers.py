@@ -18,8 +18,6 @@ class AngkatanSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    role = RoleSerializer()
-    angkatan = AngkatanSerializer()
     class Meta:
         model = UserProfile
         fields = ('id', 'user', 'name', 'role', 'npm', 'angkatan', 'email',

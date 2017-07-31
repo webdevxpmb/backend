@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-
+from rest_framework.parsers import FileUploadParser, JSONParser
 from account.models import (
     Role, Angkatan, UserProfile,
 )
@@ -62,3 +62,4 @@ class UserProfileDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsOwner,)
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
+    parser_classes = (JSONParser, FileUploadParser, )

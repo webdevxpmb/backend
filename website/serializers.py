@@ -5,8 +5,8 @@ from website.models import (
     PostType,
     Album, EventStatistic,
     TaskStatistic, UserStatistic,
-
 )
+from account.serializers import UserSerializer
 
 
 class PostTypeSerializer(serializers.ModelSerializer):
@@ -22,7 +22,25 @@ class PostSerializer(serializers.ModelSerializer):
                   'post_type', 'attachment_link', 'created_at', 'updated_at')
 
 
+class GetPostSerializer(serializers.ModelSerializer):
+    author = UserSerializer()
+    post_type = PostTypeSerializer()
+
+    class Meta:
+        model = Post
+        fields = ('id', 'title', 'author', 'summary', 'content',
+                  'post_type', 'attachment_link', 'created_at', 'updated_at')
+
+
 class CommentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('id', 'post', 'author', 'comment', 'created_at', 'updated_at')
+
+
+class GetCommentsSerializer(serializers.ModelSerializer):
+    post = GetPostSerializer()
+    author = UserSerializer()
     class Meta:
         model = Comment
         fields = ('id', 'post', 'author', 'comment', 'created_at', 'updated_at')

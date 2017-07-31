@@ -6,8 +6,10 @@ from website.serializers import (
     CommentsSerializer, ElementWordSerializer,
     TaskSerializer, SubmissionSerializer, EventSerializer,
     AlbumSerializer, TaskStatisticSerializer, EventStatisticSerializer,
-    UserStatisticSerializer,
+    UserStatisticSerializer, GetPostSerializer, GetCommentsSerializer,
 )
+
+from website.utils import StandardResultsSetPagination
 
 from website.models import (
     PostType, Post, Comment,
@@ -41,9 +43,20 @@ class PostTypeDetail(generics.RetrieveUpdateDestroyAPIView):
 class PostList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, )
     queryset = Post.objects.all()
-    serializer_class = PostSerializer
     filter_fields = ('post_type',)
     parser_classes = (JSONParser, )
+    serializer_class = PostSerializer
+    pagination_class = StandardResultsSetPagination
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = GetPostSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = GetPostSerializer(queryset, many=True)
+        return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -51,8 +64,10 @@ class PostList(generics.ListCreateAPIView):
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=201, headers=headers)
+        instance = Post.objects.get(id=serializer.data['id'])
+        response_serializer = GetPostSerializer(instance)
+        headers = self.get_success_headers(response_serializer.data)
+        return Response(response_serializer.data, status=201, headers=headers)
 
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -61,18 +76,69 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PostSerializer
     parser_classes = (JSONParser,)
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = GetPostSerializer(instance)
+        return Response(serializer.data)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(GetPostSerializer(instance).data)
+
 
 class CommentList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, )
     queryset = Comment.objects.all()
     serializer_class = CommentsSerializer
     filter_fields = ('post', )
+    pagination_class = StandardResultsSetPagination
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = GetCommentsSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = GetCommentsSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        data['author'] = request.user.id
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        instance = Comment.objects.get(id=serializer.data['id'])
+        response_serializer = GetCommentsSerializer(instance)
+        headers = self.get_success_headers(response_serializer.data)
+        return Response(response_serializer.data, status=201, headers=headers)
 
 
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsOwner, )
     queryset = Comment.objects.all()
     serializer_class = CommentsSerializer
+
+    # def retrieve(self, request, *args, **kwargs):
+    #     self.permission_classes = (IsOwner, )
+    #     instance = self.get_object()
+    #     serializer = GetCommentsSerializer(instance)
+    #     return Response(serializer.data)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(GetCommentsSerializer(instance).data)
 
 
 class ElementWordList(generics.ListCreateAPIView):
