@@ -18,6 +18,15 @@ class AngkatanSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ('id', 'user', 'name', 'role', 'npm', 'angkatan', 'email',
+                  'photo', 'about', 'linkedin', 'facebook', 'phone_number',
+                  'birth_place', 'birth_date', 'created_at', 'updated_at')
+        read_only_fields = ('role', 'npm', 'angkatan', 'user')
+
+
+class GetUserProfileSerializer(serializers.ModelSerializer):
     role = RoleSerializer()
     angkatan = AngkatanSerializer()
     class Meta:
@@ -28,8 +37,16 @@ class UserProfileSerializer(serializers.ModelSerializer):
         read_only_fields = ('role', 'npm', 'angkatan', 'user')
 
 
+class ShrinkedUserProfileSerializer(serializers.ModelSerializer):
+    angkatan = AngkatanSerializer()
+
+    class Meta:
+        model = UserProfile
+        fields = ('id', 'name', 'npm', 'angkatan', 'email')
+
+
 class UserSerializer(serializers.ModelSerializer):
-    profile = UserProfileSerializer()
+    profile = ShrinkedUserProfileSerializer()
     class Meta:
         model = User
         fields = ('id', 'username', 'profile')
