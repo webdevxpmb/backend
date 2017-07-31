@@ -7,7 +7,7 @@ from website.serializers import (
     TaskSerializer, SubmissionSerializer, EventSerializer,
     AlbumSerializer, TaskStatisticSerializer, EventStatisticSerializer,
     UserStatisticSerializer, GetPostSerializer, GetCommentsSerializer,
-    GetElementWordSerializer, GetSubmissionSerializer,
+    GetElementWordSerializer, GetSubmissionSerializer, GetEventStatisticSerializer,
 )
 
 from website.utils import StandardResultsSetPagination
@@ -303,6 +303,8 @@ class EventList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+    parser_classes = (JSONParser,)
+    pagination_class = StandardResultsSetPagination
 
     def perform_create(self, serializer):
         if is_pmb_admin(self.request.user):
@@ -339,6 +341,8 @@ class AlbumList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, )
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
+    parser_classes = (JSONParser,)
+    pagination_class = StandardResultsSetPagination
 
     def perform_create(self, serializer):
         if is_pmb_admin(self.request.user):
@@ -375,10 +379,29 @@ class EventStatisticList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = EventStatistic.objects.all()
     serializer_class = EventStatisticSerializer
+    parser_classes = (JSONParser,)
+    pagination_class = StandardResultsSetPagination
 
-    def perform_create(self, serializer):
-        if is_pmb_admin(self.request.user):
-            serializer.save()
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = GetEventStatisticSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = GetEventStatisticSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        if is_pmb_admin(request.user):
+            data = request.data
+            serializer = self.get_serializer(data=data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            instance = EventStatistic.objects.get(id=serializer.data['id'])
+            response_serializer = GetEventStatisticSerializer(instance)
+            headers = self.get_success_headers(response_serializer.data)
+            return Response(response_serializer.data, status=201, headers=headers)
         else:
             raise exceptions.PermissionDenied
 
@@ -388,15 +411,21 @@ class EventStatisticDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = EventStatistic.objects.all()
     serializer_class = EventStatisticSerializer
 
-    def put(self, request, *args, **kwargs):
-        if is_pmb_admin(request.user):
-            return self.update(request, *args, **kwargs)
-        else:
-            raise exceptions.PermissionDenied
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = GetEventStatisticSerializer(instance)
+        return Response(serializer.data)
 
-    def patch(self, request, *args, **kwargs):
+    def update(self, request, *args, **kwargs):
         if is_pmb_admin(request.user):
-            return self.update(request, *args, **kwargs)
+            partial = kwargs.pop('partial', False)
+            instance = self.get_object()
+            request.data['event'] = instance.event.id
+            serializer = self.get_serializer(instance, data=request.data, partial=partial)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+
+            return Response(GetEventStatisticSerializer(instance).data)
         else:
             raise exceptions.PermissionDenied
 
@@ -407,40 +436,16 @@ class EventStatisticDetail(generics.RetrieveUpdateDestroyAPIView):
             raise exceptions.PermissionDenied
 
 
-class TaskStatisticList(generics.ListCreateAPIView):
+class TaskStatisticList(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = TaskStatistic.objects.all()
     serializer_class = TaskStatisticSerializer
 
-    def perform_create(self, serializer):
-        if is_pmb_admin(self.request.user):
-            serializer.save()
-        else:
-            raise exceptions.PermissionDenied
 
-
-class TaskStatisticDetail(generics.RetrieveUpdateDestroyAPIView):
+class TaskStatisticDetail(generics.RetrieveAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = TaskStatistic.objects.all()
     serializer_class = TaskStatisticSerializer
-
-    def put(self, request, *args, **kwargs):
-        if is_pmb_admin(request.user):
-            return self.update(request, *args, **kwargs)
-        else:
-            raise exceptions.PermissionDenied
-
-    def patch(self, request, *args, **kwargs):
-        if is_pmb_admin(request.user):
-            return self.update(request, *args, **kwargs)
-        else:
-            raise exceptions.PermissionDenied
-
-    def delete(self, request, *args, **kwargs):
-        if is_pmb_admin(request.user):
-            return self.destroy(request, *args, **kwargs)
-        else:
-            raise exceptions.PermissionDenied
 
 
 class UserStatisticList(generics.ListCreateAPIView):

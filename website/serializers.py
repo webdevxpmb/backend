@@ -99,6 +99,7 @@ class AlbumSerializer(serializers.ModelSerializer):
 
 
 class TaskStatisticSerializer(serializers.ModelSerializer):
+    task = TaskSerializer()
     class Meta:
         model = TaskStatistic
         fields = ('id', 'task', 'amount', 'created_at', 'updated_at')
@@ -111,7 +112,16 @@ class EventStatisticSerializer(serializers.ModelSerializer):
                   'absent', 'created_at', 'updated_at')
 
 
+class GetEventStatisticSerializer(serializers.ModelSerializer):
+    event = EventSerializer()
+    class Meta:
+        model = EventStatistic
+        fields = ('id', 'event', 'attendee', 'on_time', 'late', 'permission',
+                  'absent', 'created_at', 'updated_at')
+
+
 class UserStatisticSerializer(serializers.ModelSerializer):
+    task = TaskSerializer()
     class Meta:
         model = UserStatistic
         fields = ('id', 'user', 'name', 'task', 'amount_omega',
