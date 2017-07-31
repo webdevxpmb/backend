@@ -989,3 +989,217 @@ Not Found: /pmb-api
 [pid: 10918|app: 0|req: 6/6] 127.0.0.1 () {46 vars in 652 bytes} [Sun Jul 30 21:46:38 2017] GET /pmb-api => generated 20611 bytes in 18 msecs (HTTP/1.0 404) 3 headers in 103 bytes (1 switches on core 0)
 Not Found: /pmb-api
 [pid: 10918|app: 0|req: 7/7] 127.0.0.1 () {50 vars in 940 bytes} [Sun Jul 30 21:57:14 2017] GET /pmb-api => generated 20611 bytes in 19 msecs (HTTP/1.0 404) 3 headers in 103 bytes (1 switches on core 0)
+*** Starting uWSGI 2.0.15 (64bit) on [Sun Jul 30 23:38:53 2017] ***
+compiled with version: 5.4.0 20160609 on 09 July 2017 10:16:34
+os: Linux-3.16.0-4-amd64 #1 SMP Debian 3.16.43-2+deb8u2 (2017-06-26)
+nodename: ristek
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 2
+current working directory: /home/ristek/pmb
+detected binary path: /home/ristek/pmb/venv/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /home/ristek/pmb
+*** WARNING: you are running uWSGI without its master process manager ***
+your processes number limit is 7974
+your memory page size is 4096 bytes
+detected max file descriptor number: 65536
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uWSGI http bound on :5001 fd 4
+spawned uWSGI http 1 (pid: 14112)
+uwsgi socket 0 bound to TCP address 127.0.0.1:59859 (port auto-assigned) fd 3
+Python version: 2.7.12 (default, Nov 19 2016, 06:48:10)  [GCC 5.4.0 20160609]
+Set PythonHome to /home/ristek/pmb/venv
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1a86290
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 72760 bytes (71 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x1a86290 pid: 14111 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI worker 1 (and the only) (pid: 14111, cores: 1)
+[pid: 14111|app: 0|req: 1/1] 127.0.0.1 () {48 vars in 985 bytes} [Sun Jul 30 23:39:01 2017] GET /pmb-api/ => generated 16 bytes in 102 msecs (HTTP/1.0 401) 6 headers in 194 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 2/2] 127.0.0.1 () {48 vars in 997 bytes} [Sun Jul 30 23:39:06 2017] GET /pmb-api/login/ => generated 0 bytes in 107 msecs (HTTP/1.0 302) 6 headers in 357 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 3/3] 127.0.0.1 () {46 vars in 734 bytes} [Sun Jul 30 23:41:30 2017] GET /pmb-api => generated 0 bytes in 1 msecs (HTTP/1.0 301) 3 headers in 114 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 4/4] 127.0.0.1 () {44 vars in 697 bytes} [Sun Jul 30 23:41:30 2017] GET /pmb-api/ => generated 16 bytes in 3 msecs (HTTP/1.0 401) 6 headers in 194 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 5/5] 127.0.0.1 () {46 vars in 652 bytes} [Sun Jul 30 23:44:31 2017] GET /pmb-api => generated 0 bytes in 1 msecs (HTTP/1.0 301) 3 headers in 114 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 6/6] 127.0.0.1 () {48 vars in 706 bytes} [Sun Jul 30 23:44:32 2017] GET /pmb-api/ => generated 16 bytes in 3 msecs (HTTP/1.0 401) 6 headers in 194 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 7/7] 127.0.0.1 () {60 vars in 980 bytes} [Mon Jul 31 00:10:09 2017] GET /pmb-api/login => generated 0 bytes in 1 msecs (HTTP/1.0 301) 3 headers in 120 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 8/8] 127.0.0.1 () {46 vars in 664 bytes} [Mon Jul 31 00:10:09 2017] GET /pmb-api/login => generated 0 bytes in 1 msecs (HTTP/1.0 301) 3 headers in 120 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 9/9] 127.0.0.1 () {62 vars in 1040 bytes} [Mon Jul 31 00:10:09 2017] GET /pmb-api/login/ => generated 0 bytes in 59 msecs (HTTP/1.0 302) 6 headers in 357 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 10/10] 127.0.0.1 () {60 vars in 979 bytes} [Mon Jul 31 00:10:09 2017] GET /pmb-api/login => generated 0 bytes in 1 msecs (HTTP/1.0 301) 3 headers in 120 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 11/11] 127.0.0.1 () {48 vars in 724 bytes} [Mon Jul 31 00:10:09 2017] GET /pmb-api/login/ => generated 0 bytes in 24 msecs (HTTP/1.0 302) 6 headers in 357 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 12/12] 127.0.0.1 () {62 vars in 1039 bytes} [Mon Jul 31 00:10:09 2017] GET /pmb-api/login/ => generated 0 bytes in 20 msecs (HTTP/1.0 302) 6 headers in 357 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 13/13] 127.0.0.1 () {44 vars in 750 bytes} [Mon Jul 31 00:10:18 2017] GET /pmb-api/login => generated 0 bytes in 1 msecs (HTTP/1.0 301) 3 headers in 120 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 14/14] 127.0.0.1 () {44 vars in 752 bytes} [Mon Jul 31 00:10:18 2017] GET /pmb-api/login/ => generated 0 bytes in 32 msecs (HTTP/1.0 302) 6 headers in 357 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 15/15] 127.0.0.1 () {48 vars in 1115 bytes} [Mon Jul 31 00:10:18 2017] GET /pmb-api/login => generated 0 bytes in 1 msecs (HTTP/1.0 301) 3 headers in 120 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 16/16] 127.0.0.1 () {48 vars in 1117 bytes} [Mon Jul 31 00:10:18 2017] GET /pmb-api/login/ => generated 0 bytes in 21 msecs (HTTP/1.0 302) 6 headers in 357 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 17/17] 127.0.0.1 () {52 vars in 1207 bytes} [Mon Jul 31 00:11:49 2017] GET /pmb-api/login/ => generated 0 bytes in 33 msecs (HTTP/1.0 302) 6 headers in 357 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 18/18] 127.0.0.1 () {52 vars in 1211 bytes} [Mon Jul 31 00:13:08 2017] GET /pmb-api/login/ => generated 0 bytes in 64 msecs (HTTP/1.0 302) 6 headers in 359 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 19/19] 127.0.0.1 () {56 vars in 1130 bytes} [Mon Jul 31 00:13:30 2017] GET /pmb-api/login => generated 0 bytes in 1 msecs (HTTP/1.0 301) 3 headers in 120 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 20/20] 127.0.0.1 () {56 vars in 1132 bytes} [Mon Jul 31 00:13:30 2017] GET /pmb-api/login/ => generated 0 bytes in 32 msecs (HTTP/1.0 302) 6 headers in 359 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 21/21] 127.0.0.1 () {56 vars in 1273 bytes} [Mon Jul 31 00:13:31 2017] GET /pmb-api/login/?ticket=ST-5676-Q4mbVplgHPDoa91297le-sso.ui.ac.id => generated 0 bytes in 222 msecs (HTTP/1.0 302) 8 headers in 600 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 22/22] 127.0.0.1 () {56 vars in 1303 bytes} [Mon Jul 31 00:13:31 2017] GET /pmb-api/ => generated 695 bytes in 21 msecs (HTTP/1.0 200) 5 headers in 150 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 23/23] 127.0.0.1 () {52 vars in 1094 bytes} [Mon Jul 31 00:14:19 2017] GET /pmb-api/ => generated 16 bytes in 14 msecs (HTTP/1.0 401) 6 headers in 194 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 24/24] 127.0.0.1 () {52 vars in 1104 bytes} [Mon Jul 31 00:14:28 2017] GET /pmb-api/login/ => generated 0 bytes in 49 msecs (HTTP/1.0 302) 6 headers in 359 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 25/25] 127.0.0.1 () {54 vars in 1240 bytes} [Mon Jul 31 00:14:38 2017] GET /pmb-api/login/?ticket=ST-5679-NdgN5bJgKqHuvdxy2AeX-sso.ui.ac.id => generated 0 bytes in 117 msecs (HTTP/1.0 302) 8 headers in 625 bytes (1 switches on core 0)
+[pid: 14111|app: 0|req: 26/26] 127.0.0.1 () {52 vars in 1232 bytes} [Mon Jul 31 00:14:38 2017] GET /pmb-api/ => generated 695 bytes in 21 msecs (HTTP/1.0 200) 5 headers in 150 bytes (1 switches on core 0)
+*** Starting uWSGI 2.0.15 (64bit) on [Mon Jul 31 00:27:06 2017] ***
+compiled with version: 5.4.0 20160609 on 09 July 2017 10:16:34
+os: Linux-3.16.0-4-amd64 #1 SMP Debian 3.16.43-2+deb8u2 (2017-06-26)
+nodename: ristek
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 2
+current working directory: /home/ristek/pmb
+detected binary path: /home/ristek/pmb/venv/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /home/ristek/pmb
+*** WARNING: you are running uWSGI without its master process manager ***
+your processes number limit is 7974
+your memory page size is 4096 bytes
+detected max file descriptor number: 65536
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uWSGI http bound on :5001 fd 4
+spawned uWSGI http 1 (pid: 14559)
+uwsgi socket 0 bound to TCP address 127.0.0.1:42500 (port auto-assigned) fd 3
+Python version: 2.7.12 (default, Nov 19 2016, 06:48:10)  [GCC 5.4.0 20160609]
+Set PythonHome to /home/ristek/pmb/venv
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xac82a0
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 72760 bytes (71 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0xac82a0 pid: 14558 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI worker 1 (and the only) (pid: 14558, cores: 1)
+[pid: 14558|app: 0|req: 1/1] 127.0.0.1 () {52 vars in 1231 bytes} [Mon Jul 31 00:27:10 2017] GET /pmb-api/ => generated 715 bytes in 129 msecs (HTTP/1.0 200) 5 headers in 150 bytes (1 switches on core 0)
+[pid: 14558|app: 0|req: 2/2] 127.0.0.1 () {52 vars in 1241 bytes} [Mon Jul 31 00:28:20 2017] GET /pmb-api/post => generated 0 bytes in 14 msecs (HTTP/1.0 301) 3 headers in 119 bytes (1 switches on core 0)
+[pid: 14558|app: 0|req: 3/3] 127.0.0.1 () {52 vars in 1243 bytes} [Mon Jul 31 00:28:20 2017] GET /pmb-api/post/ => generated 7945 bytes in 115 msecs (HTTP/1.0 200) 5 headers in 165 bytes (1 switches on core 0)
+[pid: 14558|app: 0|req: 4/4] 127.0.0.1 () {54 vars in 1327 bytes} [Mon Jul 31 00:28:21 2017] GET /pmb-api/static/rest_framework/css/bootstrap.min.css => generated 0 bytes in 2 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 5/5] 127.0.0.1 () {54 vars in 1316 bytes} [Mon Jul 31 00:28:21 2017] GET /pmb-api/static/rest_framework/js/jquery-1.12.4.min.js => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 6/6] 127.0.0.1 () {56 vars in 1339 bytes} [Mon Jul 31 00:28:21 2017] GET /pmb-api/static/rest_framework/js/ajax-form.js => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 7/7] 127.0.0.1 () {54 vars in 1317 bytes} [Mon Jul 31 00:28:21 2017] GET /pmb-api/static/rest_framework/css/prettify.css => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 8/8] 127.0.0.1 () {54 vars in 1333 bytes} [Mon Jul 31 00:28:21 2017] GET /pmb-api/static/rest_framework/css/bootstrap-tweaks.css => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 9/9] 127.0.0.1 () {54 vars in 1327 bytes} [Mon Jul 31 00:28:21 2017] GET /pmb-api/static/rest_framework/css/bootstrap.min.css => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 10/10] 127.0.0.1 () {54 vars in 1290 bytes} [Mon Jul 31 00:28:21 2017] GET /pmb-api/static/rest_framework/js/csrf.js => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 11/11] 127.0.0.1 () {54 vars in 1308 bytes} [Mon Jul 31 00:28:21 2017] GET /pmb-api/static/rest_framework/js/bootstrap.min.js => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 12/12] 127.0.0.1 () {56 vars in 1345 bytes} [Mon Jul 31 00:28:21 2017] GET /pmb-api/static/rest_framework/js/prettify-min.js => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 13/13] 127.0.0.1 () {54 vars in 1296 bytes} [Mon Jul 31 00:28:21 2017] GET /pmb-api/static/rest_framework/js/default.js => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 14/14] 127.0.0.1 () {54 vars in 1315 bytes} [Mon Jul 31 00:28:22 2017] GET /pmb-api/static/rest_framework/css/default.css => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 15/15] 127.0.0.1 () {54 vars in 1371 bytes} [Mon Jul 31 00:28:22 2017] GET /pmb-api/static/rest_framework/img/grid.png => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 16/16] 127.0.0.1 () {56 vars in 1428 bytes} [Mon Jul 31 00:28:22 2017] GET /pmb-api/static/rest_framework/fonts/glyphicons-halflings-regular.woff2 => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+Not Found: /pmb-api/static/rest_framework/css/bootstrap.min.css.map
+[pid: 14558|app: 0|req: 17/17] 127.0.0.1 () {48 vars in 1192 bytes} [Mon Jul 31 00:28:22 2017] GET /pmb-api/static/rest_framework/css/bootstrap.min.css.map => generated 20869 bytes in 21 msecs (HTTP/1.0 404) 3 headers in 103 bytes (1 switches on core 0)
+[pid: 14558|app: 0|req: 18/18] 127.0.0.1 () {56 vars in 1114 bytes} [Mon Jul 31 13:05:43 2017] GET /pmb-api/ => generated 715 bytes in 22 msecs (HTTP/1.0 200) 5 headers in 150 bytes (1 switches on core 0)
+Internal Server Error: /pmb-api/login/
+Traceback (most recent call last):
+  File "/home/ristek/pmb/venv/local/lib/python2.7/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/ristek/pmb/venv/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/ristek/pmb/venv/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ristek/pmb/venv/local/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/ristek/pmb/venv/local/lib/python2.7/site-packages/django/views/decorators/http.py", line 40, in inner
+    return func(request, *args, **kwargs)
+  File "/home/ristek/pmb/venv/local/lib/python2.7/site-packages/django_cas_ng/views.py", line 52, in login
+    clean_sessions(client, request)
+  File "/home/ristek/pmb/venv/local/lib/python2.7/site-packages/django_cas_ng/views.py", line 161, in clean_sessions
+    for slo in client.get_saml_slos(request.POST.get('logoutRequest')):
+AttributeError: 'CASClientV2' object has no attribute 'get_saml_slos'
+[pid: 14558|app: 0|req: 19/19] 127.0.0.1 () {50 vars in 738 bytes} [Mon Jul 31 15:56:04 2017] POST /pmb-api/login/ => generated 78708 bytes in 86 msecs (HTTP/1.0 500) 4 headers in 129 bytes (1 switches on core 0)
+[pid: 14558|app: 0|req: 20/20] 127.0.0.1 () {50 vars in 1021 bytes} [Mon Jul 31 18:37:47 2017] GET /pmb-api/admin => generated 0 bytes in 1 msecs (HTTP/1.0 301) 3 headers in 120 bytes (1 switches on core 0)
+[pid: 14558|app: 0|req: 21/21] 127.0.0.1 () {50 vars in 1023 bytes} [Mon Jul 31 18:37:47 2017] GET /pmb-api/admin/ => generated 0 bytes in 63 msecs (HTTP/1.0 302) 7 headers in 281 bytes (1 switches on core 0)
+[pid: 14558|app: 0|req: 22/22] 127.0.0.1 () {50 vars in 1076 bytes} [Mon Jul 31 18:37:47 2017] GET /pmb-api/admin/login/?next=/pmb-api/admin/ => generated 1863 bytes in 36 msecs (HTTP/1.0 200) 7 headers in 381 bytes (1 switches on core 0)
+[pid: 14558|app: 0|req: 23/23] 127.0.0.1 () {50 vars in 1042 bytes} [Mon Jul 31 18:37:47 2017] GET /pmb-api/static/admin/css/base.css => generated 16066 bytes in 0 msecs via sendfile() (HTTP/1.0 200) 5 headers in 195 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 24/24] 127.0.0.1 () {50 vars in 1044 bytes} [Mon Jul 31 18:37:47 2017] GET /pmb-api/static/admin/css/login.css => generated 1203 bytes in 0 msecs via sendfile() (HTTP/1.0 200) 5 headers in 194 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 25/25] 127.0.0.1 () {50 vars in 1044 bytes} [Mon Jul 31 18:37:47 2017] GET /pmb-api/static/admin/css/fonts.css => generated 423 bytes in 0 msecs via sendfile() (HTTP/1.0 200) 5 headers in 193 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 26/26] 127.0.0.1 () {52 vars in 1102 bytes} [Mon Jul 31 18:37:47 2017] GET /pmb-api/static/admin/fonts/Roboto-Regular-webfont.woff => generated 80304 bytes in 0 msecs via sendfile() (HTTP/1.0 200) 5 headers in 191 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 27/27] 127.0.0.1 () {52 vars in 1096 bytes} [Mon Jul 31 18:37:47 2017] GET /pmb-api/static/admin/fonts/Roboto-Bold-webfont.woff => generated 82564 bytes in 0 msecs via sendfile() (HTTP/1.0 200) 5 headers in 191 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 28/28] 127.0.0.1 () {52 vars in 1098 bytes} [Mon Jul 31 18:37:47 2017] GET /pmb-api/static/admin/fonts/Roboto-Light-webfont.woff => generated 81348 bytes in 0 msecs via sendfile() (HTTP/1.0 200) 5 headers in 191 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 29/29] 127.0.0.1 () {60 vars in 1301 bytes} [Mon Jul 31 18:38:04 2017] POST /pmb-api/admin/login/?next=/pmb-api/admin/ => generated 2027 bytes in 95 msecs (HTTP/1.0 200) 7 headers in 381 bytes (1 switches on core 0)
+[pid: 14558|app: 0|req: 30/30] 127.0.0.1 () {52 vars in 1097 bytes} [Mon Jul 31 18:38:04 2017] GET /pmb-api/static/admin/css/base.css => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 31/31] 127.0.0.1 () {52 vars in 1099 bytes} [Mon Jul 31 18:38:04 2017] GET /pmb-api/static/admin/css/login.css => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 32/32] 127.0.0.1 () {52 vars in 1099 bytes} [Mon Jul 31 18:38:04 2017] GET /pmb-api/static/admin/css/fonts.css => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 33/33] 127.0.0.1 () {54 vars in 1157 bytes} [Mon Jul 31 18:38:04 2017] GET /pmb-api/static/admin/fonts/Roboto-Regular-webfont.woff => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 34/34] 127.0.0.1 () {54 vars in 1151 bytes} [Mon Jul 31 18:38:04 2017] GET /pmb-api/static/admin/fonts/Roboto-Bold-webfont.woff => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 35/35] 127.0.0.1 () {54 vars in 1153 bytes} [Mon Jul 31 18:38:04 2017] GET /pmb-api/static/admin/fonts/Roboto-Light-webfont.woff => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 36/36] 127.0.0.1 () {60 vars in 1301 bytes} [Mon Jul 31 18:38:12 2017] POST /pmb-api/admin/login/?next=/pmb-api/admin/ => generated 2022 bytes in 96 msecs (HTTP/1.0 200) 7 headers in 381 bytes (1 switches on core 0)
+[pid: 14558|app: 0|req: 37/37] 127.0.0.1 () {52 vars in 1097 bytes} [Mon Jul 31 18:38:12 2017] GET /pmb-api/static/admin/css/base.css => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 38/38] 127.0.0.1 () {52 vars in 1099 bytes} [Mon Jul 31 18:38:12 2017] GET /pmb-api/static/admin/css/login.css => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 39/39] 127.0.0.1 () {52 vars in 1099 bytes} [Mon Jul 31 18:38:12 2017] GET /pmb-api/static/admin/css/fonts.css => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 40/40] 127.0.0.1 () {54 vars in 1157 bytes} [Mon Jul 31 18:38:12 2017] GET /pmb-api/static/admin/fonts/Roboto-Regular-webfont.woff => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 41/41] 127.0.0.1 () {54 vars in 1151 bytes} [Mon Jul 31 18:38:12 2017] GET /pmb-api/static/admin/fonts/Roboto-Bold-webfont.woff => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 42/42] 127.0.0.1 () {54 vars in 1153 bytes} [Mon Jul 31 18:38:12 2017] GET /pmb-api/static/admin/fonts/Roboto-Light-webfont.woff => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 43/43] 127.0.0.1 () {60 vars in 1300 bytes} [Mon Jul 31 18:38:38 2017] POST /pmb-api/admin/login/?next=/pmb-api/admin/ => generated 2027 bytes in 96 msecs (HTTP/1.0 200) 7 headers in 381 bytes (1 switches on core 0)
+[pid: 14558|app: 0|req: 44/44] 127.0.0.1 () {52 vars in 1096 bytes} [Mon Jul 31 18:38:38 2017] GET /pmb-api/static/admin/css/base.css => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 45/45] 127.0.0.1 () {52 vars in 1098 bytes} [Mon Jul 31 18:38:38 2017] GET /pmb-api/static/admin/css/login.css => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 46/46] 127.0.0.1 () {52 vars in 1098 bytes} [Mon Jul 31 18:38:38 2017] GET /pmb-api/static/admin/css/fonts.css => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 47/47] 127.0.0.1 () {54 vars in 1156 bytes} [Mon Jul 31 18:38:38 2017] GET /pmb-api/static/admin/fonts/Roboto-Regular-webfont.woff => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 48/48] 127.0.0.1 () {54 vars in 1150 bytes} [Mon Jul 31 18:38:38 2017] GET /pmb-api/static/admin/fonts/Roboto-Bold-webfont.woff => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 49/49] 127.0.0.1 () {54 vars in 1152 bytes} [Mon Jul 31 18:38:38 2017] GET /pmb-api/static/admin/fonts/Roboto-Light-webfont.woff => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 50/50] 127.0.0.1 () {50 vars in 1020 bytes} [Mon Jul 31 18:38:50 2017] GET /pmb-api/login => generated 0 bytes in 1 msecs (HTTP/1.0 301) 3 headers in 120 bytes (1 switches on core 0)
+[pid: 14558|app: 0|req: 51/51] 127.0.0.1 () {50 vars in 1022 bytes} [Mon Jul 31 18:38:50 2017] GET /pmb-api/login/ => generated 0 bytes in 14 msecs (HTTP/1.0 302) 6 headers in 307 bytes (1 switches on core 0)
+[pid: 14558|app: 0|req: 52/52] 127.0.0.1 () {50 vars in 1141 bytes} [Mon Jul 31 18:38:50 2017] GET /pmb-api/ => generated 715 bytes in 19 msecs (HTTP/1.0 200) 5 headers in 150 bytes (1 switches on core 0)
+[pid: 14558|app: 0|req: 53/53] 127.0.0.1 () {50 vars in 1149 bytes} [Mon Jul 31 18:38:55 2017] GET /pmb-api/post => generated 0 bytes in 1 msecs (HTTP/1.0 301) 3 headers in 119 bytes (1 switches on core 0)
+[pid: 14558|app: 0|req: 54/54] 127.0.0.1 () {50 vars in 1152 bytes} [Mon Jul 31 18:38:55 2017] GET /pmb-api/post/ => generated 7945 bytes in 63 msecs (HTTP/1.0 200) 5 headers in 165 bytes (1 switches on core 0)
+[pid: 14558|app: 0|req: 55/55] 127.0.0.1 () {50 vars in 1181 bytes} [Mon Jul 31 18:38:55 2017] GET /pmb-api/static/rest_framework/css/bootstrap.min.css => generated 121200 bytes in 1 msecs via sendfile() (HTTP/1.0 200) 5 headers in 196 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 56/56] 127.0.0.1 () {50 vars in 1171 bytes} [Mon Jul 31 18:38:55 2017] GET /pmb-api/static/rest_framework/css/prettify.css => generated 817 bytes in 0 msecs via sendfile() (HTTP/1.0 200) 5 headers in 193 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 57/57] 127.0.0.1 () {50 vars in 1187 bytes} [Mon Jul 31 18:38:55 2017] GET /pmb-api/static/rest_framework/css/bootstrap-tweaks.css => generated 3385 bytes in 0 msecs via sendfile() (HTTP/1.0 200) 5 headers in 194 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 58/58] 127.0.0.1 () {50 vars in 1169 bytes} [Mon Jul 31 18:38:55 2017] GET /pmb-api/static/rest_framework/css/default.css => generated 1132 bytes in 0 msecs via sendfile() (HTTP/1.0 200) 5 headers in 194 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 59/59] 127.0.0.1 () {50 vars in 1170 bytes} [Mon Jul 31 18:38:55 2017] GET /pmb-api/static/rest_framework/js/jquery-1.12.4.min.js => generated 97163 bytes in 0 msecs via sendfile() (HTTP/1.0 200) 5 headers in 209 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 60/60] 127.0.0.1 () {50 vars in 1144 bytes} [Mon Jul 31 18:38:55 2017] GET /pmb-api/static/rest_framework/js/csrf.js => generated 1735 bytes in 0 msecs via sendfile() (HTTP/1.0 200) 5 headers in 208 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 61/61] 127.0.0.1 () {50 vars in 1162 bytes} [Mon Jul 31 18:38:55 2017] GET /pmb-api/static/rest_framework/js/bootstrap.min.js => generated 37045 bytes in 0 msecs via sendfile() (HTTP/1.0 200) 5 headers in 209 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 62/62] 127.0.0.1 () {50 vars in 1160 bytes} [Mon Jul 31 18:38:55 2017] GET /pmb-api/static/rest_framework/js/prettify-min.js => generated 13632 bytes in 0 msecs via sendfile() (HTTP/1.0 200) 5 headers in 209 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 63/63] 127.0.0.1 () {50 vars in 1150 bytes} [Mon Jul 31 18:38:55 2017] GET /pmb-api/static/rest_framework/js/default.js => generated 1262 bytes in 0 msecs via sendfile() (HTTP/1.0 200) 5 headers in 208 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 64/64] 127.0.0.1 () {50 vars in 1225 bytes} [Mon Jul 31 18:38:55 2017] GET /pmb-api/static/rest_framework/img/grid.png => generated 1458 bytes in 0 msecs via sendfile() (HTTP/1.0 200) 5 headers in 178 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 65/65] 127.0.0.1 () {52 vars in 1282 bytes} [Mon Jul 31 18:38:55 2017] GET /pmb-api/static/rest_framework/fonts/glyphicons-halflings-regular.woff2 => generated 18028 bytes in 0 msecs via sendfile() (HTTP/1.0 200) 5 headers in 180 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 66/66] 127.0.0.1 () {50 vars in 1154 bytes} [Mon Jul 31 18:38:55 2017] GET /pmb-api/static/rest_framework/js/ajax-form.js => generated 2876 bytes in 0 msecs via sendfile() (HTTP/1.0 200) 5 headers in 208 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 67/67] 127.0.0.1 () {50 vars in 1170 bytes} [Mon Jul 31 18:39:00 2017] GET /pmb-api/user-profile/1 => generated 0 bytes in 1 msecs (HTTP/1.0 301) 3 headers in 129 bytes (1 switches on core 0)
+[pid: 14558|app: 0|req: 68/68] 127.0.0.1 () {50 vars in 1172 bytes} [Mon Jul 31 18:39:00 2017] GET /pmb-api/user-profile/1/ => generated 6439 bytes in 79 msecs (HTTP/1.0 403) 5 headers in 186 bytes (1 switches on core 0)
+[pid: 14558|app: 0|req: 69/69] 127.0.0.1 () {52 vars in 1246 bytes} [Mon Jul 31 18:39:00 2017] GET /pmb-api/static/rest_framework/css/bootstrap.min.css => generated 0 bytes in 1 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 70/70] 127.0.0.1 () {52 vars in 1252 bytes} [Mon Jul 31 18:39:00 2017] GET /pmb-api/static/rest_framework/css/bootstrap-tweaks.css => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 71/71] 127.0.0.1 () {52 vars in 1236 bytes} [Mon Jul 31 18:39:00 2017] GET /pmb-api/static/rest_framework/css/prettify.css => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 72/72] 127.0.0.1 () {52 vars in 1234 bytes} [Mon Jul 31 18:39:00 2017] GET /pmb-api/static/rest_framework/css/default.css => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 73/73] 127.0.0.1 () {52 vars in 1219 bytes} [Mon Jul 31 18:39:00 2017] GET /pmb-api/static/rest_framework/js/ajax-form.js => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 74/74] 127.0.0.1 () {52 vars in 1235 bytes} [Mon Jul 31 18:39:00 2017] GET /pmb-api/static/rest_framework/js/jquery-1.12.4.min.js => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 75/75] 127.0.0.1 () {52 vars in 1209 bytes} [Mon Jul 31 18:39:00 2017] GET /pmb-api/static/rest_framework/js/csrf.js => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 76/76] 127.0.0.1 () {52 vars in 1225 bytes} [Mon Jul 31 18:39:00 2017] GET /pmb-api/static/rest_framework/js/prettify-min.js => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 77/77] 127.0.0.1 () {52 vars in 1227 bytes} [Mon Jul 31 18:39:00 2017] GET /pmb-api/static/rest_framework/js/bootstrap.min.js => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 78/78] 127.0.0.1 () {52 vars in 1215 bytes} [Mon Jul 31 18:39:00 2017] GET /pmb-api/static/rest_framework/js/default.js => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 79/79] 127.0.0.1 () {50 vars in 1170 bytes} [Mon Jul 31 18:39:03 2017] GET /pmb-api/user-profile/2 => generated 0 bytes in 1 msecs (HTTP/1.0 301) 3 headers in 129 bytes (1 switches on core 0)
+[pid: 14558|app: 0|req: 80/80] 127.0.0.1 () {50 vars in 1172 bytes} [Mon Jul 31 18:39:03 2017] GET /pmb-api/user-profile/2/ => generated 14586 bytes in 95 msecs (HTTP/1.0 200) 5 headers in 180 bytes (1 switches on core 0)
+[pid: 14558|app: 0|req: 81/81] 127.0.0.1 () {52 vars in 1235 bytes} [Mon Jul 31 18:39:03 2017] GET /pmb-api/static/rest_framework/js/jquery-1.12.4.min.js => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 82/82] 127.0.0.1 () {52 vars in 1246 bytes} [Mon Jul 31 18:39:03 2017] GET /pmb-api/static/rest_framework/css/bootstrap.min.css => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 83/83] 127.0.0.1 () {52 vars in 1236 bytes} [Mon Jul 31 18:39:03 2017] GET /pmb-api/static/rest_framework/css/prettify.css => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 84/84] 127.0.0.1 () {52 vars in 1252 bytes} [Mon Jul 31 18:39:03 2017] GET /pmb-api/static/rest_framework/css/bootstrap-tweaks.css => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 85/85] 127.0.0.1 () {52 vars in 1234 bytes} [Mon Jul 31 18:39:03 2017] GET /pmb-api/static/rest_framework/css/default.css => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 86/86] 127.0.0.1 () {52 vars in 1219 bytes} [Mon Jul 31 18:39:03 2017] GET /pmb-api/static/rest_framework/js/ajax-form.js => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 87/87] 127.0.0.1 () {52 vars in 1209 bytes} [Mon Jul 31 18:39:03 2017] GET /pmb-api/static/rest_framework/js/csrf.js => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 88/88] 127.0.0.1 () {52 vars in 1225 bytes} [Mon Jul 31 18:39:03 2017] GET /pmb-api/static/rest_framework/js/prettify-min.js => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 89/89] 127.0.0.1 () {52 vars in 1227 bytes} [Mon Jul 31 18:39:03 2017] GET /pmb-api/static/rest_framework/js/bootstrap.min.js => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+[pid: 14558|app: 0|req: 90/90] 127.0.0.1 () {52 vars in 1215 bytes} [Mon Jul 31 18:39:03 2017] GET /pmb-api/static/rest_framework/js/default.js => generated 0 bytes in 0 msecs (HTTP/1.0 304) 1 headers in 63 bytes (0 switches on core 0)
+Internal Server Error: /pmb-api/login/
+Traceback (most recent call last):
+  File "/home/ristek/pmb/venv/local/lib/python2.7/site-packages/django/core/handlers/exception.py", line 41, in inner
+    response = get_response(request)
+  File "/home/ristek/pmb/venv/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/ristek/pmb/venv/local/lib/python2.7/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ristek/pmb/venv/local/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/ristek/pmb/venv/local/lib/python2.7/site-packages/django/views/decorators/http.py", line 40, in inner
+    return func(request, *args, **kwargs)
+  File "/home/ristek/pmb/venv/local/lib/python2.7/site-packages/django_cas_ng/views.py", line 52, in login
+    clean_sessions(client, request)
+  File "/home/ristek/pmb/venv/local/lib/python2.7/site-packages/django_cas_ng/views.py", line 161, in clean_sessions
+    for slo in client.get_saml_slos(request.POST.get('logoutRequest')):
+AttributeError: 'CASClientV2' object has no attribute 'get_saml_slos'
+[pid: 14558|app: 0|req: 91/91] 127.0.0.1 () {50 vars in 738 bytes} [Tue Aug  1 00:26:02 2017] POST /pmb-api/login/ => generated 78707 bytes in 78 msecs (HTTP/1.0 500) 4 headers in 129 bytes (1 switches on core 0)
