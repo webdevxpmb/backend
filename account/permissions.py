@@ -47,9 +47,13 @@ class IsOwner(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         # Instance must have a field named `id`.
         try:
-            return obj.user == request.user
+            if hasattr(obj, 'user'):
+                return obj.user == request.user
+            elif hasattr(obj, 'author_id'):
+                return obj.author_id == request.user.id
+
         except Exception as e:
-            return False
+            raise
 
 
 class IsPmbAdmin(permissions.BasePermission):
