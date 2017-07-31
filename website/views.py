@@ -142,6 +142,7 @@ class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
         instance = self.get_object()
         post = instance.post
         request.data['post'] = post.id
+        request.data['author'] = request.user.id
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
@@ -184,6 +185,23 @@ class ElementWordDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsOwner, )
     queryset = ElementWord.objects.all()
     serializer_class = ElementWordSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = GetElementWordSerializer(instance)
+        return Response(serializer.data)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        request.data['author'] = request.user.id
+        if not is_pmb_admin(request.user):
+            request.data['approved'] = False
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(GetCommentsSerializer(instance).data)
 
 
 class TaskList(generics.ListCreateAPIView):
