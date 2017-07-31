@@ -45,7 +45,7 @@ class PostTypeDetail(generics.RetrieveUpdateDestroyAPIView):
 class PostList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, )
     queryset = Post.objects.all()
-    filter_fields = ('post_type',)
+    filter_fields = ('post_type', 'author__profile__angkatan', )
     parser_classes = (JSONParser, )
     serializer_class = PostSerializer
     pagination_class = StandardResultsSetPagination
@@ -448,40 +448,13 @@ class TaskStatisticDetail(generics.RetrieveAPIView):
     serializer_class = TaskStatisticSerializer
 
 
-class UserStatisticList(generics.ListCreateAPIView):
+class UserStatisticList(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UserStatisticSerializer
 
-    def get_queryset(self):
-        queryset = UserStatistic.objects.filter(user=self.request.user)
-        return queryset
 
-    def perform_create(self, serializer):
-        if is_pmb_admin(self.request.user):
-            serializer.save()
-        else:
-            raise exceptions.PermissionDenied
-
-
-class UserStatisticDetail(generics.RetrieveUpdateDestroyAPIView):
+class UserStatisticDetail(generics.RetrieveAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = UserStatistic.objects.all()
     serializer_class = UserStatisticSerializer
 
-    def put(self, request, *args, **kwargs):
-        if is_pmb_admin(request.user):
-            return self.update(request, *args, **kwargs)
-        else:
-            raise exceptions.PermissionDenied
-
-    def patch(self, request, *args, **kwargs):
-        if is_pmb_admin(request.user):
-            return self.update(request, *args, **kwargs)
-        else:
-            raise exceptions.PermissionDenied
-
-    def delete(self, request, *args, **kwargs):
-        if is_pmb_admin(request.user):
-            return self.destroy(request, *args, **kwargs)
-        else:
-            raise exceptions.PermissionDenied
