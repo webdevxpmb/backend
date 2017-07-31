@@ -75,6 +75,15 @@ class SubmissionSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'task', 'file_link')
 
 
+class GetSubmissionSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    task = TaskSerializer()
+
+    class Meta:
+        model = Submission
+        fields = ('id', 'user', 'task', 'file_link')
+
+
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event

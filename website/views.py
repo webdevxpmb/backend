@@ -7,7 +7,7 @@ from website.serializers import (
     TaskSerializer, SubmissionSerializer, EventSerializer,
     AlbumSerializer, TaskStatisticSerializer, EventStatisticSerializer,
     UserStatisticSerializer, GetPostSerializer, GetCommentsSerializer,
-    GetElementWordSerializer,
+    GetElementWordSerializer, GetSubmissionSerializer,
 )
 
 from website.utils import StandardResultsSetPagination
@@ -208,6 +208,8 @@ class TaskList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, )
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+    parser_classes = (JSONParser,)
+    pagination_class = StandardResultsSetPagination
 
     def perform_create(self, serializer):
         if is_pmb_admin(self.request.user):
@@ -243,10 +245,34 @@ class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
 class SubmissionList(generics.ListCreateAPIView):
     permission_classes = (IsMabaOrAdmin,)
     serializer_class = SubmissionSerializer
+    parser_classes = (JSONParser,)
+    filter_fields = ('task', )
+    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         queryset = Submission.objects.filter(user=self.request.user)
-        return  queryset
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = GetSubmissionSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = GetSubmissionSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        data['user'] = request.user.id
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        instance = Submission.objects.get(id=serializer.data['id'])
+        response_serializer = GetSubmissionSerializer(instance)
+        headers = self.get_success_headers(response_serializer.data)
+        return Response(response_serializer.data, status=201, headers=headers)
 
 
 class SubmissionDetail(generics.RetrieveUpdateAPIView):
@@ -256,6 +282,21 @@ class SubmissionDetail(generics.RetrieveUpdateAPIView):
     def get_queryset(self):
         queryset = Submission.objects.filter(user=self.request.user)
         return queryset
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = GetSubmissionSerializer(instance)
+        return Response(serializer.data)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        request.data['task'] = instance.task.id
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(GetSubmissionSerializer(instance).data)
 
 
 class EventList(generics.ListCreateAPIView):

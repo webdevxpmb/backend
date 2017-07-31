@@ -79,14 +79,15 @@ class SSOAuth(APIView):
             token = jwt_encode_handler(payload)
 
             user_profile = UserProfile.objects.get(user=request.user)
+            profile_id = user_profile.id
             name = user_profile.name
             npm = user_profile.npm
             email = user_profile.email
             role = user_profile.role.role_name
             angkatan = user_profile.angkatan.name
 
-            data = {'user_id': request.user.id, 'user': request.user.username, 'token': token, 'name': name,
-                    'npm': npm, 'email': email, 'role': role, 'angkatan': angkatan}
+            data = {'user_id': request.user.id, 'user': request.user.username, 'token': token, 'profile_id': profile_id,
+                    'name': name, 'npm': npm, 'email': email, 'role': role, 'angkatan': angkatan}
             return Response(data)
         except Exception as e:
             raise
