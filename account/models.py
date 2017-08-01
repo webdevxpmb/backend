@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from smartfields import fields
 # Create your models here.
 
 
@@ -35,7 +34,7 @@ class UserProfile(models.Model):
     email = models.CharField(max_length=50)
     role = models.ForeignKey(Role)
     angkatan = models.ForeignKey(Angkatan)
-    photo = fields.ImageField('photo', blank=True, null=True)
+    photo = models.ImageField('photo', blank=True, null=True)
     about = models.TextField(blank=True, null=True)
     linkedin = models.CharField(max_length=50, blank=True, null=True)
     facebook = models.CharField(max_length=50, blank=True, null=True)

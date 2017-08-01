@@ -1,4 +1,13 @@
 from rest_framework.pagination import PageNumberPagination
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from website.models import Task, Event, Submission
+from kenalan.models import Kenalan
+
+
+@receiver(post_save, sender=Task)
+def my_handler(sender, **kwargs):
+    pass
 
 
 class StandardResultsSetPagination(PageNumberPagination):
