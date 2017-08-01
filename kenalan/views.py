@@ -66,22 +66,24 @@ class KenalanDetail(generics.RetrieveUpdateAPIView):
     queryset = Kenalan.objects.all()
 
     def retrieve(self, request, *args, **kwargs):
+        if is_pmb_admin(request.user):
+            self.permission_classes = (IsPmbAdmin,)
         instance = self.get_object()
         serializer = GetKenalanSerializer(instance)
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
+        if is_pmb_admin(request.user):
+            self.permission_classes = (IsPmbAdmin,)
         if is_pmb_admin(request.user) or is_elemen(request.user):
             partial = kwargs.pop('partial', False)
             instance = self.get_object()
             serializer = self.get_serializer(instance, data=request.data, partial=partial)
             serializer.is_valid(raise_exception=True)
             self.perform_update(serializer)
-
             return Response(GetKenalanSerializer(instance).data)
         else:
             raise PermissionDenied
-
 
 class KenalanStatusList(generics.ListCreateAPIView):
     queryset = KenalanStatus.objects.all()
