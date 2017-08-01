@@ -1,5 +1,5 @@
 from kenalan.models import Token, Kenalan, KenalanStatus, DetailKenalan
-from kenalan.serializers import TokenSerializer, KenalanSerializer
+from kenalan.serializers import TokenSerializer, GetKenalanSerializer
 from account.models import UserProfile
 from account.permissions import IsElemen, IsMaba
 from django.utils.crypto import get_random_string
@@ -67,7 +67,7 @@ def create_kenalan_by_token(request):
                                              status=kenalan_status)
             # create initial detail
             DetailKenalan.objects.create(kenalan=kenalan, name=elemen_profile.name)
-            content = KenalanSerializer(kenalan, context={'request': request})
+            content = GetKenalanSerializer(kenalan, context={'request': request})
             return Response(content.data, status=201)
             
         else:
