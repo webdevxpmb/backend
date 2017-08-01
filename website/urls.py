@@ -57,7 +57,4 @@ urlpatterns = format_suffix_patterns([
         views.EventStatisticList.as_view(), name="eventstatistic-list"),
     url(r'/event-statistic/(?P<pk>[0-9]+)/$',
         views.EventStatisticDetail.as_view(), name='eventstatistic-detail'),
-
-
-
 ])

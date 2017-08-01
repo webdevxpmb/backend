@@ -122,7 +122,10 @@ class GetEventStatisticSerializer(serializers.ModelSerializer):
 
 class UserStatisticSerializer(serializers.ModelSerializer):
     task = TaskSerializer()
+
     class Meta:
         model = UserStatistic
         fields = ('id', 'user', 'name', 'task', 'amount_omega',
-                  'amount_capung', 'amount_orion', 'amount_alumni')
+                  'amount_capung', 'amount_orion', 'amount_alumni',
+                  'amount_approved_omega', 'amount_approved_capung',
+                  'amount_approved_orion', 'amount_approved_alumni')
