@@ -1,5 +1,4 @@
 <html><body>
-<h1>Profiles</h1>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script type="text/javascript">
   var user = {
@@ -13,11 +12,22 @@
     role: "{{ role }}",
     angkatan: "{{ angkatan }}",
   };
+  function sendLoginData(event) {
+        // For Chrome, the origin property is in the event.originalEvent object.
+        var origin = event.origin || event.originalEvent.origin;
+        var allowedDomain = 'http://pmb.cs.ui.ac.id/';
+        var allowedLocalDomain = 'http://localhost:3000/';
+        // MAKE SURE FUNCTION CALLER ORIGIN IS FROM ALLOWED DOMAIN! SECURITY PURPOSES.
+        // DELETE ALLOWEDLOCALDOMAIN UPON PRODUCTION (TAR AJA KALO DAH DEPLOY)
+        if (origin === allowedDomain || origin === allowedLocalDomain) {
+            // call postMessage function from the window caller
+            event.source.postMessage(user, origin);
+            // close window
+            window.close();
+        }
+  }
 
-  console.log(user);
-  window.hashData = true;
-  window.data = user;
-  window.close();
+// receive any postmessage to catch the caller window and send the data to there
 </script>
 </body>
 </html>
