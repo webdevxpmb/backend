@@ -15,7 +15,8 @@
   };
 
   console.log(user);
-  window.opener.processLogin(user);
+  window.hashData = true;
+  window.data = user;
   window.close();
 </script>
 </body>

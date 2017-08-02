@@ -9,6 +9,9 @@ class Role(models.Model):
     """
     role_name = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.role_name
+
     class Meta:
         pass
 
@@ -19,6 +22,9 @@ class Angkatan(models.Model):
     """
     year = models.CharField(max_length=10)
     name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         pass

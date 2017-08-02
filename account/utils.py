@@ -26,13 +26,13 @@ def get_angkatan_by_npm(npm):
 
 def get_role_by_angkatan(angkatan):
     try:
-        if angkatan == 1:
-            return 3
+        if angkatan == "2017":
+            return "mahasiswa baru"
         else:
-            return 2
+            return "elemen"
 
     except Exception as e:
-        return 0
+        return "elemen"
 
 
 def get_email_by_username(username):
