@@ -58,7 +58,7 @@ def login(request, next_page=None, required=False):
         if settings.CAS_LOGGED_MSG is not None:
             message = settings.CAS_LOGGED_MSG % request.user.get_username()
             messages.success(request, message)
-        return HttpResponseRedirect(next_page)
+        return render(request, 'index.html')
 
     ticket = request.GET.get('ticket')
     if ticket:
@@ -74,6 +74,25 @@ def login(request, next_page=None, required=False):
                 session_key=request.session.session_key,
                 ticket=ticket
             )
+            if pgtiou and settings.CAS_PROXY_CALLBACK:
+                # Delete old PGT
+                ProxyGrantingTicket.objects.filter(
+                    user=user,
+                    session_key=request.session.session_key
+                ).delete()
+                # Set new PGT ticket
+                try:
+                    pgt = ProxyGrantingTicket.objects.get(pgtiou=pgtiou)
+                    pgt.user = user
+                    pgt.session_key = request.session.session_key
+                    pgt.save()
+                except ProxyGrantingTicket.DoesNotExist:
+                    pass
+
+            if settings.CAS_LOGIN_MSG is not None:
+                name = user.get_username()
+                message = settings.CAS_LOGIN_MSG % name
+                messages.success(request, message)
 
             try:
                 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
@@ -96,34 +115,11 @@ def login(request, next_page=None, required=False):
                 return render(request, 'index.html', data)
             except Exception as e:
                 raise
-
-            if pgtiou and settings.CAS_PROXY_CALLBACK:
-                # Delete old PGT
-                ProxyGrantingTicket.objects.filter(
-                    user=user,
-                    session_key=request.session.session_key
-                ).delete()
-                # Set new PGT ticket
-                try:
-                    pgt = ProxyGrantingTicket.objects.get(pgtiou=pgtiou)
-                    pgt.user = user
-                    pgt.session_key = request.session.session_key
-                    pgt.save()
-                except ProxyGrantingTicket.DoesNotExist:
-                    pass
-
-            if settings.CAS_LOGIN_MSG is not None:
-                name = user.get_username()
-                message = settings.CAS_LOGIN_MSG % name
-                messages.success(request, message)
-            return HttpResponseRedirect(next_page)
         elif settings.CAS_RETRY_LOGIN or required:
             return HttpResponseRedirect(client.get_login_url())
         else:
             raise PermissionDenied(_('Login failed.'))
     else:
-        if settings.CAS_STORE_NEXT:
-            request.session['CASNEXT'] = next_page
         return HttpResponseRedirect(client.get_login_url())
 
 
@@ -155,11 +151,12 @@ def logout(request, next_page=None):
             (protocol, host, next_page, '', '', ''),
         )
         client = get_cas_client()
+
         return HttpResponseRedirect(client.get_logout_url(redirect_url))
     else:
         # This is in most cases pointless if not CAS_RENEW is set. The user will
         # simply be logged in again on next request requiring authorization.
-        return HttpResponseRedirect(next_page)
+        return render(request, 'index.html')
 
 
 @csrf_exempt

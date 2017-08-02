@@ -164,11 +164,10 @@ AUTHENTICATION_BACKENDS = (
 
 
 CAS_SERVER_URL = 'https://sso.ui.ac.id/cas2/login'
-CAS_PROXY_CALLBACK = 'http://ristek.cs.ui.ac.id/pmb-api'
 CAS_STORE_NEXT = True
 CAS_CREATE_USER = True
 CAS_APPLY_ATTRIBUTES_TO_USER = True
-CAS_REDIRECT_URL = 'http://ristek.cs.ui.ac.id/pmb-api/'
+CAS_REDIRECT_URL = '/pmb-api/'
 
 CRONJOBS = [
     ('*/10 * * * *', 'kenalan.utils.delete_all_expired_token')
