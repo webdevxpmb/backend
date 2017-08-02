@@ -96,8 +96,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'USER': 'pmb',
+        'PASSWORD': 'webdevxpmb',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -168,7 +168,7 @@ CAS_PROXY_CALLBACK = 'http://ristek.cs.ui.ac.id/pmb-api'
 CAS_STORE_NEXT = True
 CAS_CREATE_USER = True
 CAS_APPLY_ATTRIBUTES_TO_USER = True
-CAS_REDIRECT_URL = '/pmb-api/'
+CAS_REDIRECT_URL = 'http://ristek.cs.ui.ac.id/pmb-api/'
 
 CRONJOBS = [
     ('*/10 * * * *', 'kenalan.utils.delete_all_expired_token')
