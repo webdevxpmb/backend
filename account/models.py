@@ -20,7 +20,7 @@ class Angkatan(models.Model):
     """
     Description: Model Description
     """
-    year = models.CharField(max_length=10)
+    year = models.CharField(max_length=50)
     name = models.CharField(max_length=50)
 
     def __str__(self):
