@@ -121,22 +121,22 @@ class CASBackend(ModelBackend):
                 npm = attributes['npm']
                 email = get_email_by_username(user.get_username())
                 angkatan = Angkatan.objects.get(name=get_angkatan_by_npm(npm))
-                role = Role.objects.get(id=get_role_by_angkatan(angkatan))
+                role = Role.objects.get(role_name=get_role_by_angkatan(angkatan.name))
 
             elif attributes['peran_user'] == 'staff':
                 name = attributes['nama']
                 npm = attributes['nip']
                 email = get_email_by_username(user.get_username())
-                angkatan = Angkatan.objects.get(id=6)
-                role = Role.objects.get(id=get_role_by_angkatan(angkatan))
+                angkatan = Angkatan.objects.get(name='alumni')
+                role = Role.objects.get(role_name=get_role_by_angkatan(angkatan.name))
 
             UserProfile.objects.create(user = user,
-                                                      name = name,
-                                                      npm = npm,
-                                                      email = email,
-                                                      angkatan = angkatan,
-                                                      role = role,
-                                                      )
+                                       name = name,
+                                       npm = npm,
+                                       email = email,
+                                       angkatan = angkatan,
+                                       role = role,
+                                       )
         except Exception as e:
             raise PermissionDenied
 

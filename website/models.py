@@ -143,10 +143,14 @@ class UserStatistic(models.Model):
     name = models.CharField(max_length=255)
     user = models.ForeignKey(User)
     task = models.ForeignKey(Task)
-    amount_omega = models.SmallIntegerField(blank=True, null=True)
-    amount_capung = models.SmallIntegerField(blank=True, null=True)
-    amount_orion = models.SmallIntegerField(blank=True, null=True)
-    amount_alumni = models.SmallIntegerField(blank=True, null=True)
+    amount_omega = models.SmallIntegerField(default=0)
+    amount_capung = models.SmallIntegerField(default=0)
+    amount_orion = models.SmallIntegerField(default=0)
+    amount_alumni = models.SmallIntegerField(default=0)
+    amount_approved_omega = models.SmallIntegerField(default=0)
+    amount_approved_capung = models.SmallIntegerField(default=0)
+    amount_approved_orion = models.SmallIntegerField(default=0)
+    amount_approved_alumni = models.SmallIntegerField(default=0)
 
     class Meta:
         pass

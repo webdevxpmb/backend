@@ -23,8 +23,8 @@ class KenalanStatusSerializer(serializers.ModelSerializer):
 class KenalanSerializer(serializers.ModelSerializer):
     class Meta:
         model = Kenalan
-        fields = ('detail_kenalan', 'id', 'user_elemen', 'user_maba', 'status')
-        read_only_fields = ('detail_kenalan', 'user_elemen', 'user_maba')
+        fields = ('id', 'user_elemen', 'user_maba', 'status')
+        read_only_fields = ('user_elemen', 'user_maba')
 
 
 class GetKenalanSerializer(serializers.ModelSerializer):

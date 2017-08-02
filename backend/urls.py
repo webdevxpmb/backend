@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from django_cas_ng import views
+from account import cas_views
 from django.conf import settings
 from django.conf.urls.static import static
 from account.utils import SSOAuth
+from django_cas_ng import views
 
 urlpatterns = [
     # OAuth 2 endpoints:
@@ -27,9 +28,9 @@ urlpatterns = [
     url(r'^pmb-api', include('account.urls')),
     url(r'^pmb-api', include('kenalan.urls')),
     url(r'^pmb-api', include('website.urls')),
-    url(r'^pmb-api/login/$', views.login, name='cas_ng_login'),
-    url(r'^pmb-api/logout$', views.logout, name='cas_ng_logout'),
-    url(r'^pmb-api/callback$', views.callback, name='cas_ng_proxy_callback'),
+    url(r'^pmb-api/login/$', cas_views.login, name='cas_ng_login'),
+    url(r'^pmb-api/logout$', cas_views.logout, name='cas_ng_logout'),
+    url(r'^pmb-api/callback$', cas_views.callback, name='cas_ng_proxy_callback'),
     url(r'^pmb-api/docs/', include('rest_framework_docs.urls')),
 
 ]

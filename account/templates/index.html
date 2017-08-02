@@ -14,7 +14,9 @@
     angkatan: "{{ angkatan }}",
   };
 
-  window.opener.processLogin(user);
+  console.log(user);
+  window.hashData = true;
+  window.data = user;
   window.close();
 </script>
 </body>

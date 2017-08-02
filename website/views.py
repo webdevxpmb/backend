@@ -451,6 +451,7 @@ class TaskStatisticDetail(generics.RetrieveAPIView):
 class UserStatisticList(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UserStatisticSerializer
+    queryset = UserStatistic.objects.all()
 
 
 class UserStatisticDetail(generics.RetrieveAPIView):
