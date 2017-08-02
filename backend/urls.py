@@ -19,7 +19,6 @@ from account import cas_views
 from django.conf import settings
 from django.conf.urls.static import static
 from account.utils import SSOAuth
-from django_cas_ng import views
 
 urlpatterns = [
     # OAuth 2 endpoints:
