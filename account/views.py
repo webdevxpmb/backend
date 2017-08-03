@@ -55,10 +55,12 @@ class AngkatanDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class UserProfileList(generics.ListAPIView):
-    permission_classes = (IsPmbAdmin,)
-    queryset = UserProfile.objects.all()
+    permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UserProfileSerializer
-    filter_fields = ('role', 'angkatan')
+
+    def get_queryset(self):
+        queryset = UserProfile.objects.filter(user=self.request.user)
+        return queryset
 
 
 class UserProfileDetail(generics.RetrieveUpdateAPIView):

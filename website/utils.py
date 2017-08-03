@@ -1,8 +1,13 @@
+from django.http import HttpResponse
 from rest_framework.pagination import PageNumberPagination
-from django.db.models.signals import post_save, pre_delete
+from django.db.models.signals import post_save
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAdminUser
 from django.dispatch import receiver
+from rest_framework.response import Response
+
 from website.models import (
-    Task, Event, Submission,
+    Task, Submission,
     TaskStatistic, UserStatistic,
     )
 from kenalan.models import Kenalan
@@ -34,7 +39,7 @@ def task_create_or_update(sender, created, instance, **kwargs):
 
                 for user_profile in user_profile_maba:
                     user = user_profile.user
-                    UserStatistic.objects.create(user=user, task=task, name=task.name + ' statistic',)
+                    UserStatistic.objects.create(user=user, task=task, name=task.name + ' statistic')
         else:
             pass
     except Exception:
@@ -74,3 +79,35 @@ def kenalan_create_or_update(sender, created, instance, **kwargs):
         user_statistic.save()
     except Exception:
         pass
+
+
+@api_view(['GET'])
+@permission_classes((IsAdminUser,))
+def update_user_statistic(request):
+    user_statistics = UserStatistic.objects.all()
+
+    for user_statistic in user_statistics:
+        user_statistic.amount_omega = Kenalan.objects.filter(user_maba=user_statistic.user,
+                                              user_elemen__profile__angkatan__name='omega').count()
+        user_statistic.amount_capung = Kenalan.objects.filter(user_maba=user_statistic.user,
+                                               user_elemen__profile__angkatan__name='capung').count()
+        user_statistic.amount_orion = Kenalan.objects.filter(user_maba=user_statistic.user,
+                                              user_elemen__profile__angkatan__name='orion').count()
+        user_statistic.amount_alumni = Kenalan.objects.filter(user_maba=user_statistic.user,
+                                               user_elemen__profile__angkatan__name='alumni').count()
+
+        user_statistic.amount_approved_omega = Kenalan.objects.filter(user_maba=user_statistic.user,
+                                                       user_elemen__profile__angkatan__name='omega',
+                                                       status__status='accepted').count()
+        user_statistic.amount_approved_capung = Kenalan.objects.filter(user_maba=user_statistic.user,
+                                                       user_elemen__profile__angkatan__name='capung',
+                                                       status__status='accepted').count()
+        user_statistic.amount_approved_orion = Kenalan.objects.filter(user_maba=user_statistic.user,
+                                                       user_elemen__profile__angkatan__name='orion',
+                                                       status__status='accepted').count()
+        user_statistic.amount_approved_alumni = Kenalan.objects.filter(user_maba=user_statistic.user,
+                                                       user_elemen__profile__angkatan__name='alumni',
+                                                       status__status='accepted').count()
+        user_statistic.save()
+
+    return Response('updated')

@@ -50,6 +50,7 @@ def load_data(data_dir):
     except Exception as e:
         return {'allowed_org':[]}
 
+
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
 def configure_token(request):

@@ -15,8 +15,9 @@
   function sendLoginData(event) {
         // For Chrome, the origin property is in the event.originalEvent object.
         var origin = event.origin || event.originalEvent.origin;
-        var allowedDomain = 'http://pmb.cs.ui.ac.id/';
-        var allowedLocalDomain = 'http://localhost:3000/';
+        var allowedDomain = 'http://pmb.cs.ui.ac.id';
+        var allowedLocalDomain = 'http://localhost:3000';
+        console.log(origin);
         // MAKE SURE FUNCTION CALLER ORIGIN IS FROM ALLOWED DOMAIN! SECURITY PURPOSES.
         // DELETE ALLOWEDLOCALDOMAIN UPON PRODUCTION (TAR AJA KALO DAH DEPLOY)
         if (origin === allowedDomain || origin === allowedLocalDomain) {
@@ -28,6 +29,7 @@
   }
 
 // receive any postmessage to catch the caller window and send the data to there
+window.addEventListener('message', sendLoginData);
 </script>
 </body>
 </html>
