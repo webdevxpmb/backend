@@ -19,6 +19,7 @@ from account import cas_views
 from django.conf import settings
 from django.conf.urls.static import static
 from account.utils import SSOAuth
+from website.utils import update_user_statistic
 
 urlpatterns = [
     # OAuth 2 endpoints:
@@ -31,6 +32,7 @@ urlpatterns = [
     url(r'^pmb-api/logout$', cas_views.logout, name='cas_ng_logout'),
     url(r'^pmb-api/callback$', cas_views.callback, name='cas_ng_proxy_callback'),
     url(r'^pmb-api/docs/', include('rest_framework_docs.urls')),
+    url(r'^pmb-api/update-user-statistic/', update_user_statistic),
 
 ]
 
