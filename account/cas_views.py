@@ -143,16 +143,10 @@ def logout(request, next_page=None):
     # clean current session ProxyGrantingTicket and SessionTicket
     ProxyGrantingTicket.objects.filter(session_key=request.session.session_key).delete()
     SessionTicket.objects.filter(session_key=request.session.session_key).delete()
-    next_page = next_page or get_redirect_url(request)
     if settings.CAS_LOGOUT_COMPLETELY:
-        protocol = get_protocol(request)
-        host = request.get_host()
-        redirect_url = urlunparse(
-            (protocol, host, next_page, '', '', ''),
-        )
         client = get_cas_client()
 
-        return HttpResponseRedirect(client.get_logout_url(redirect_url))
+        return HttpResponseRedirect(client.get_logout_url(settings.CLIENT_HOST))
     else:
         # This is in most cases pointless if not CAS_RENEW is set. The user will
         # simply be logged in again on next request requiring authorization.
