@@ -85,6 +85,7 @@ class KenalanDetail(generics.RetrieveUpdateAPIView):
         else:
             raise PermissionDenied
 
+
 class KenalanStatusList(generics.ListCreateAPIView):
     queryset = KenalanStatus.objects.all()
     serializer_class = KenalanStatusSerializer

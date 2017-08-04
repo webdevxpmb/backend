@@ -27,6 +27,7 @@ from account.permissions import (
     IsElemenOrAdmin,
 )
 
+import datetime
 
 class PostTypeList(generics.ListCreateAPIView):
     permission_classes = (IsPmbAdmin,)
@@ -103,7 +104,6 @@ class CommentList(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentsSerializer
     filter_fields = ('post', )
-    pagination_class = StandardResultsSetPagination
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -155,7 +155,6 @@ class ElementWordList(generics.ListCreateAPIView):
     queryset = ElementWord.objects.all()
     serializer_class = ElementWordSerializer
     parser_classes = (JSONParser, )
-    pagination_class = StandardResultsSetPagination
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -209,7 +208,6 @@ class TaskList(generics.ListCreateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     parser_classes = (JSONParser,)
-    pagination_class = StandardResultsSetPagination
 
     def perform_create(self, serializer):
         if is_pmb_admin(self.request.user):
@@ -247,7 +245,6 @@ class SubmissionList(generics.ListCreateAPIView):
     serializer_class = SubmissionSerializer
     parser_classes = (JSONParser,)
     filter_fields = ('task', )
-    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         queryset = Submission.objects.filter(user=self.request.user)
@@ -268,6 +265,9 @@ class SubmissionList(generics.ListCreateAPIView):
         data['user'] = request.user.id
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
+        task = Task.objects.get(id=data['task'])
+        if task.end_time < datetime.datetime.now():
+            return Response({"message": "The submission deadline has been overdue"}, status=400)
         self.perform_create(serializer)
         instance = Submission.objects.get(id=serializer.data['id'])
         response_serializer = GetSubmissionSerializer(instance)
@@ -292,6 +292,8 @@ class SubmissionDetail(generics.RetrieveUpdateAPIView):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         request.data['task'] = instance.task.id
+        if instance.task.end_time < datetime.datetime.now():
+            return Response({"message": "The submission deadline has been overdue"}, status=400)
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
@@ -304,7 +306,6 @@ class EventList(generics.ListCreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     parser_classes = (JSONParser,)
-    pagination_class = StandardResultsSetPagination
 
     def perform_create(self, serializer):
         if is_pmb_admin(self.request.user):
