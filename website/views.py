@@ -29,6 +29,7 @@ from account.permissions import (
 
 import datetime
 
+
 class PostTypeList(generics.ListCreateAPIView):
     permission_classes = (IsPmbAdmin,)
     queryset = PostType.objects.all()
@@ -41,6 +42,25 @@ class PostTypeDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = PostType.objects.all()
     serializer_class = PostTypeSerializer
     parser_classes = (JSONParser,)
+
+
+class AnnouncementList(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated, )
+    queryset = Post.objects.filter(post_type__post_type='pengumuman')
+    filter_fields = ('post_type', 'author__profile__angkatan', )
+    parser_classes = (JSONParser, )
+    serializer_class = PostSerializer
+    pagination_class = StandardResultsSetPagination
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = GetPostSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = GetPostSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class PostList(generics.ListCreateAPIView):
@@ -343,7 +363,6 @@ class AlbumList(generics.ListCreateAPIView):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
     parser_classes = (JSONParser,)
-    pagination_class = StandardResultsSetPagination
 
     def perform_create(self, serializer):
         if is_pmb_admin(self.request.user):
@@ -381,7 +400,6 @@ class EventStatisticList(generics.ListCreateAPIView):
     queryset = EventStatistic.objects.all()
     serializer_class = EventStatisticSerializer
     parser_classes = (JSONParser,)
-    pagination_class = StandardResultsSetPagination
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())

@@ -10,6 +10,8 @@ urlpatterns = format_suffix_patterns([
 
     url(r'/post/$',
         views.PostList.as_view(), name='post-list'),
+    url(r'/announcement/$',
+        views.AnnouncementList.as_view(), name='announcement-list'),
     url(r'/post/(?P<pk>[0-9]+)/$',
         views.PostDetail.as_view(), name='post-detail'),
 
