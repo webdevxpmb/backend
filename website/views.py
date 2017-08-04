@@ -60,7 +60,7 @@ class AnnouncementList(generics.ListAPIView):
             return self.get_paginated_response(serializer.data)
 
         serializer = GetPostSerializer(queryset, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=200)
 
 
 class PostList(generics.ListCreateAPIView):
