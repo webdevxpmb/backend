@@ -59,4 +59,10 @@ urlpatterns = format_suffix_patterns([
         views.EventStatisticList.as_view(), name="eventstatistic-list"),
     url(r'/event-statistic/(?P<pk>[0-9]+)/$',
         views.EventStatisticDetail.as_view(), name='eventstatistic-detail'),
+
+    url(r'/update-statistic/$',
+        utils.update_user_statistic, name='update-statistic'),
+
+    url(r'/server-time/$',
+        utils.get_server_time, name='server-time'),
 ])
