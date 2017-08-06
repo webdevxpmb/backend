@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from rest_framework.pagination import PageNumberPagination
 from django.db.models.signals import post_save
 from rest_framework.decorators import api_view, permission_classes
@@ -12,6 +11,8 @@ from website.models import (
     )
 from kenalan.models import Kenalan
 from account.models import UserProfile
+
+import datetime
 
 ROLE_MABA = "mahasiswa baru"
 KENALAN_ACCEPTED = "accepted"
@@ -110,4 +111,10 @@ def update_user_statistic(request):
                                                        status__status='accepted').count()
         user_statistic.save()
 
-    return Response('updated')
+    return Response({'message': 'updated'})
+
+
+@api_view(['GET'])
+def get_server_time(request):
+    now = datetime.datetime.now()
+    return Response({'server_time': now})
