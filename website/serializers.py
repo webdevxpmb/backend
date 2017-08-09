@@ -63,7 +63,7 @@ class GetElementWordSerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = ('id', 'name', 'description', 'start_time',
+        fields = ('id', 'name', 'description', 'start_time', 'attachment_link',
                   'end_time', 'is_kenalan', 'expected_amount_omega',
                   'expected_amount_capung', 'expected_amount_orion',
                   'expected_amount_alumni', 'created_at', 'updated_at')
