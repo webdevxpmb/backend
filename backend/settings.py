@@ -170,6 +170,7 @@ CAS_STORE_NEXT = True
 CAS_CREATE_USER = True
 CAS_APPLY_ATTRIBUTES_TO_USER = True
 CAS_REDIRECT_URL = '/pmb-api/'
+CAS_FORCE_CHANGE_USERNAME_CASE = 'lower'
 
 CRONJOBS = [
     ('*/10 * * * *', 'kenalan.utils.delete_all_expired_token')
