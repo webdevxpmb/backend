@@ -41,10 +41,21 @@ class PostModelAdmin(admin.ModelAdmin):
         model = Post
 
 
+class SubmissionModelAdmin(admin.ModelAdmin):
+    list_display = ('user_profile', 'task', 'file_link',
+                    'is_checked', 'is_approved', 'created_at', 'updated_at')
+    list_filter = ('task', 'is_checked', 'is_approved')
+
+    def user_profile(self, obj):
+        return obj.user.profile
+
+    class Meta:
+        model = Submission
+
 admin.site.register(ElementWord, ElementWordModelAdmin)
 admin.site.register(Event, EventModelAdmin)
 admin.site.register(Task, TaskModelAdmin)
-admin.site.register(Submission)
+admin.site.register(Submission, SubmissionModelAdmin)
 admin.site.register(Post, PostModelAdmin)
 admin.site.register(Comment)
 admin.site.register(PostType)

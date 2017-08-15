@@ -59,6 +59,9 @@ class ElementWord(models.Model):
 
 
 class Task(models.Model):
+
+    def __str__(self):
+        return self.name
     """
     Description: Model Description
     """
@@ -86,6 +89,8 @@ class Submission(models.Model):
     user = models.ForeignKey(User, related_name="submissions")
     task = models.ForeignKey(Task, related_name="submissions")
     file_link = models.CharField(max_length=255, null=True)
+    is_checked = models.BooleanField(default=False)
+    is_approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
