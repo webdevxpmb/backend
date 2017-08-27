@@ -47,6 +47,15 @@ class ShrinkedUserProfileSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     profile = ShrinkedUserProfileSerializer()
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'profile')
+
+
+class DetailUserSerializer(serializers.ModelSerializer):
+    profile = GetUserProfileSerializer()
+
     class Meta:
         model = User
         fields = ('id', 'username', 'profile')
