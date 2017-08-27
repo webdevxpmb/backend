@@ -38,7 +38,6 @@ Kenalan Views
 class KenalanList(generics.ListAPIView):
     serializer_class = KenalanSerializer
     permission_classes = (permissions.IsAuthenticated,)
-    pagination_class = StandardResultsSetPagination
     filter_fields = ('user_elemen__profile__angkatan', )
 
     def get_queryset(self):
@@ -151,7 +150,6 @@ class DetailKenalanDetail(generics.RetrieveUpdateAPIView):
 
 class FriendList(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         if is_maba(self.request.user):

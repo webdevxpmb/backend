@@ -59,7 +59,7 @@ class DetailKenalan(models.Model):
     """
     Description: Model Description
     """
-    kenalan = models.ForeignKey(Kenalan, related_name='detail_kenalan')
+    kenalan = models.OneToOneField(Kenalan, related_name='detail_kenalan')
     name = models.CharField(max_length=50, null=True)
     phone_number = models.CharField(max_length=20, null=True)
     birth_place = models.CharField(max_length=50, null=True)
