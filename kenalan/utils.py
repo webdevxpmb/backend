@@ -76,7 +76,9 @@ def create_kenalan_by_token(request):
             return Response({'data': 'token is invalid or expired'}, status=400)
 
     except IntegrityError:
-        return Response({"you already make connection to this user"}, status=400)
+        kenalan = Kenalan.objects.get(user_maba=request.user)
+        content = GetKenalanSerializer(kenalan, context={'request': request})
+        return Response(content.data, status=200)
     except Exception :
         return Response(status=400)
 
