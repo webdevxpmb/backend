@@ -9,7 +9,9 @@ from kenalan.serializers import(
     TokenSerializer, KenalanSerializer,
     KenalanStatusSerializer, DetailKenalanSerializer,
     GetDetailKenalanSerializer, GetKenalanSerializer,
+    UserMabaSerializer, UserElemenSerializer,
 )
+
 
 from rest_framework import generics, permissions
 from account.permissions import(
@@ -47,6 +49,7 @@ class KenalanList(generics.ListAPIView):
         else:
             queryset = Kenalan.objects.all()
 
+        print(Kenalan.objects.all().filter(user_elemen=self.request.user))
         return queryset
 
     def list(self, request, *args, **kwargs):
@@ -145,4 +148,32 @@ class DetailKenalanDetail(generics.RetrieveUpdateAPIView):
             return Response(GetDetailKenalanSerializer(instance).data)
         else:
             raise PermissionDenied
+
+class FriendList(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    pagination_class = StandardResultsSetPagination
+
+    def get_queryset(self):
+        if is_maba(self.request.user):
+            queryset = Kenalan.objects.all().filter(user_maba=self.request.user)
+        elif is_elemen(self.request.user):
+            queryset = Kenalan.objects.all().filter(user_elemen=self.request.user)
+        else:
+            queryset = Kenalan.objects.all()
+
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            if is_maba(self.request.user):
+                serializer = UserElemenSerializer(page, many=True)
+            elif is_elemen(self.request.user):
+                serializer = UserMabaSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = GetDetailKenalanSerializer(queryset, many=True)
+        return Response(serializer.data)
+
 

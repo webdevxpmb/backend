@@ -22,6 +22,9 @@ urlpatterns = format_suffix_patterns([
     url(r'/detail-kenalan/(?P<pk>[0-9]+)/$',
         views.DetailKenalanDetail.as_view(), name='detailkenalan-detail', ),
 
+    url(r'/friend-list/$',
+        views.FriendList.as_view(), name='friend-list'),
+
     url(r'/generate-token/$',
         utils.generate_token, name='generate-token'),
 

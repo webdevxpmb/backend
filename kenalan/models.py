@@ -8,8 +8,8 @@ from django.contrib.auth.models import User
 
 def default_end_time():
     now = timezone.now()
-    end_time = now + timedelta(minutes=50)
-    return end_time 
+    end_time = now + timedelta(minutes=5)
+    return end_time
 
 
 class Token(models.Model):
