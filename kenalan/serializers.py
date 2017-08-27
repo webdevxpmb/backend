@@ -27,10 +27,19 @@ class KenalanSerializer(serializers.ModelSerializer):
         read_only_fields = ('user_elemen', 'user_maba')
 
 
+class ShrinkedDetailKenalanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DetailKenalan
+        fields = ('id', 'name', 'phone_number', 'birth_place',
+                  'birth_date', 'asal_sma', 'story', 'created_at', 'updated_at')
+        read_only_fields = ('kenalan',)
+
+
 class GetKenalanSerializer(serializers.ModelSerializer):
     status = KenalanStatusSerializer()
     user_elemen = UserSerializer()
     user_maba = UserSerializer()
+    detail_kenalan = ShrinkedDetailKenalanSerializer()
 
     class Meta:
         model = Kenalan
