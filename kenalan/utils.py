@@ -15,6 +15,7 @@ PENDING_STATUS = 'pending'
 @api_view(['GET'])
 @permission_classes((IsElemen, ))
 def generate_token(request):
+    delete_expired_token(request)
     try:
         user = request.user
         if not check_user(user):
@@ -55,6 +56,7 @@ def delete_all_expired_token():
 @permission_classes((IsMaba,))
 def create_kenalan_by_token(request):
     try:
+        delete_expired_token(request)
         if not check_token(request.data["token"]):
             token = Token.objects.get(token=request.data["token"])
             user_elemen = token.user
@@ -71,7 +73,7 @@ def create_kenalan_by_token(request):
             return Response(content.data, status=201)
             
         else:
-            return Response({'data': 'invalid token'}, status=400)
+            return Response({'data': 'token is invalid or expired'}, status=400)
 
     except IntegrityError:
         return Response({"you already make connection to this user"}, status=400)

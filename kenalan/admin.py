@@ -2,9 +2,13 @@ from django.contrib import admin
 
 # Register your models here.
 from kenalan.models import (
-    Kenalan, KenalanStatus, DetailKenalan,
+    Kenalan, KenalanStatus, DetailKenalan, Token,
 )
-from account.models import UserProfile
+from django.utils.translation import ugettext_lazy as _
+
+ADMIN_PMB = 'adminpmb'
+SUPER_ADMIN = 'admin'
+
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -54,9 +58,86 @@ class KenalanModelAdmin(admin.ModelAdmin):
     list_display = ('user_maba', 'user_elemen', 'status', 'updated_at')
     list_filter = (KenalanListFilter, )
 
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+            return ()
+        return ('user_maba', 'user_elemen',)
+
+    def has_delete_permission(self, request, obj=None):
+        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+            return True
+        return False
+
+    def has_add_permission(self, request):
+        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+            return True
+        return False
+
     class Meta:
         model = Kenalan
 
+
+class KenalanStatusModelAdmin(admin.ModelAdmin):
+    def has_change_permission(self, request, obj=None):
+        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+            return True
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+            return True
+        return False
+
+    def has_add_permission(self, request):
+        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+            return True
+        return False
+
+    class Meta:
+        model = KenalanStatus
+
+
+class DetailKenalanModelAdmin(admin.ModelAdmin):
+    def has_change_permission(self, request, obj=None):
+        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+            return True
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+            return True
+        return False
+
+    def has_add_permission(self, request):
+        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+            return True
+        return False
+
+    class Meta:
+        model = DetailKenalan
+
+
+class TokenModelAdmin(admin.ModelAdmin):
+    def has_change_permission(self, request, obj=None):
+        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+            return True
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+            return True
+        return False
+
+    def has_add_permission(self, request):
+        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+            return True
+        return False
+
+    class Meta:
+        model = DetailKenalan
+
+
 admin.site.register(Kenalan, KenalanModelAdmin)
-admin.site.register(KenalanStatus)
-admin.site.register(DetailKenalan)
+admin.site.register(KenalanStatus, KenalanStatusModelAdmin)
+admin.site.register(DetailKenalan, DetailKenalanModelAdmin)
+admin.site.register(Token, TokenModelAdmin)
