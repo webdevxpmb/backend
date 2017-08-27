@@ -3,7 +3,7 @@ from kenalan.models import (
     Token, Kenalan, KenalanStatus, DetailKenalan
 )
 
-from account.serializers import UserSerializer
+from account.serializers import DetailUserSerializer, UserSerializer
 
 
 class TokenSerializer(serializers.ModelSerializer):
@@ -37,8 +37,8 @@ class ShrinkedDetailKenalanSerializer(serializers.ModelSerializer):
 
 class GetKenalanSerializer(serializers.ModelSerializer):
     status = KenalanStatusSerializer()
-    user_elemen = UserSerializer()
-    user_maba = UserSerializer()
+    user_elemen = DetailUserSerializer()
+    user_maba = DetailUserSerializer()
     detail_kenalan = ShrinkedDetailKenalanSerializer()
 
     class Meta:
@@ -67,7 +67,7 @@ class GetDetailKenalanSerializer(serializers.ModelSerializer):
 
 
 class UserElemenSerializer(serializers.ModelSerializer):
-    user_elemen = UserSerializer()
+    user_elemen = DetailUserSerializer()
 
     class Meta:
         model = Kenalan
@@ -75,7 +75,7 @@ class UserElemenSerializer(serializers.ModelSerializer):
 
 
 class UserMabaSerializer(serializers.ModelSerializer):
-    user_maba = UserSerializer()
+    user_maba = DetailUserSerializer()
 
     class Meta:
         model = Kenalan
