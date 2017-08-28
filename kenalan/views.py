@@ -77,15 +77,30 @@ class KenalanDetail(generics.RetrieveUpdateAPIView):
     def update(self, request, *args, **kwargs):
         if is_pmb_admin(request.user):
             self.permission_classes = (IsPmbAdmin,)
-        if is_pmb_admin(request.user) or is_elemen(request.user):
+        if is_elemen(request.user):
             partial = kwargs.pop('partial', False)
             instance = self.get_object()
-            serializer = self.get_serializer(instance, data=request.data, partial=partial)
-            serializer.is_valid(raise_exception=True)
-            self.perform_update(serializer)
-            return Response(GetKenalanSerializer(instance).data)
-        else:
-            raise PermissionDenied
+            if instance.status.status == 'pending':
+                serializer = self.get_serializer(instance, data=request.data, partial=partial)
+                serializer.is_valid(raise_exception=True)
+                self.perform_update(serializer)
+                return Response(GetKenalanSerializer(instance).data)
+            else:
+                raise PermissionDenied
+        elif is_maba(request.user):
+            partial = kwargs.pop('partial', False)
+            instance = self.get_object()
+            if instance.status.status == 'rejected':
+                data = request.data
+                status = KenalanStatus.objects.get(id=data['status'])
+                if status.status != 'pending':
+                    raise PermissionDenied
+                serializer = self.get_serializer(instance, data=request.data, partial=partial)
+                serializer.is_valid(raise_exception=True)
+                self.perform_update(serializer)
+                return Response(GetKenalanSerializer(instance).data)
+            else:
+                raise PermissionDenied
 
 
 class KenalanStatusList(generics.ListCreateAPIView):
@@ -147,6 +162,7 @@ class DetailKenalanDetail(generics.RetrieveUpdateAPIView):
             return Response(GetDetailKenalanSerializer(instance).data)
         else:
             raise PermissionDenied
+
 
 class FriendList(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
