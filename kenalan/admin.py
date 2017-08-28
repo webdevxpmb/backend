@@ -56,7 +56,7 @@ class KenalanListFilter(admin.SimpleListFilter):
 
 class KenalanModelAdmin(admin.ModelAdmin):
     list_display = ('user_maba', 'user_elemen', 'status', 'updated_at')
-    list_filter = (KenalanListFilter, )
+    list_filter = (KenalanListFilter, 'status', )
 
     def get_readonly_fields(self, request, obj=None):
         if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
