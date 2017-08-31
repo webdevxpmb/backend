@@ -106,6 +106,7 @@ class SubmissionModelAdmin(admin.ModelAdmin):
     list_display = ('user_profile', 'task', 'file_link',
                     'is_checked', 'is_approved', 'created_at', 'updated_at')
     list_filter = ('task', 'is_checked', 'is_approved')
+    search_fields = ('user__profile__name', )
 
     def user_profile(self, obj):
         return obj.user.profile
