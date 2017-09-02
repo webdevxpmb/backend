@@ -73,6 +73,7 @@ class SubmissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Submission
         fields = ('id', 'user', 'task', 'file_link')
+        read_only_fields = ('user', 'task',)
 
 
 class GetSubmissionSerializer(serializers.ModelSerializer):
