@@ -1,6 +1,7 @@
 from rest_framework import generics, permissions, exceptions
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
+from django.db import IntegrityError
 from website.serializers import (
     PostTypeSerializer, PostSerializer,
     CommentsSerializer, ElementWordSerializer,
@@ -281,18 +282,21 @@ class SubmissionList(generics.ListCreateAPIView):
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
-        data = request.data
-        data['user'] = request.user.id
-        serializer = self.get_serializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        task = Task.objects.get(id=data['task'])
-        if task.end_time < datetime.datetime.now():
-            return Response({"message": "The submission deadline has been overdue"}, status=400)
-        self.perform_create(serializer)
-        instance = Submission.objects.get(id=serializer.data['id'])
-        response_serializer = GetSubmissionSerializer(instance)
-        headers = self.get_success_headers(response_serializer.data)
-        return Response(response_serializer.data, status=201, headers=headers)
+        try:
+            data = request.data
+            data['user'] = request.user.id
+            serializer = self.get_serializer(data=data)
+            serializer.is_valid(raise_exception=True)
+            task = Task.objects.get(id=data['task'])
+            if task.end_time < datetime.datetime.now():
+                return Response({"message": "The submission deadline has been overdue"}, status=400)
+            self.perform_create(serializer)
+            instance = Submission.objects.get(id=serializer.data['id'])
+            response_serializer = GetSubmissionSerializer(instance)
+            headers = self.get_success_headers(response_serializer.data)
+            return Response(response_serializer.data, status=201, headers=headers)
+        except IntegrityError:
+            return Response({'you already have submission for this task'}, status=400)
 
 
 class SubmissionDetail(generics.RetrieveUpdateAPIView):
@@ -311,7 +315,6 @@ class SubmissionDetail(generics.RetrieveUpdateAPIView):
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        request.data['task'] = instance.task.id
         if instance.task.end_time < datetime.datetime.now():
             return Response({"message": "The submission deadline has been overdue"}, status=400)
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
