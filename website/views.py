@@ -109,7 +109,6 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
         self.permission_classes = (IsOwner, )
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        request.data['author'] = request.user.id
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
@@ -214,9 +213,6 @@ class ElementWordDetail(generics.RetrieveUpdateDestroyAPIView):
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        request.data['author'] = request.user.id
-        if not is_pmb_admin(request.user):
-            request.data['approved'] = False
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
@@ -442,7 +438,6 @@ class EventStatisticDetail(generics.RetrieveUpdateDestroyAPIView):
         if is_pmb_admin(request.user):
             partial = kwargs.pop('partial', False)
             instance = self.get_object()
-            request.data['event'] = instance.event.id
             serializer = self.get_serializer(instance, data=request.data, partial=partial)
             serializer.is_valid(raise_exception=True)
             self.perform_update(serializer)

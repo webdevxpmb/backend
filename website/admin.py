@@ -83,11 +83,6 @@ class PostModelAdmin(admin.ModelAdmin):
     list_display = ('author', 'title', 'summary', 'content', 'post_type')
     list_filter = ('post_type',)
 
-    def has_change_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
-            return True
-        return False
-
     def has_delete_permission(self, request, obj=None):
         if request.user.username == ADMIN_PMB:
             return True
