@@ -473,7 +473,10 @@ class TaskStatisticDetail(generics.RetrieveAPIView):
 class UserStatisticList(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UserStatisticSerializer
-    queryset = UserStatistic.objects.all()
+
+    def get_queryset(self):
+        queryset = UserStatistic.objects.filter(user=self.request.user)
+        return queryset
 
 
 class UserStatisticDetail(generics.RetrieveAPIView):
