@@ -44,6 +44,10 @@ class Kenalan(models.Model):
     """
     Description: Model Description
     """
+
+    def __str__(self):
+        return self.status.status
+
     user_elemen = models.ForeignKey(User, related_name='user_elemen')
     user_maba = models.ForeignKey(User, related_name='user_maba')
     status = models.ForeignKey(KenalanStatus, default=2)
