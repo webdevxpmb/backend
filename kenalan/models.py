@@ -67,7 +67,7 @@ class DetailKenalan(models.Model):
     name = models.CharField(max_length=50, null=True)
     phone_number = models.CharField(max_length=20, null=True)
     birth_place = models.CharField(max_length=50, null=True)
-    birth_date = models.DateField(null=True)
+    birth_date = models.CharField(max_length=50, null=True)
     asal_sma = models.CharField(max_length=50, null=True)
     story = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)

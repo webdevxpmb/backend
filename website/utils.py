@@ -11,6 +11,7 @@ from website.models import (
     )
 from kenalan.models import Kenalan
 from account.models import UserProfile
+import datetime
 
 import datetime
 
@@ -50,33 +51,36 @@ def task_create_or_update(sender, created, instance, **kwargs):
 @receiver(post_save, sender=Kenalan)
 def kenalan_create_or_update(sender, created, instance, **kwargs):
     try:
-        kenalan = instance
-        user_maba = kenalan.user_maba
-        user_elemen = kenalan.user_elemen
-        user_elemen_profile = UserProfile.objects.get(user=user_elemen)
-        user_elemen_angkatan = user_elemen_profile.angkatan.name
+        user_maba = instance.user_maba
         user_statistic = UserStatistic.objects.get(user=user_maba)
-        if created:
-            if user_elemen_angkatan == ANGKATAN_OMEGA:
-                user_statistic.amount_omega += 1
-            elif user_elemen_angkatan == ANGKATAN_CAPUNG:
-                user_statistic.amount_capung += 1
-            elif user_elemen_angkatan == ANGKATAN_ORION:
-                user_statistic.amount_orion += 1
-            elif user_elemen_angkatan == ANGKATAN_ALUMNI:
-                user_statistic.amount_alumni += 1
-        else:
-            if kenalan.status.status == KENALAN_ACCEPTED:
-                if user_elemen_angkatan == ANGKATAN_OMEGA:
-                    user_statistic.amount_approved_omega += 1
-                elif user_elemen_angkatan == ANGKATAN_CAPUNG:
-                    user_statistic.amount_approved_capung += 1
-                elif user_elemen_angkatan == ANGKATAN_ORION:
-                    user_statistic.amount_approved_orion += 1
-                elif user_elemen_angkatan == ANGKATAN_ALUMNI:
-                    user_statistic.amount_approved_alumni += 1
-            else:
-                pass
+        task = user_statistic.task
+        print (task.start_time)
+        print (instance.created_at)
+        print (task.end_time)
+        print (datetime.datetime.now())
+        if task.end_time >= datetime.datetime.now():
+            user_statistic.amount_omega = Kenalan.objects.filter(user_maba=user_maba,
+                                                                 user_elemen__profile__angkatan__name='omega').count()
+            user_statistic.amount_capung = Kenalan.objects.filter(user_maba=user_maba,
+                                                                  user_elemen__profile__angkatan__name='capung').count()
+            user_statistic.amount_orion = Kenalan.objects.filter(user_maba=user_maba,
+                                                                 user_elemen__profile__angkatan__name='orion').count()
+            user_statistic.amount_alumni = Kenalan.objects.filter(user_maba=user_maba,
+                                                                  user_elemen__profile__angkatan__name='alumni').count()
+
+
+        user_statistic.amount_approved_omega = Kenalan.objects.filter(user_maba=user_maba,
+                                                                      user_elemen__profile__angkatan__name='omega',
+                                                                      status__status='accepted').count()
+        user_statistic.amount_approved_capung = Kenalan.objects.filter(user_maba=user_maba,
+                                                                       user_elemen__profile__angkatan__name='capung',
+                                                                       status__status='accepted').count()
+        user_statistic.amount_approved_orion = Kenalan.objects.filter(user_maba=user_maba,
+                                                                      user_elemen__profile__angkatan__name='orion',
+                                                                      status__status='accepted').count()
+        user_statistic.amount_approved_alumni = Kenalan.objects.filter(user_maba=user_maba,
+                                                                       user_elemen__profile__angkatan__name='alumni',
+                                                                       status__status='accepted').count()
         user_statistic.save()
     except Exception:
         pass
