@@ -144,10 +144,10 @@ class DetailKenalanModelAdmin(admin.ModelAdmin):
     search_fields = ('kenalan__user_maba__profile__name', 'kenalan__user_elemen__profile__name')
 
     def user_maba(self, obj):
-        return obj.kenalan.user_maba
+        return obj.kenalan.user_maba.profile.name
 
     def user_elemen(self, obj):
-        return obj.kenalan.user_elemen
+        return obj.kenalan.user_elemen.profile.name
 
     def angkatan_elemen(self, obj):
         return obj.kenalan.user_elemen.profile.angkatan
