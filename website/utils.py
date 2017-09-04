@@ -54,11 +54,8 @@ def kenalan_create_or_update(sender, created, instance, **kwargs):
         user_maba = instance.user_maba
         user_statistic = UserStatistic.objects.get(user=user_maba)
         task = user_statistic.task
-        print (task.start_time)
-        print (instance.created_at)
-        print (task.end_time)
-        print (datetime.datetime.now())
-        if task.end_time >= datetime.datetime.now():
+        now = datetime.datetime.now().replace(tzinfo=None)
+        if task.end_time >= now:
             user_statistic.amount_omega = Kenalan.objects.filter(user_maba=user_maba,
                                                                  user_elemen__profile__angkatan__name='omega').count()
             user_statistic.amount_capung = Kenalan.objects.filter(user_maba=user_maba,
@@ -71,16 +68,24 @@ def kenalan_create_or_update(sender, created, instance, **kwargs):
 
         user_statistic.amount_approved_omega = Kenalan.objects.filter(user_maba=user_maba,
                                                                       user_elemen__profile__angkatan__name='omega',
-                                                                      status__status='accepted').count()
+                                                                      status__status='approved',
+                                                                      created_at__gt=task.start_time,
+                                                                      created_at__lt=task.end_time).count()
         user_statistic.amount_approved_capung = Kenalan.objects.filter(user_maba=user_maba,
                                                                        user_elemen__profile__angkatan__name='capung',
-                                                                       status__status='accepted').count()
+                                                                       status__status='approved',
+                                                                       created_at__gt=task.start_time,
+                                                                       created_at__lt=task.end_time).count()
         user_statistic.amount_approved_orion = Kenalan.objects.filter(user_maba=user_maba,
                                                                       user_elemen__profile__angkatan__name='orion',
-                                                                      status__status='accepted').count()
+                                                                      status__status='approved',
+                                                                      created_at__gt=task.start_time,
+                                                                      created_at__lt=task.end_time).count()
         user_statistic.amount_approved_alumni = Kenalan.objects.filter(user_maba=user_maba,
                                                                        user_elemen__profile__angkatan__name='alumni',
-                                                                       status__status='accepted').count()
+                                                                       status__status='approved',
+                                                                       created_at__gt=task.start_time,
+                                                                       created_at__lt=task.end_time).count()
         user_statistic.save()
     except Exception:
         pass
