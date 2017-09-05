@@ -3,6 +3,9 @@ from account.models import (
     Role, Angkatan, UserProfile,
 )
 
+from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
+
 ADMIN_PMB = 'adminpmb'
 
 # Register your models here.
@@ -27,11 +30,6 @@ class RoleModelAdmin(admin.ModelAdmin):
 
     class Meta:
         model = Role
-
-
-# Register your models here.
-
-
 
 class AngkatanModelAdmin(admin.ModelAdmin):
     list_display = ('name', 'year')
@@ -82,3 +80,5 @@ class UserProfileModelAdmin(admin.ModelAdmin):
 admin.site.register(Role, RoleModelAdmin)
 admin.site.register(Angkatan, AngkatanModelAdmin)
 admin.site.register(UserProfile, UserProfileModelAdmin)
+admin.site.unregister(User)
+admin.site.unregister(Group)
