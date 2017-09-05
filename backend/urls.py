@@ -31,7 +31,6 @@ urlpatterns = [
     url(r'^pmb-api/login/$', cas_views.login, name='cas_ng_login'),
     url(r'^pmb-api/logout$', cas_views.logout, name='cas_ng_logout'),
     url(r'^pmb-api/callback$', cas_views.callback, name='cas_ng_proxy_callback'),
-    url(r'^pmb-api/docs/', include('rest_framework_docs.urls')),
     url(r'^pmb-api/update-user-statistic/', update_user_statistic),
 
 ]

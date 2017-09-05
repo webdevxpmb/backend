@@ -4,11 +4,9 @@ from django.contrib import admin
 from kenalan.models import (
     Kenalan, KenalanStatus, DetailKenalan, Token,
 )
-from django.utils.translation import ugettext_lazy as _
 
 ADMIN_PMB = 'adminpmb'
 SUPER_ADMIN = 'admin'
-
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -54,9 +52,37 @@ class KenalanListFilter(admin.SimpleListFilter):
             return queryset.filter(user_elemen__profile__angkatan__name='alumni')
 
 
+class DetailKenalanInline(admin.StackedInline):
+    model = DetailKenalan
+
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+            return ()
+        return ('name', 'phone_number', 'birth_place', 'birth_date', 'asal_sma', 'story',)
+
+    def has_delete_permission(self, request, obj=None):
+        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+            return True
+        return False
+
+    def has_add_permission(self, request):
+        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+            return True
+        return False
+
 class KenalanModelAdmin(admin.ModelAdmin):
-    list_display = ('user_maba', 'user_elemen', 'status', 'updated_at')
+    list_display = ('profile_maba', 'profile_elemen', 'status', 'created_at', 'updated_at')
     list_filter = (KenalanListFilter, 'status', )
+    search_fields = ('user_maba__profile__name', 'user_elemen__profile__name')
+    inlines = [
+        DetailKenalanInline,
+    ]
+
+    def profile_maba(self, obj):
+        return obj.user_maba.profile.name
+
+    def profile_elemen(self, obj):
+        return obj.user_elemen.profile.name
 
     def get_readonly_fields(self, request, obj=None):
         if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
@@ -152,10 +178,10 @@ class DetailKenalanModelAdmin(admin.ModelAdmin):
     def angkatan_elemen(self, obj):
         return obj.kenalan.user_elemen.profile.angkatan
 
-    def get_readonly_fields(self, request, obj=None):
+    def has_change_permission(self, request, obj=None):
         if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
-            return ()
-        return ('name', 'phone_number', 'birth_place', 'birth_date', 'asal_sma', 'story',)
+            return True
+        return False
 
     def has_delete_permission(self, request, obj=None):
         if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
