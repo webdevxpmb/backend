@@ -42,13 +42,11 @@ class KenalanList(generics.ListAPIView):
 
     def get_queryset(self):
         if is_maba(self.request.user):
-            queryset = Kenalan.objects.all().filter(user_maba=self.request.user)
+            queryset = Kenalan.objects.all().filter(user_maba=self.request.user).order_by('-status', '-updated_at')
         elif is_elemen(self.request.user):
-            queryset = Kenalan.objects.all().filter(user_elemen=self.request.user)
+            queryset = Kenalan.objects.all().filter(user_elemen=self.request.user).order_by('-status', '-updated_at')
         else:
             queryset = Kenalan.objects.all()
-
-        print(Kenalan.objects.all().filter(user_elemen=self.request.user))
         return queryset
 
     def list(self, request, *args, **kwargs):
