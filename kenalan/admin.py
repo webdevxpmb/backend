@@ -72,6 +72,7 @@ class DetailKenalanInline(admin.StackedInline):
 
 class KenalanModelAdmin(admin.ModelAdmin):
     list_display = ('profile_maba', 'profile_elemen', 'status', 'created_at', 'updated_at', 'story',)
+    list_editable = ('status',)
     list_filter = (KenalanListFilter, 'status', )
     search_fields = ('user_maba__profile__name', 'user_elemen__profile__name')
     inlines = [
