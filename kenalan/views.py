@@ -187,5 +187,3 @@ class FriendList(generics.ListAPIView):
 
         serializer = GetDetailKenalanSerializer(queryset, many=True)
         return Response(serializer.data)
-
-

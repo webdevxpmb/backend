@@ -51,6 +51,7 @@ class Kenalan(models.Model):
     user_elemen = models.ForeignKey(User, related_name='user_elemen')
     user_maba = models.ForeignKey(User, related_name='user_maba')
     status = models.ForeignKey(KenalanStatus, default=2)
+    notes = models.CharField(max_length=500, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

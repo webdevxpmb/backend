@@ -71,7 +71,7 @@ class DetailKenalanInline(admin.StackedInline):
         return False
 
 class KenalanModelAdmin(admin.ModelAdmin):
-    list_display = ('profile_maba', 'profile_elemen', 'status', 'created_at', 'updated_at')
+    list_display = ('profile_maba', 'profile_elemen', 'status', 'created_at', 'updated_at', 'story',)
     list_filter = (KenalanListFilter, 'status', )
     search_fields = ('user_maba__profile__name', 'user_elemen__profile__name')
     inlines = [
@@ -83,6 +83,10 @@ class KenalanModelAdmin(admin.ModelAdmin):
 
     def profile_elemen(self, obj):
         return obj.user_elemen.profile.name
+
+    def story(self, obj):
+        return obj.detail_kenalan.story
+
 
     def get_readonly_fields(self, request, obj=None):
         if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:

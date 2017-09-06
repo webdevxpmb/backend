@@ -23,7 +23,7 @@ class KenalanStatusSerializer(serializers.ModelSerializer):
 class KenalanSerializer(serializers.ModelSerializer):
     class Meta:
         model = Kenalan
-        fields = ('id', 'user_elemen', 'user_maba', 'status')
+        fields = ('id', 'user_elemen', 'user_maba', 'status', 'notes')
         read_only_fields = ('user_elemen', 'user_maba')
 
 
@@ -43,7 +43,7 @@ class GetKenalanSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Kenalan
-        fields = ('detail_kenalan', 'id', 'user_elemen', 'user_maba', 'status', 'created_at', 'updated_at')
+        fields = ('detail_kenalan', 'id', 'user_elemen', 'user_maba', 'status', 'notes', 'created_at', 'updated_at')
         read_only_fields = ('detail_kenalan', 'user_elemen', 'user_maba')
 
 
