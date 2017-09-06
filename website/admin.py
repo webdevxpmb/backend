@@ -236,7 +236,9 @@ class EventStatisticModelAdmin(admin.ModelAdmin):
 
 
 class UserStatisticModelAdmin(admin.ModelAdmin):
-    list_display = ('user', 'name', 'task')
+    list_display = ('user', 'name', 'task', 'amount_approved_omega',
+                    'amount_approved_capung', 'amount_approved_orion',
+                    'amount_approved_alumni',)
 
     def has_change_permission(self, request, obj=None):
         if request.user.username == ADMIN_PMB:
