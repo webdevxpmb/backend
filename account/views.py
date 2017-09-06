@@ -67,7 +67,6 @@ class UserProfileDetail(generics.RetrieveUpdateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
-    parser_classes = (JSONParser, FileUploadParser, )
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()

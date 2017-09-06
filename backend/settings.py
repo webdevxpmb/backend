@@ -53,8 +53,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'dj_database_url',
     'rest_framework_docs',
-
-
+    'resizeimage',
 ]
 
 
