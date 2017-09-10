@@ -64,7 +64,8 @@ def kenalan_create_or_update(sender, created, instance, **kwargs):
                                                                  user_elemen__profile__angkatan__name='orion').count()
             user_statistic.amount_alumni = Kenalan.objects.filter(user_maba=user_maba,
                                                                   user_elemen__profile__angkatan__name='alumni').count()
-
+            user_statistic.amount_total = (user_statistic.amount_omega + user_statistic.amount_capung +
+                                           user_statistic.amount_orion + user_statistic.amount_alumni)
 
         user_statistic.amount_approved_omega = Kenalan.objects.filter(user_maba=user_maba,
                                                                       user_elemen__profile__angkatan__name='omega',
@@ -86,6 +87,8 @@ def kenalan_create_or_update(sender, created, instance, **kwargs):
                                                                        status__status='approved',
                                                                        created_at__gt=task.start_time,
                                                                        created_at__lt=task.end_time).count()
+        user_statistic.amount_approved_total = (user_statistic.amount_approved_omega + user_statistic.amount_approved_capung +
+                                                user_statistic.amount_approved_orion + user_statistic.amount_approved_alumni)
         user_statistic.save()
     except Exception:
         pass
@@ -98,26 +101,31 @@ def update_user_statistic(request):
 
     for user_statistic in user_statistics:
         user_statistic.amount_omega = Kenalan.objects.filter(user_maba=user_statistic.user,
-                                              user_elemen__profile__angkatan__name='omega').count()
+                                                             user_elemen__profile__angkatan__name='omega').count()
         user_statistic.amount_capung = Kenalan.objects.filter(user_maba=user_statistic.user,
-                                               user_elemen__profile__angkatan__name='capung').count()
+                                                             user_elemen__profile__angkatan__name='capung').count()
         user_statistic.amount_orion = Kenalan.objects.filter(user_maba=user_statistic.user,
-                                              user_elemen__profile__angkatan__name='orion').count()
+                                                             user_elemen__profile__angkatan__name='orion').count()
         user_statistic.amount_alumni = Kenalan.objects.filter(user_maba=user_statistic.user,
-                                               user_elemen__profile__angkatan__name='alumni').count()
+                                                              user_elemen__profile__angkatan__name='alumni').count()
+        user_statistic.amount_total = (user_statistic.amount_omega + user_statistic.amount_capung +
+                                       user_statistic.amount_orion + user_statistic.amount_alumni)
 
         user_statistic.amount_approved_omega = Kenalan.objects.filter(user_maba=user_statistic.user,
-                                                       user_elemen__profile__angkatan__name='omega',
-                                                       status__status='accepted').count()
+                                                                      user_elemen__profile__angkatan__name='omega',
+                                                                      status__status='approved').count()
         user_statistic.amount_approved_capung = Kenalan.objects.filter(user_maba=user_statistic.user,
-                                                       user_elemen__profile__angkatan__name='capung',
-                                                       status__status='accepted').count()
+                                                                       user_elemen__profile__angkatan__name='capung',
+                                                                       status__status='approved').count()
         user_statistic.amount_approved_orion = Kenalan.objects.filter(user_maba=user_statistic.user,
-                                                       user_elemen__profile__angkatan__name='orion',
-                                                       status__status='accepted').count()
+                                                                      user_elemen__profile__angkatan__name='orion',
+                                                                      status__status='approved').count()
         user_statistic.amount_approved_alumni = Kenalan.objects.filter(user_maba=user_statistic.user,
-                                                       user_elemen__profile__angkatan__name='alumni',
-                                                       status__status='accepted').count()
+                                                                       user_elemen__profile__angkatan__name='alumni',
+                                                                       status__status='approved').count()
+
+        user_statistic.amount_approved_total = (user_statistic.amount_approved_omega + user_statistic.amount_approved_capung +
+                                                user_statistic.amount_approved_orion + user_statistic.amount_approved_alumni)
         user_statistic.save()
 
     return Response({'message': 'updated'})

@@ -236,9 +236,11 @@ class EventStatisticModelAdmin(admin.ModelAdmin):
 
 
 class UserStatisticModelAdmin(admin.ModelAdmin):
-    list_display = ('user', 'name', 'task', 'amount_approved_omega',
-                    'amount_approved_capung', 'amount_approved_orion',
-                    'amount_approved_alumni',)
+    list_display = ('user_profile', 'name', 'task', 'amount_total', 'amount_approved_total',)
+    search_fields = ('user__profile__name',)
+
+    def user_profile(self, obj):
+        return obj.user.profile.name
 
     def has_change_permission(self, request, obj=None):
         if request.user.username == ADMIN_PMB:

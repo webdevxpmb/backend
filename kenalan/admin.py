@@ -203,6 +203,9 @@ class DetailKenalanModelAdmin(admin.ModelAdmin):
 
 
 class TokenModelAdmin(admin.ModelAdmin):
+    list_display = ('user', 'end_time',)
+
+
     def has_change_permission(self, request, obj=None):
         if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
             return True
