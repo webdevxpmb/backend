@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     'dj_database_url',
     'rest_framework_docs',
     'resizeimage',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 
@@ -175,7 +177,7 @@ CAS_REDIRECT_URL = '/pmb-api/'
 CAS_FORCE_CHANGE_USERNAME_CASE = 'lower'
 
 CRONJOBS = [
-    ('*/10 * * * *', 'kenalan.utils.delete_all_expired_token')
+    ('* * * * *', 'kenalan.utils.delete_all_expired_token')
 ]
 
 CORS_ORIGIN_WHITELIST = ['localhost:3000']
@@ -213,7 +215,7 @@ STATICFILES_DIRS = (
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'pmb-api/media')
-MEDIA_URL = '/media/'
+MEDIA_URL = '/pmb-api/media/'
 
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -223,3 +225,14 @@ TEMPLATE_LOADERS = (
 TEMPLATE_DIRS = (
         os.path.join(BASE_DIR, 'templates'),
 )
+
+# cloudinary settings
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'webdevxpmb',
+    'API_KEY': '412671288918363',
+    'API_SECRET': 'iHz7liAJx4dOH8HcXJFNCoUF7FE'
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
