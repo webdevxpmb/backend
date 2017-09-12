@@ -24,10 +24,10 @@ from account.permissions import(
 )
 
 
-class TokenList(generics.ListAPIView):
-    queryset = Token.objects.all()
-    serializer_class = TokenSerializer
-    permission_classes = (permissions.IsAdminUser,)
+# class TokenList(generics.ListAPIView):
+#     queryset = Token.objects.all()
+#     serializer_class = TokenSerializer
+#     permission_classes = (permissions.IsAdminUser,)
 
 
 '''
