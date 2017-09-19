@@ -1,9 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from PIL import Image
-from io import BytesIO
-from django.core.files.base import ContentFile
-from resizeimage import resizeimage
 # Create your models here.
 
 
@@ -56,27 +52,6 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.name
-
-    def save(self, *args, **kwargs):
-        if self.photo:
-            pil_image_obj = Image.open(self.photo)
-            if self.photo.width > 500:
-                new_image = resizeimage.resize_width(pil_image_obj, 500)
-            else:
-                new_image = pil_image_obj
-
-            new_image_io = BytesIO()
-            new_image.save(new_image_io, format='JPEG')
-
-            temp_name = self.photo.name
-            self.photo.delete(save=False)
-
-            self.photo.save(
-                temp_name,
-                content=ContentFile(new_image_io.getvalue()),
-                save=False
-            )
-        super(UserProfile, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ['created_at']

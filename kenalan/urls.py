@@ -4,9 +4,6 @@ from kenalan import views, utils
 
 # API endpoints
 urlpatterns = format_suffix_patterns([
-    url(r'/token/$',
-        views.TokenList.as_view(), name='token-list'),
-
     url(r'/kenalan/$',
         views.KenalanList.as_view(), name='kenalan-list'),
     url(r'/kenalan/(?P<pk>[0-9]+)/$',
