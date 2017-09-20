@@ -86,6 +86,7 @@ class PostList(generics.ListCreateAPIView):
         data = request.data
         data['author'] = request.user.id
         serializer = self.get_serializer(data=data)
+        print serializer
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         instance = Post.objects.get(id=serializer.data['id'])
@@ -291,8 +292,8 @@ class SubmissionList(generics.ListCreateAPIView):
             response_serializer = GetSubmissionSerializer(instance)
             headers = self.get_success_headers(response_serializer.data)
             return Response(response_serializer.data, status=201, headers=headers)
-        except IntegrityError:
-            return Response({'you already have submission for this task'}, status=400)
+        except Exception:
+            return Response(status=400)
 
 
 class SubmissionDetail(generics.RetrieveUpdateAPIView):
