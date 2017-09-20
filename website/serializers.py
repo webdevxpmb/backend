@@ -20,7 +20,6 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ('id', 'title', 'author', 'summary', 'content',
                   'post_type', 'attachment_link', 'created_at', 'updated_at')
-        read_only_fields = ('author',)
 
 
 class GetPostSerializer(serializers.ModelSerializer):
@@ -37,7 +36,6 @@ class CommentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ('id', 'post', 'author', 'comment', 'created_at', 'updated_at')
-        read_only_fields = ('author', 'post',)
 
 
 class GetCommentsSerializer(serializers.ModelSerializer):
@@ -53,7 +51,6 @@ class ElementWordSerializer(serializers.ModelSerializer):
     class Meta:
         model = ElementWord
         fields = ('id', 'author', 'testimony', 'approved', 'created_at', 'updated_at')
-        read_only_fields = ('author', 'approved',)
 
 
 class GetElementWordSerializer(serializers.ModelSerializer):
@@ -76,7 +73,6 @@ class SubmissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Submission
         fields = ('id', 'user', 'task', 'file_link')
-        read_only_fields = ('user', 'task',)
 
 
 class GetSubmissionSerializer(serializers.ModelSerializer):
@@ -114,7 +110,6 @@ class EventStatisticSerializer(serializers.ModelSerializer):
         model = EventStatistic
         fields = ('id', 'event', 'attendee', 'on_time', 'late', 'permission',
                   'absent', 'created_at', 'updated_at')
-        read_only_fields = ('event',)
 
 
 class GetEventStatisticSerializer(serializers.ModelSerializer):
