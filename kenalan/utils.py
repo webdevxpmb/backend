@@ -83,6 +83,30 @@ def create_kenalan_by_token(request):
         return Response(status=400)
 
 
+@api_view(['GET'])
+@permission_classes((IsMaba,))
+def create_kenalan_non_sso(request):
+    try:
+        user_maba = request.user
+
+        kenalan_status = KenalanStatus.objects.get(status=PENDING_STATUS)
+        kenalan = Kenalan.objects.create(user_maba=user_maba,
+                                         status=kenalan_status)
+        # create initial detail
+        DetailKenalan.objects.create(kenalan=kenalan)
+        content = GetKenalanSerializer(kenalan, context={'request': request})
+        return Response(content.data, status=201)
+
+
+    except IntegrityError:
+        kenalan = Kenalan.objects.get(user_maba=request.user)
+        content = GetKenalanSerializer(kenalan, context={'request': request})
+        return Response(content.data, status=200)
+    except Exception:
+        raise
+        return Response(status=400)
+
+
 def get_token():
     token = get_random_string(length=6, allowed_chars='1234567890')
     if check_token(token):
