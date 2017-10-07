@@ -83,7 +83,10 @@ class KenalanModelAdmin(admin.ModelAdmin):
         return obj.user_maba.profile.name
 
     def profile_elemen(self, obj):
-        return obj.user_elemen.profile.name
+        if (obj.user_elemen):
+            return obj.user_elemen.profile.name
+        else:
+            return 'alumni'
 
     def story(self, obj):
         return obj.detail_kenalan.story
@@ -178,10 +181,14 @@ class DetailKenalanModelAdmin(admin.ModelAdmin):
         return obj.kenalan.user_maba.profile.name
 
     def user_elemen(self, obj):
-        return obj.kenalan.user_elemen.profile.name
+        if (obj.kenalan.user_elemen):
+            return obj.kenalan.user_elemen.profile.name
+        return 'alumni'
 
     def angkatan_elemen(self, obj):
-        return obj.kenalan.user_elemen.profile.angkatan
+        if (obj.kenalan.user_elemen):
+            return obj.kenalan.user_elemen.profile.angkatan
+        return 'alumni'
 
     def has_change_permission(self, request, obj=None):
         if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:

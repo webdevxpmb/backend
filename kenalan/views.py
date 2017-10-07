@@ -35,7 +35,7 @@ Kenalan Views
 '''
 
 
-class KenalanList(generics.ListAPIView):
+class KenalanList(generics.ListCreateAPIView):
     serializer_class = KenalanSerializer
     permission_classes = (permissions.IsAuthenticated,)
     filter_fields = ('user_elemen__profile__angkatan', )

@@ -48,7 +48,7 @@ class Kenalan(models.Model):
     def __str__(self):
         return self.status.status
 
-    user_elemen = models.ForeignKey(User, related_name='user_elemen')
+    user_elemen = models.ForeignKey(User, related_name='user_elemen', null=True, blank=True)
     user_maba = models.ForeignKey(User, related_name='user_maba')
     status = models.ForeignKey(KenalanStatus, default=2)
     notes = models.CharField(max_length=500, blank=True, null=True)
@@ -71,6 +71,8 @@ class DetailKenalan(models.Model):
     birth_date = models.CharField(max_length=50, null=True)
     asal_sma = models.CharField(max_length=50, null=True)
     story = models.TextField(null=True)
+    angkatan = models.CharField(max_length=50, null=True, blank=True)
+    link_photo = models.CharField(max_length=500, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
