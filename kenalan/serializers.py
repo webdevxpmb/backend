@@ -31,7 +31,7 @@ class ShrinkedDetailKenalanSerializer(serializers.ModelSerializer):
     class Meta:
         model = DetailKenalan
         fields = ('id', 'name', 'phone_number', 'birth_place',
-                  'birth_date', 'asal_sma', 'story', 'created_at', 'angkatan', 'link_photo', 'updated_at')
+                  'birth_date', 'asal_sma', 'story', 'created_at', 'updated_at')
         read_only_fields = ('kenalan',)
 
 
@@ -51,7 +51,7 @@ class DetailKenalanSerializer(serializers.ModelSerializer):
     class Meta:
         model = DetailKenalan
         fields = ('id', 'kenalan', 'name', 'phone_number', 'birth_place', 
-                  'birth_date', 'asal_sma', 'story', 'angkatan', 'link_photo', 'created_at', 'updated_at')
+                  'birth_date', 'asal_sma', 'story', 'created_at', 'updated_at')
         read_only_fields = ('kenalan',)
 
 
@@ -60,7 +60,7 @@ class GetDetailKenalanSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DetailKenalan
-        fields = ('id', 'kenalan', 'name', 'phone_number', 'birth_place', 'angkatan', 'link_photo',
+        fields = ('id', 'kenalan', 'name', 'phone_number', 'birth_place',
                   'birth_date', 'asal_sma', 'story', 'created_at', 'updated_at')
         read_only_fields = ('kenalan',)
 
@@ -80,3 +80,6 @@ class UserMabaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Kenalan
         read_only_fields = fields = ('user_maba', )
+
+
+
