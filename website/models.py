@@ -95,7 +95,7 @@ class Submission(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = (("task", "user"),)
+        pass
 
 
 

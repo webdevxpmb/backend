@@ -98,11 +98,13 @@ class PostModelAdmin(admin.ModelAdmin):
 
 
 class SubmissionModelAdmin(admin.ModelAdmin):
-    list_display = ('user_profile', 'task', 'file_link',
+    list_display = ('task_and_user', 'user_profile', 'task', 'file_link',
                     'is_checked', 'is_approved', 'created_at', 'updated_at')
     list_filter = ('task', 'is_checked', 'is_approved')
-    search_fields = ('user__profile__name', )
+    search_fields = ('user__profile__name', 'task__id', 'user__id')
 
+    def task_and_user(self, obj):
+        return str(obj.task.id) + ' ' + str(obj.user.id)
     def user_profile(self, obj):
         return obj.user.profile
 
