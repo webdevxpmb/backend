@@ -37,7 +37,7 @@ class KenalanListFilter(admin.SimpleListFilter):
     def queryset(self, request, queryset):
         """
         Returns the filtered queryset based on the value
-        provided in the query string and retrievable via
+        provide qd in the query string and retrievable via
         `self.value()`.
         """
         # Compare the requested value (either '80s' or '90s')

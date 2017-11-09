@@ -32,6 +32,10 @@ DEBUG = True
 CLIENT_HOST = 'http://localhost:3000'
 
 ALLOWED_HOSTS = ['*']
+CORS_ORIGIN_WHITELIST = (
+    'localhost:3000',
+    'pmb.cs.ui.ac.id',
+)
 
 
 # Application definition
@@ -68,8 +72,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-]
 
+]
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -180,7 +184,6 @@ CRONJOBS = [
     ('* * * * *', 'kenalan.utils.delete_all_expired_token')
 ]
 
-CORS_ORIGIN_WHITELIST = ['localhost:3000']
 
 JWT_AUTH = {
     'JWT_ENCODE_HANDLER':
