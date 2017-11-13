@@ -65,4 +65,14 @@ urlpatterns = format_suffix_patterns([
 
     url(r'/server-time/$',
         utils.get_server_time, name='server-time'),
+
+    url(r'/vote/$',
+        views.VoteList.as_view(), name="vote-list"),
+
+    url(r'/voting/$',
+        views.VotingListCreate.as_view(), name="voting-list"),
+
+    url(r'/voting/(?P<pk>[0-9]+)/$',
+        views.VotingDetail.as_view(), name='voting-detail'),
+
 ])
