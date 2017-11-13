@@ -9,7 +9,11 @@ from website.serializers import (
     AlbumSerializer, TaskStatisticSerializer, EventStatisticSerializer,
     UserStatisticSerializer, GetPostSerializer, GetCommentsSerializer,
     GetElementWordSerializer, GetSubmissionSerializer, GetEventStatisticSerializer,
+    VoteSerializer, GetVoteSerializer, VoteOptionSerializer, GetVoteOptionSerializer,
+    VotingSerializer, GetVotingSerializer
 )
+
+from account import permissions as account_permissions
 
 from website.utils import StandardResultsSetPagination
 
@@ -19,6 +23,7 @@ from website.models import (
     Event,
     Album, TaskStatistic,
     UserStatistic, EventStatistic,
+    Vote, VoteOption, Voting,
 )
 from account.permissions import (
     IsPmbAdmin,
@@ -28,6 +33,7 @@ from account.permissions import (
     IsElemenOrAdmin,
 )
 
+from rest_framework.test import APIRequestFactory
 import datetime
 
 
@@ -82,6 +88,9 @@ class PostList(generics.ListCreateAPIView):
         serializer = GetPostSerializer(queryset, many=True)
         return Response(serializer.data)
 
+    def perform_update(self, serializer):
+        serializer.save(author=self.request.user)
+
     def post(self, request, *args, **kwargs):
         data = request.data
         data['author'] = request.user.id
@@ -105,6 +114,9 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
         instance = self.get_object()
         serializer = GetPostSerializer(instance)
         return Response(serializer.data)
+
+    def perform_update(self, serializer):
+        serializer.save(author=self.request.user)
 
     def update(self, request, *args, **kwargs):
         self.permission_classes = (IsOwner, )
@@ -136,6 +148,9 @@ class CommentList(generics.ListCreateAPIView):
         serializer = GetCommentsSerializer(queryset, many=True)
         return Response(serializer.data)
 
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
     def post(self, request, *args, **kwargs):
         data = request.data
         data['author'] = request.user.id
@@ -158,12 +173,13 @@ class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
         serializer = GetCommentsSerializer(instance)
         return Response(serializer.data)
 
+    def perform_update(self, serializer):
+        serializer.save(author=self.request.user)
+
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         post = instance.post
-        request.data['post'] = post.id
-        request.data['author'] = request.user.id
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
@@ -187,11 +203,12 @@ class ElementWordList(generics.ListCreateAPIView):
         serializer = GetElementWordSerializer(queryset, many=True)
         return Response(serializer.data)
 
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user, approved=False)
+
     def post(self, request, *args, **kwargs):
         self.permission_classes = (IsElemenOrAdmin, )
         data = request.data
-        data['author'] = request.user.id
-        data['approved'] = False
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
@@ -278,10 +295,12 @@ class SubmissionList(generics.ListCreateAPIView):
         serializer = GetSubmissionSerializer(queryset, many=True)
         return Response(serializer.data)
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
     def post(self, request, *args, **kwargs):
         try:
             data = request.data
-            data['user'] = request.user.id
             serializer = self.get_serializer(data=data)
             serializer.is_valid(raise_exception=True)
             task = Task.objects.get(id=data['task'])
@@ -480,3 +499,85 @@ class UserStatisticDetail(generics.RetrieveAPIView):
     queryset = UserStatistic.objects.all()
     serializer_class = UserStatisticSerializer
 
+
+class VoteList(generics.ListAPIView):
+    permission_classes = (account_permissions.IsElemenOrAdmin, )
+    serializer_class = GetVoteSerializer
+    queryset = Vote.objects.all()
+
+
+class VotingListCreate(generics.ListCreateAPIView):
+    permission_classes = (account_permissions.IsElemenOrAdmin, )
+    serializer_class = VotingSerializer
+
+    def get_queryset(self):
+        queryset = Voting.objects.filter(user=self.request.user)
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = GetVotingSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = GetVotingSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            data = request.data
+            vote_option = VoteOption.objects.get(id=data['vote_option'])
+            vote = vote_option.vote
+            if vote.end_time < datetime.datetime.now():
+                return Response({"message": "The voting period is over"}, status=400)
+
+            if vote.start_time > datetime.datetime.now():
+                return Response({"message": "The voting period has not started yet"}, status=400)
+
+            serializer = self.get_serializer(data=data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            instance = Voting.objects.get(id=serializer.data['id'])
+            response_serializer = GetVotingSerializer(instance)
+            headers = self.get_success_headers(response_serializer.data)
+            return Response(response_serializer.data, status=201, headers=headers)
+        except Exception:
+            return Response(status=400)
+
+
+class VotingDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (account_permissions.IsElemenOrAdmin, )
+    serializer_class = VotingSerializer
+
+    def get_queryset(self):
+        queryset = Voting.objects.filter(user=self.request.user)
+        return queryset
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = GetVotingSerializer(instance)
+        return Response(serializer.data)
+
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        vote_option = VoteOption.objects.get(id=request.data['vote_option'])
+        vote = vote_option.vote
+        if vote.end_time < datetime.datetime.now():
+            return Response({"message": "The voting period is over"}, status=400)
+
+        if vote.start_time > datetime.datetime.now():
+            return Response({"message": "The voting period has not started yet"}, status=400)
+
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(GetVotingSerializer(instance).data)

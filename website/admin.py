@@ -7,6 +7,7 @@ from website.models import (
     PostType,
     Album, TaskStatistic,
     EventStatistic, UserStatistic,
+    Vote, VoteOption, Voting,
 )
 ADMIN_PMB = 'adminpmb'
 
@@ -263,6 +264,54 @@ class UserStatisticModelAdmin(admin.ModelAdmin):
         model = UserStatistic
 
 
+class VoteOptionInline(admin.StackedInline):
+    list_display = ('name', 'description', 'total_voters',)
+    model = VoteOption
+
+    def has_change_permission(self, request, obj=None):
+        if request.user.username == ADMIN_PMB:
+            return True
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        if request.user.username == ADMIN_PMB:
+            return True
+        return False
+
+    def has_add_permission(self, request):
+        if request.user.username == ADMIN_PMB:
+            return True
+        return False
+
+
+class VoteModelAdmin(admin.ModelAdmin):
+    list_display = ('title', 'description', 'total_voters', 'start_time', 'end_time')
+    search_fields = ('title',)
+    inlines = [
+        VoteOptionInline,
+    ]
+
+    def has_change_permission(self, request, obj=None):
+        if request.user.username == ADMIN_PMB:
+            return True
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        if request.user.username == ADMIN_PMB:
+            return True
+        return False
+
+    def has_add_permission(self, request):
+        if request.user.username == ADMIN_PMB:
+            return True
+        return False
+
+    class Meta:
+        model = Vote
+
+
+
+
 admin.site.register(ElementWord, ElementWordModelAdmin)
 admin.site.register(Event, EventModelAdmin)
 admin.site.register(Task, TaskModelAdmin)
@@ -274,3 +323,5 @@ admin.site.register(Album, AlbumModelAdmin)
 admin.site.register(TaskStatistic, TaskStatisticModelAdmin)
 admin.site.register(EventStatistic, EventStatisticModelAdmin)
 admin.site.register(UserStatistic, UserStatisticModelAdmin)
+admin.site.register(Vote, VoteModelAdmin)
+admin.site.register(Voting)

@@ -168,3 +168,45 @@ class UserStatistic(models.Model):
 
     class Meta:
         pass
+
+
+class Vote(models.Model):
+    def __str__(self):
+        return self.title
+
+
+    title = models.CharField(max_length=500)
+    description = models.CharField(max_length=500, null=True, blank=True)
+    start_time = models.DateTimeField(null=True, blank=True)
+    end_time = models.DateTimeField(null=True, blank=True)
+    total_voters = models.SmallIntegerField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class meta:
+        pass
+
+
+class VoteOption(models.Model):
+    def __str__(self):
+        return self.name
+
+    name = models.CharField(max_length=500)
+    description = models.CharField(max_length=500, null=True, blank=True)
+    vote = models.ForeignKey(Vote, on_delete=models.CASCADE, related_name='options')
+    total_voters = models.SmallIntegerField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        pass
+    
+
+class Voting(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='votings')
+    vote_option = models.ForeignKey(VoteOption, on_delete=models.CASCADE, related_name='votings')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        unique_together = ("user", "vote_option",)

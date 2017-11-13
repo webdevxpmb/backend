@@ -5,6 +5,7 @@ from website.models import (
     PostType,
     Album, EventStatistic,
     TaskStatistic, UserStatistic,
+    Vote, VoteOption, Voting,
 )
 from account.serializers import UserSerializer
 
@@ -129,3 +130,46 @@ class UserStatisticSerializer(serializers.ModelSerializer):
                   'amount_capung', 'amount_orion', 'amount_alumni',
                   'amount_approved_omega', 'amount_approved_capung',
                   'amount_approved_orion', 'amount_approved_alumni')
+
+
+class VoteOptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VoteOption
+        fields = ('id', 'name', 'description', 'vote', 'total_voters', 'created_at', 'updated_at',)
+
+
+class GetVoteSerializer(serializers.ModelSerializer):
+    options = VoteOptionSerializer(many=True)
+
+    class Meta:
+        model = Vote
+        fields = ('id', 'title', 'description', 'start_time', 'end_time', 'total_voters', 'options', 'created_at', 'updated_at')
+
+
+class VoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vote
+        fields = ('id', 'title', 'description', 'start_time', 'end_time', 'total_voters', 'created_at', 'updated_at')
+
+
+class GetVoteOptionSerializer(serializers.ModelSerializer):
+    vote = VoteSerializer()
+
+    class Meta:
+        model = VoteOption
+        fields = ('id', 'name', 'description', 'vote', 'total_voters', 'created_at', 'updated_at')
+
+
+class VotingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Voting
+        fields = ('id', 'user', 'vote_option', 'created_at', 'updated_at')
+
+
+class GetVotingSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    vote_option = GetVoteOptionSerializer()
+
+    class Meta:
+        model = Voting
+        fields = ('id', 'user', 'vote_option', 'created_at', 'updated_at')
