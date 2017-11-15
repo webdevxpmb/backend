@@ -98,8 +98,11 @@ class Submission(models.Model):
         pass
 
 
-
 class Event(models.Model):
+
+    def __str__(self):
+        return self.name
+
     """
     Description: Model Description
     """
