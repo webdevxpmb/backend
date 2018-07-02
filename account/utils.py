@@ -1,4 +1,5 @@
 from django.core.exceptions import PermissionDenied
+from django.conf import settings
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.views import APIView
 from account.models import UserProfile
