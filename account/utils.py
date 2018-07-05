@@ -1,4 +1,5 @@
 from django.core.exceptions import PermissionDenied
+from django.conf import settings
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.views import APIView
 from account.models import UserProfile
@@ -15,6 +16,7 @@ ANGKATAN = {"2017": "2017", "2016": "omega",
 
 def get_angkatan_by_npm(npm):
     try:
+        ANGKATAN = load_data(settings.BASE_DIR + "/account/" + 'data_angkatan.json')
         suffix = npm[:2]        # get first two digit of NPM
         angkatan = '20' + suffix
         
@@ -26,7 +28,8 @@ def get_angkatan_by_npm(npm):
 
 def get_role_by_angkatan(angkatan):
     try:
-        if angkatan == "2017":
+        ANGKATAN = load_data(settings.BASE_DIR + "/account/" + 'data_angkatan.json')
+        if angkatan == ANGKATAN['maba']:
             return "mahasiswa baru"
         else:
             return "elemen"
