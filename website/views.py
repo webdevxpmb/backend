@@ -89,7 +89,16 @@ class PostList(generics.ListCreateAPIView):
         return Response(serializer.data)
 
     def perform_update(self, serializer):
-        serializer.save(author=self.request.user)
+        if is_pmb_admin(self.request.user):
+            serializer.save(author=self.request.user)
+        else:
+            raise exceptions.PermissionDenied
+
+    def perform_create(self, serializer):
+        if is_pmb_admin(self.request.user):
+            serializer.save()
+        else:
+            raise exceptions.PermissionDenied
 
     def post(self, request, *args, **kwargs):
         data = request.data
