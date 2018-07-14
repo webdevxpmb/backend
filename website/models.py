@@ -19,6 +19,7 @@ class Post(models.Model):
     """
     title = models.CharField(max_length=50, null=True)
     author = models.ForeignKey(User, related_name="post")
+    cover_image_url = models.URLField(blank=True, null=True)
     summary = models.CharField(max_length=255, blank=True, null=True)
     content = models.TextField()
     attachment_link = models.CharField(max_length=255, blank=True, null=True)
