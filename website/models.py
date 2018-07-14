@@ -17,7 +17,7 @@ class Post(models.Model):
     """
     Description: Model Description
     """
-    title = models.CharField(max_length=50, null=True)
+    title = models.CharField(max_length=100, null=True)
     author = models.ForeignKey(User, related_name="post")
     cover_image_url = models.URLField(blank=True, null=True)
     summary = models.CharField(max_length=255, blank=True, null=True)
