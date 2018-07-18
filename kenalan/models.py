@@ -65,11 +65,11 @@ class DetailKenalan(models.Model):
     Description: Model Description
     """
     kenalan = models.OneToOneField(Kenalan, related_name='detail_kenalan')
-    name = models.CharField(max_length=50, null=True)
+    name = models.CharField(max_length=128, null=True)
     phone_number = models.CharField(max_length=20, null=True)
-    birth_place = models.CharField(max_length=50, null=True)
+    birth_place = models.CharField(max_length=100, null=True)
     birth_date = models.CharField(max_length=50, null=True)
-    asal_sma = models.CharField(max_length=50, null=True)
+    asal_sma = models.CharField(max_length=100, null=True)
     story = models.TextField(null=True)
     angkatan = models.CharField(max_length=50, null=True, blank=True)
     link_photo = models.CharField(max_length=500, null=True, blank=True)
