@@ -9,7 +9,6 @@ from website.models import (
     EventStatistic, UserStatistic,
     Vote, VoteOption, Voting,
 )
-ADMIN_PMB = 'adminpmb'
 
 
 class ElementWordModelAdmin(admin.ModelAdmin):
@@ -17,17 +16,17 @@ class ElementWordModelAdmin(admin.ModelAdmin):
     list_filter = ('approved', )
 
     def get_readonly_fields(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return ()
         return ('author', 'testimony')
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_add_permission(self, request):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
@@ -39,17 +38,17 @@ class EventModelAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'location', 'start_time', 'end_time')
 
     def has_change_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_add_permission(self, request):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
@@ -62,17 +61,17 @@ class TaskModelAdmin(admin.ModelAdmin):
     list_filter = ('is_kenalan',)
 
     def has_change_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_add_permission(self, request):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
@@ -81,16 +80,17 @@ class TaskModelAdmin(admin.ModelAdmin):
 
 
 class PostModelAdmin(admin.ModelAdmin):
-    list_display = ('author', 'title', 'summary', 'content', 'post_type')
+    list_display = ('author', 'title', 'summary', 'content', 
+                    'cover_image_link', 'attachment_link', 'post_type')
     list_filter = ('post_type',)
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_add_permission(self, request):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
@@ -110,17 +110,17 @@ class SubmissionModelAdmin(admin.ModelAdmin):
         return obj.user.profile
 
     def get_readonly_fields(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return ()
         return ('file_link', 'user_profile', 'task',)
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_add_permission(self, request):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
@@ -132,17 +132,17 @@ class CommentModelAdmin(admin.ModelAdmin):
     list_display = ('author', 'comment')
 
     def has_change_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_add_permission(self, request):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
@@ -154,17 +154,17 @@ class PostTypeModelAdmin(admin.ModelAdmin):
     list_display = ('post_type',)
 
     def has_change_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_add_permission(self, request):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
@@ -176,17 +176,17 @@ class AlbumModelAdmin(admin.ModelAdmin):
     list_display = ('name', 'album_link')
 
     def has_change_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_add_permission(self, request):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
@@ -198,17 +198,17 @@ class TaskStatisticModelAdmin(admin.ModelAdmin):
     list_display = ('task', 'amount')
 
     def has_change_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_add_permission(self, request):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
@@ -220,17 +220,17 @@ class EventStatisticModelAdmin(admin.ModelAdmin):
     list_display = ('event', 'attendee', 'on_time', 'late', 'permission', 'absent')
 
     def has_change_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_add_permission(self, request):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
@@ -246,17 +246,17 @@ class UserStatisticModelAdmin(admin.ModelAdmin):
         return obj.user.profile.name
 
     def has_change_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_add_permission(self, request):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
@@ -269,17 +269,17 @@ class VoteOptionInline(admin.StackedInline):
     model = VoteOption
 
     def has_change_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_add_permission(self, request):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
@@ -292,17 +292,17 @@ class VoteModelAdmin(admin.ModelAdmin):
     ]
 
     def has_change_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_add_permission(self, request):
-        if request.user.username == ADMIN_PMB:
+        if request.user.is_superuser == True:
             return True
         return False
 
