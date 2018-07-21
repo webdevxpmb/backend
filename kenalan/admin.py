@@ -5,11 +5,19 @@ from kenalan.models import (
     Kenalan, KenalanStatus, DetailKenalan, Token,
 )
 
-ADMIN_PMB = 'adminpmb'
-SUPER_ADMIN = 'admin'
+from account.models import Angkatan
 
 from django.utils.translation import ugettext_lazy as _
 
+# data_angkatan.json harus berisi hanya 6 elemen,
+# dimana 2 define maba, 1 define alumni, dan 3 define angkatan aktif
+lookup_data = []
+daftar_angkatan = Angkatan.objects.all()
+tahun_pmb = int(Angkatan.objects.get(year='maba').name)
+for angkatan in daftar_angkatan:
+    if ((angkatan.year.isdigit() and angkatan.name.isdigit() == False)
+        or ('--' in angkatan.year)):
+        lookup_data.append((angkatan.year, angkatan.name))
 
 class KenalanListFilter(admin.SimpleListFilter):
     # Human-readable title which will be displayed in the
@@ -28,10 +36,10 @@ class KenalanListFilter(admin.SimpleListFilter):
         in the right sidebar.
         """
         return (
-            ('2016', _('omega')),
-            ('2015', _('capung')),
-            ('2014', _('orion')),
-            ('2013--', _('alumni'))
+            (lookup_data[0][0], _(lookup_data[0][1])),
+            (lookup_data[1][0], _(lookup_data[1][1])),
+            (lookup_data[2][0], _(lookup_data[2][1])),
+            (lookup_data[3][0], _(lookup_data[3][1]))
         )
 
     def queryset(self, request, queryset):
@@ -42,31 +50,31 @@ class KenalanListFilter(admin.SimpleListFilter):
         """
         # Compare the requested value (either '80s' or '90s')
         # to decide how to filter the queryset.
-        if self.value() == '2016':
-            return queryset.filter(user_elemen__profile__angkatan__name='omega')
-        if self.value() == '2015':
-            return queryset.filter(user_elemen__profile__angkatan__name='capung')
-        if self.value() == '2014':
-            return queryset.filter(user_elemen__profile__angkatan__name='orion')
-        if self.value() == '2013--':
-            return queryset.filter(user_elemen__profile__angkatan__name='alumni')
+        if self.value() == lookup_data[0][0]:
+            return queryset.filter(user_elemen__profile__angkatan__name=lookup_data[0][1])
+        if self.value() == lookup_data[1][0]:
+            return queryset.filter(user_elemen__profile__angkatan__name=lookup_data[1][1])
+        if self.value() == lookup_data[2][0]:
+            return queryset.filter(user_elemen__profile__angkatan__name=lookup_data[2][1])
+        if self.value() == lookup_data[3][0]:
+            return queryset.filter(user_elemen__profile__angkatan__name=lookup_data[3][1])
 
 
 class DetailKenalanInline(admin.StackedInline):
     model = DetailKenalan
 
     def get_readonly_fields(self, request, obj=None):
-        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+        if request.user.is_superuser == True:
             return ()
         return ('name', 'phone_number', 'birth_place', 'birth_date', 'asal_sma', 'story',)
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_add_permission(self, request):
-        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+        if request.user.is_superuser == True:
             return True
         return False
 
@@ -93,17 +101,17 @@ class KenalanModelAdmin(admin.ModelAdmin):
 
 
     def get_readonly_fields(self, request, obj=None):
-        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+        if request.user.is_superuser == True:
             return ()
         return ('user_maba', 'user_elemen',)
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_add_permission(self, request):
-        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+        if request.user.is_superuser == True:
             return True
         return False
 
@@ -113,17 +121,17 @@ class KenalanModelAdmin(admin.ModelAdmin):
 
 class KenalanStatusModelAdmin(admin.ModelAdmin):
     def has_change_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_add_permission(self, request):
-        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+        if request.user.is_superuser == True:
             return True
         return False
 
@@ -138,6 +146,8 @@ class DetailKenalanListFilter(admin.SimpleListFilter):
 
     # Parameter for the filter that will be used in the URL query.
     parameter_name = 'angkatan'
+
+
 
     def lookups(self, request, model_admin):
         """
@@ -191,17 +201,17 @@ class DetailKenalanModelAdmin(admin.ModelAdmin):
         return 'alumni'
 
     def has_change_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_add_permission(self, request):
-        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+        if request.user.is_superuser == True:
             return True
         return False
 
@@ -214,17 +224,17 @@ class TokenModelAdmin(admin.ModelAdmin):
 
 
     def has_change_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_delete_permission(self, request, obj=None):
-        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+        if request.user.is_superuser == True:
             return True
         return False
 
     def has_add_permission(self, request):
-        if request.user.username == ADMIN_PMB or request.user.username == SUPER_ADMIN:
+        if request.user.is_superuser == True:
             return True
         return False
 

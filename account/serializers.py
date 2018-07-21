@@ -22,7 +22,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = ('id', 'user', 'name', 'role', 'npm', 'angkatan', 'email',
                   'photo', 'about', 'linkedin', 'facebook', 'phone_number',
-                  'birth_place', 'birth_date', 'created_at', 'updated_at')
+                  'birth_place', 'birth_date', 'score', 'created_at', 'updated_at')
         read_only_fields = ('role', 'npm', 'angkatan', 'user', 'name', )
 
 
@@ -33,7 +33,7 @@ class GetUserProfileSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = ('id', 'user', 'name', 'role', 'npm', 'angkatan', 'email',
                   'photo', 'about', 'linkedin', 'facebook', 'phone_number',
-                  'birth_place', 'birth_date', 'created_at', 'updated_at')
+                  'birth_place', 'birth_date', 'score', 'created_at', 'updated_at')
         read_only_fields = ('role', 'npm', 'angkatan', 'user')
 
 

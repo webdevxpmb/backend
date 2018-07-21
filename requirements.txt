@@ -14,6 +14,7 @@ django-cloudinary-storage==0.2.3
 django-common-helpers==0.9.1
 django-cors-headers==2.1.0
 django-crontab==0.7.1
+django-dotenv==1.4.2
 django-filter==1.0.4
 djangorestframework==3.6.3
 djangorestframework-filters==0.10.1
