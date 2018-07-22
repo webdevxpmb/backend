@@ -12,12 +12,14 @@ from django.utils.translation import ugettext_lazy as _
 # data_angkatan.json harus berisi hanya 6 elemen,
 # dimana 2 define maba, 1 define alumni, dan 3 define angkatan aktif
 lookup_data = []
-daftar_angkatan = Angkatan.objects.all()
-tahun_pmb = int(Angkatan.objects.get(year='maba').name)
-for angkatan in daftar_angkatan:
-    if ((angkatan.year.isdigit() and angkatan.name.isdigit() == False)
-        or ('--' in angkatan.year)):
-        lookup_data.append((angkatan.year, angkatan.name))
+
+def fill_lookup_data():
+    daftar_angkatan = Angkatan.objects.all()
+    tahun_pmb = int(Angkatan.objects.get(year='maba').name)
+    for angkatan in daftar_angkatan:
+        if ((angkatan.year.isdigit() and angkatan.name.isdigit() == False)
+            or ('--' in angkatan.year)):
+            lookup_data.append((angkatan.year, angkatan.name))
 
 class KenalanListFilter(admin.SimpleListFilter):
     # Human-readable title which will be displayed in the
@@ -35,6 +37,8 @@ class KenalanListFilter(admin.SimpleListFilter):
         human-readable name for the option that will appear
         in the right sidebar.
         """
+        if not lookup_data:
+            fill_lookup_data()
         return (
             (lookup_data[0][0], _(lookup_data[0][1])),
             (lookup_data[1][0], _(lookup_data[1][1])),
@@ -50,6 +54,8 @@ class KenalanListFilter(admin.SimpleListFilter):
         """
         # Compare the requested value (either '80s' or '90s')
         # to decide how to filter the queryset.
+        if not lookup_data:
+            fill_lookup_data()
         if self.value() == lookup_data[0][0]:
             return queryset.filter(user_elemen__profile__angkatan__name=lookup_data[0][1])
         if self.value() == lookup_data[1][0]:
