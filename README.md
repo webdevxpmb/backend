@@ -127,8 +127,6 @@ For now, liat di Models dulu details spesifikasinya
   Query String buat GET:  
   post_type -> filter by type  
   author__profile__angkatan -> filter by angkatan yang buat postnya  
-  page -> pagination  
-  page_size -> tiap page mau berapa post  
   Example:  
   /pmb-api/post/?=post_type=pengumuman&author__profile__angkatan=tarung&page=1&page_size=2  
   Ambil semua post bertipe pengumuman yang dibuat anak tarung, page pertama dmn tiap page 2 post aja yang diambil
@@ -136,73 +134,39 @@ For now, liat di Models dulu details spesifikasinya
   See below (virtually sama, cuma kalo ini query yg pengumuman aja lalu dan post tetep lewat bawah)
   * GET POST /pmb-api/post/  
   JSON:  
-  Ini hasil dari "http://127.0.0.1:8000/pmb-api/announcement/?page=1&page_size=2",
+  Ini hasil dari "http://127.0.0.1:8000/pmb-api/announcement/",
     <pre>
-    {
-      "count": 4,
-      "next": "http://127.0.0.1:8000/pmb-api/announcement/?page=2&page_size=2",
-      "previous": null,
-      "results": [
-          {
-              "id": 1,
-              "title": "PENGUMUMAN CAHYA",
-              "author": {
-                  "id": 11,
-                  "username": "pande.ketut71",
-                  "profile": {
-                      "id": 4,
-                      "name": "Pande Ketut Cahya Nugraha",
-                      "npm": "1706028663",
-                      "angkatan": {
-                          "id": 1,
-                          "year": "2017",
-                          "name": "tarung"
-                      },
-                      "email": "pande.ketut71@ui.ac.id"
-                  }
-              },
-              "cover_image_link": null,
-              "summary": "cahya itu ganteng",
-              "content": "cahya ganteng banget",
-              "post_type": {
-                  "id": 1,
-                  "post_type": "pengumuman"
-              },
-              "attachment_link": null,
-              "created_at": "2018-07-04T17:22:08.119185",
-              "updated_at": "2018-07-04T17:22:08.119213"
+    [
+      {
+          "id": 1,
+          "title": "PENGUMUMAN CAHYA",
+          "author": {
+              "id": 11,
+              "username": "pande.ketut71",
+              "profile": {
+                  "id": 4,
+                  "name": "Pande Ketut Cahya Nugraha",
+                  "npm": "1706028663",
+                  "angkatan": {
+                      "id": 1,
+                      "year": "2017",
+                      "name": "tarung"
+                  },
+                  "email": "pande.ketut71@ui.ac.id"
+              }
           },
-          {
-              "id": 3,
-              "title": "Hai",
-              "author": {
-                  "id": 11,
-                  "username": "pande.ketut71",
-                  "profile": {
-                      "id": 4,
-                      "name": "Pande Ketut Cahya Nugraha",
-                      "npm": "1706028663",
-                      "angkatan": {
-                          "id": 1,
-                          "year": "2017",
-                          "name": "tarung"
-                      },
-                      "email": "pande.ketut71@ui.ac.id"
-                  }
-              },
-              "cover_image_link": null,
-              "summary": "Summary",
-              "content": "img src=x onerror=alert(1)//",
-              "post_type": {
-                  "id": 1,
-                  "post_type": "pengumuman"
-              },
-              "attachment_link": null,
-              "created_at": "2018-07-08T11:37:33.591104",
-              "updated_at": "2018-07-08T11:37:33.591162"
-          }
-      ]
-    }
+          "cover_image_link": null,
+          "summary": "cahya itu ganteng",
+          "content": "cahya ganteng banget",
+          "post_type": {
+              "id": 1,
+              "post_type": "pengumuman"
+          },
+          "attachment_link": null,
+          "created_at": "2018-07-04T17:22:08.119185",
+          "updated_at": "2018-07-04T17:22:08.119213"
+      }
+    ]
     </pre>
   
   * GET PUT PATCH DELETE /pmb-api/post/< id >/  

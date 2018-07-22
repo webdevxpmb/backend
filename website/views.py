@@ -15,7 +15,6 @@ from website.serializers import (
 
 from account import permissions as account_permissions
 
-from website.utils import StandardResultsSetPagination
 
 from website.models import (
     PostType, Post, Comment,
@@ -57,15 +56,9 @@ class AnnouncementList(generics.ListAPIView):
     filter_fields = ('post_type', 'author__profile__angkatan', )
     parser_classes = (JSONParser, )
     serializer_class = PostSerializer
-    pagination_class = StandardResultsSetPagination
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = GetPostSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
         serializer = GetPostSerializer(queryset, many=True)
         return Response(serializer.data, status=200)
 
@@ -76,15 +69,9 @@ class PostList(generics.ListCreateAPIView):
     filter_fields = ('post_type', 'author__profile__angkatan', )
     parser_classes = (JSONParser, )
     serializer_class = PostSerializer
-    pagination_class = StandardResultsSetPagination
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = GetPostSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
         serializer = GetPostSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -149,11 +136,6 @@ class CommentList(generics.ListCreateAPIView):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = GetCommentsSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
         serializer = GetCommentsSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -204,11 +186,6 @@ class ElementWordList(generics.ListCreateAPIView):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = GetElementWordSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
         serializer = GetElementWordSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -296,11 +273,6 @@ class SubmissionList(generics.ListCreateAPIView):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = GetSubmissionSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
         serializer = GetSubmissionSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -431,11 +403,6 @@ class EventStatisticList(generics.ListCreateAPIView):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = GetEventStatisticSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
         serializer = GetEventStatisticSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -525,11 +492,6 @@ class VotingListCreate(generics.ListCreateAPIView):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = GetVotingSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
         serializer = GetVotingSerializer(queryset, many=True)
         return Response(serializer.data)
 
