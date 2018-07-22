@@ -59,8 +59,8 @@ class UserProfileModelAdmin(admin.ModelAdmin):
         if request.user.is_superuser == True:
             return ()
         return ('user', 'name', 'npm', 'angkatan', 'role', 'email',
-                       'photo', 'about', 'linkedin', 'facebook', 'phone_number',
-                       'birth_place', 'birth_date')
+                       'photo', 'about', 'asal_sekolah', 'link_gdrive', 'line_id', 'phone_number',
+                       'birth_place', 'birth_date', 'score')
 
     def has_delete_permission(self, request, obj=None):
         if request.user.is_superuser == True:
