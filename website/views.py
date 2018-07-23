@@ -91,7 +91,6 @@ class PostList(generics.ListCreateAPIView):
         data = request.data
         data['author'] = request.user.id
         serializer = self.get_serializer(data=data)
-        print serializer
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         instance = Post.objects.get(id=serializer.data['id'])
