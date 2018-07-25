@@ -30,7 +30,6 @@ SECRET_KEY = '3-$(qogu0ez1jrip7^x#@b)d&xtv#2g8ej8j)2a^p%*5e8!v!p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-CLIENT_HOST = 'http://localhost:3000'
 
 ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_WHITELIST = (
@@ -97,10 +96,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 
+CLIENT_HOST = 'http://localhost:3000'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 if IDENTIFIER == 'production':
+    CLIENT_HOST = 'pmb.cs.ui.ac.id'
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
