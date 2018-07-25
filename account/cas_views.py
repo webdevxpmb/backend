@@ -2,7 +2,8 @@
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
-from urlparse import urlunparse
+# from urlparse import urlunparse # For python 2.7
+from urllib.parse import urlparse # For python 3.4
 from account.models import UserProfile
 from django.shortcuts import render
 from rest_framework_jwt.settings import api_settings

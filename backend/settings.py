@@ -28,7 +28,7 @@ IDENTIFIER = os.environ.get('IDENTIFIER', 'local')
 SECRET_KEY = '3-$(qogu0ez1jrip7^x#@b)d&xtv#2g8ej8j)2a^p%*5e8!v!p'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 ALLOWED_HOSTS = ['*']
@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'django_cas_ng',
     'django_crontab',
     'corsheaders',
+    'whitenoise',
     'dj_database_url',
     'rest_framework_docs',
     'resizeimage',
@@ -72,7 +73,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -210,7 +211,7 @@ JWT_AUTH = {
     'JWT_RESPONSE_PAYLOAD_HANDLER':
     'rest_framework_jwt.utils.jwt_response_payload_handler',
 
-    'JWT_SECRET_KEY': SECRET_KEY,
+    'JWT_SECRET_KEY': os.environ.get('JWT_SECRET_KEY', 'inibukansecretprod'),
     'JWT_ALGORITHM': 'HS256',
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=365),
 }
@@ -247,4 +248,3 @@ CLOUDINARY_STORAGE = {
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
