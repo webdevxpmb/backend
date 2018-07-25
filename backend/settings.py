@@ -102,7 +102,7 @@ CLIENT_HOST = 'http://localhost:3000'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 if IDENTIFIER == 'production':
-    CLIENT_HOST = 'pmb.cs.ui.ac.id'
+    CLIENT_HOST = 'http://pmb.cs.ui.ac.id'
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
