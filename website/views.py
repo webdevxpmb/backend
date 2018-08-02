@@ -1,5 +1,7 @@
 from rest_framework import generics, permissions, exceptions
-from rest_framework.parsers import JSONParser
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 from rest_framework.response import Response
 from django.db import IntegrityError
 from website.serializers import (
@@ -10,7 +12,7 @@ from website.serializers import (
     UserStatisticSerializer, GetPostSerializer, GetCommentsSerializer,
     GetElementWordSerializer, GetSubmissionSerializer, GetEventStatisticSerializer,
     VoteSerializer, GetVoteSerializer, VoteOptionSerializer, GetVoteOptionSerializer,
-    VotingSerializer, GetVotingSerializer
+    VotingSerializer, GetVotingSerializer, FileSerializer
 )
 
 from account import permissions as account_permissions
@@ -35,6 +37,19 @@ from account.permissions import (
 from rest_framework.test import APIRequestFactory
 import datetime
 
+class FileView(APIView):
+    permission_classes = (permissions.AllowAny,)
+    parser_classes = (MultiPartParser, FormParser)
+    def post(self, request, *args, **kwargs):
+        try:
+            file_serializer = FileSerializer(data=request.data)
+            if file_serializer.is_valid():
+                result = file_serializer.save()
+                return Response(result, status=status.HTTP_201_CREATED)
+            else:
+                return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print(e)
 
 class PostTypeList(generics.ListCreateAPIView):
     permission_classes = (IsPmbAdmin,)

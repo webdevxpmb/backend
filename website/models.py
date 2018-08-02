@@ -3,6 +3,10 @@ from django.contrib.auth.models import User
 
 
 # Create your models here.
+class File(models.Model):
+    file = models.FileField(blank=False, null=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
 class PostType(models.Model):
     post_type = models.CharField(max_length=50)
 

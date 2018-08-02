@@ -75,4 +75,5 @@ urlpatterns = format_suffix_patterns([
     url(r'/voting/(?P<pk>[0-9]+)/$',
         views.VotingDetail.as_view(), name='voting-detail'),
 
+    url(r'/upload/$', views.FileView.as_view(), name='file-upload'),
 ])

@@ -1,3 +1,4 @@
+import uuid
 from rest_framework import serializers
 from website.models import (
     Post, Comment, ElementWord,
@@ -5,10 +6,23 @@ from website.models import (
     PostType,
     Album, EventStatistic,
     TaskStatistic, UserStatistic,
-    Vote, VoteOption, Voting,
+    Vote, VoteOption, Voting, File
 )
 from account.serializers import UserSerializer
+from dropbox import Dropbox
 
+class FileSerializer(serializers.ModelSerializer):
+    class Meta():
+        model = File
+        fields = '__all__'
+
+    def create(self, validated_data):
+        dbx = Dropbox('bTgof9agI8AAAAAAAAAACqcCQi31fo9vEaDVqkuU3RkONXR_dbyoHE6difvZCU4i')
+        filename = str(uuid.uuid4())
+        dbx.files_upload(validated_data['file'].file.getvalue(), '/' + filename)
+        result = dbx.sharing_create_shared_link('/' + filename)
+        validated_data['file'] = result.url + '&raw=1'
+        return validated_data
 
 class PostTypeSerializer(serializers.ModelSerializer):
     class Meta:
