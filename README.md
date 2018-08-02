@@ -11,14 +11,27 @@
 
 This API use Python 2.7
 
-* Pull repository
+Ini cara install di local
+* Pull repository backend
+* Cd ke folder backendnya
 * Buat virtual environment baru yang versi Python-nya 2.7
-* Activate virtual environment (usually source < your virtual environment folder>/bin/activate)
-* Run python manage.py makemigrations
-* (Better safe than sorry) Run python manage.py makemigrations account kenalan website
-* Run python manage.py migrate
-* Run python manage.py seed
-* To run server, python manage.py runserver
+  * DI TERMINAL : pip2 install virtualenv
+  * DI TERMINAL : virtualenv < your virtual environment folder > --python=python2.7
+    * Contoh : virtualenv venv --python=python2.7
+* Activate virtual environment, caranya
+  * DI TERMINAL : source < your virtual environment folder >/bin/activate
+    * Contoh : source venv/bin/activate
+  * Harusnya disamping nama username kalian ada tulisan (< your virtual environment folder name >)
+    * Contoh : (venv) anthrocoon12@julius-graucus
+* Semua command dibawah dalam kondisi virtualenv aktif
+* DI TERMINAL : pip install -r requirements.txt
+* DI TERMINAL : python manage.py makemigrations
+* (Better safe than sorry) DI TERMINAL : python manage.py makemigrations account kenalan website
+* DI TERMINAL : python manage.py migrate
+* DI TERMINAL : python manage.py seed
+* Buat jalanin server, DI TERMINAL : python manage.py runserver
+  * Usually jalannya di localhost:8000, kalo somehow your port not available, tambahin aja portnya dibelakang
+    * Contoh : python manage.py runserver < your port number here >
 
 ## Endpoints
 
