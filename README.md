@@ -4,16 +4,24 @@
 
 * [Installation](#installation)
 * [Endpoints](#endpoints)
+  * [Authentication](#authentication)
+  * [User Related](#user-related)
+  * [Announcement and Post](#announcement-and-post)
+  * [Task and Submission](#task-and-submission)
 * [Models](#models)
 * [Login Explanation](#login-explanation)
 
 ## Installation
+
+[Back to sections](#sections)
 
 This API use Python 2.7
 
 Ini cara install di local
 * Pull repository backend
 * Cd ke folder backendnya
+* Uncomment di backend/cas_views.py untuk pakai library yg python 2.7
+  * So far sih ini aja, tp kalo nanti ada yang lain pasti ditandain '# For Python 2.7gii'
 * Buat virtual environment baru yang versi Python-nya 2.7
   * DI TERMINAL : pip2 install virtualenv
   * DI TERMINAL : virtualenv < your virtual environment folder > --python=python2.7
@@ -35,13 +43,19 @@ Ini cara install di local
 
 ## Endpoints
 
+[Back to sections](#sections)
+
 For now, liat di Models dulu details spesifikasinya
 
 * ### Authentication
+  [Back to sections](#sections)
   * GET /pmb-api/login/
   * GET /pmb-api/logout/
 
 * ### User Related
+  
+  [Back to sections](#sections)
+  
   ============================================================  
   **Model used -> [User](#user)**
   * GET POST /pmb-api/user/  
@@ -90,8 +104,9 @@ For now, liat di Models dulu details spesifikasinya
       "email": "pande.ketut71@ui.ac.id",
       "photo": null,
       "about": "",
-      "linkedin": null,
-      "facebook": null,
+      "asal_sekolah": null,
+      "link_gdrive": null,
+      "line_id": null,
       "phone_number": null,
       "birth_place": null,
       "birth_date": null,
@@ -133,6 +148,8 @@ For now, liat di Models dulu details spesifikasinya
   ============================================================
 
 * ### Announcement and Post
+
+  [Back to sections](#sections)
 
   ============================================================  
   Ini satu set mirip semua, perbedaannya cuma kalo announcement dia querynya cuma ngembaliin yang PostType-nya Pengumuman aja dan kalo mau add post baru apapun jenisnya, selalu lewat /pmb-api/post/  
@@ -198,21 +215,34 @@ For now, liat di Models dulu details spesifikasinya
     }
     </pre>
 
+  ============================================================  
+
+* ### Task and Submission
+
+  [Back to sections](#sections)
+
   ============================================================
 
 ## Models
 
+[Back to sections](#sections)
+
 ### Daftar Models
 
-...............................  
+============================================================
+
 [User](#user)  
 [UserProfile](#userprofile)  
 [ShrinkedUserProfile](#shrinkeduserprofile)  
 [Post](#post)  
 [PostType](#posttype)  
-...............................  
+
+============================================================
 
 * ### User
+
+  [Back to Daftar Models](#daftar-models)
+
   Fields:
   * id
     * type: integer
@@ -225,6 +255,9 @@ For now, liat di Models dulu details spesifikasinya
     See [ShrinkedUserProfile](#shrinkeduserprofile)  
 
 * ### UserProfile  
+
+  [Back to Daftar Models](#daftar-models)
+
   Fields:
   * id:
     * type: integer
@@ -253,12 +286,15 @@ For now, liat di Models dulu details spesifikasinya
     * format: uri
   * about:
     * type: string
-  * linkedin:
+  * asal_sekolah:
     * type: string
-    * maxLength: 128
-  * facebook:
+    * maxLength: 100
+  * link_gdrive:
     * type: string
-    * maxLength: 128
+    * maxLength: 100
+  * line_id:
+    * type: string
+    * maxLength: 100
   * phone_number:
     * type: string
     * maxLength: 20
@@ -275,6 +311,9 @@ For now, liat di Models dulu details spesifikasinya
     * type: string date-time
 
 * ### ShrinkedUserProfile  
+
+  [Back to Daftar Models](#daftar-models)
+
   Fields:  
   * id:
     * type: integer
@@ -304,6 +343,9 @@ For now, liat di Models dulu details spesifikasinya
     * minLength: 1
 
 * ### Post  
+
+  [Back to Daftar Models](#daftar-models)
+
   Fields:
   * id  
     * type : integer
@@ -342,6 +384,9 @@ For now, liat di Models dulu details spesifikasinya
     * Tidak dibutuhkan saat POST, auto-generated
 
 * ### PostType  
+
+  [Back to Daftar Models](#daftar-models)
+  
   Fields:
   * id  
     * type : integer  
@@ -354,7 +399,9 @@ For now, liat di Models dulu details spesifikasinya
   Untuk PostType Pengumuman, nama dari post_type nya adalah 'pengumuman'  
   Untuk PostBiasa, nama dari post_type nya adalah 'post biasa'
 
-### Login Explanation
+### Login Explaination
+
+[Back to sections](#sections)
 
 Karena kita login menggunakan SSO UI, loginnya agak ribet (?).  
 Basically stepsnya kayak gini:  
