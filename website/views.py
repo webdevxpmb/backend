@@ -283,12 +283,12 @@ class SubmissionList(generics.ListCreateAPIView):
     filter_fields = ('task', )
 
     def get_queryset(self):
-        queryset = Submission.objects.filter(user=self.request.user)
+        queryset = Submission.objects.filter(user=self.request.user).order_by
         return queryset
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        serializer = GetSubmissionSerializer(queryset, many=True)
+        serializer = GetSubmissionSerializer(queryset, many=True).order_by('-updated_at', '-created_at').distinct('task')
         return Response(serializer.data)
 
     def perform_create(self, serializer):
