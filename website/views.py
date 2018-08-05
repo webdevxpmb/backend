@@ -302,7 +302,7 @@ class SubmissionList(APIView):
     def post(self, request, *args, **kwargs):
         try:
             data = request.data
-            serializer = self.get_serializer(data=data)
+            serializer = SubmissionSerializer(data=data)
             serializer.is_valid(raise_exception=True)
             task = Task.objects.get(id=data['task'])
             if task.end_time < datetime.datetime.now():
@@ -313,7 +313,6 @@ class SubmissionList(APIView):
             headers = self.get_success_headers(response_serializer.data)
             return Response(response_serializer.data, status=201, headers=headers)
         except Exception as e:
-            print(e)
             return Response(status=400)
 
 
