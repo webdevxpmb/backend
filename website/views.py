@@ -311,6 +311,7 @@ class SubmissionList(APIView):
             response_serializer = GetSubmissionSerializer(instance)
             return Response(response_serializer.data, status=201, headers=headers)
         except Exception as e:
+            print(e)
             return Response(status=400)
 
 
