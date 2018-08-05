@@ -275,7 +275,7 @@ class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
             raise exceptions.PermissionDenied
 
 
-class SubmissionList(generics.ListCreateAPIView):
+class SubmissionList(APIView):
     permission_classes = (permissions.AllowAny,)
     serializer_class = SubmissionSerializer
     parser_classes = (JSONParser,)
@@ -291,7 +291,7 @@ class SubmissionList(generics.ListCreateAPIView):
                 task_id_table.add(q.task_id)
         return result
 
-    def list(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         serializer = GetSubmissionSerializer(queryset, many=True)
         return Response(serializer.data)
