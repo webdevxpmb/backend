@@ -296,8 +296,6 @@ class SubmissionList(APIView):
         serializer = GetSubmissionSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
 
     def post(self, request, *args, **kwargs):
         try:
@@ -307,7 +305,7 @@ class SubmissionList(APIView):
             task = Task.objects.get(id=data['task'])
             if task.end_time < datetime.datetime.now():
                 return Response({"message": "The submission deadline has been overdue"}, status=400)
-            self.perform_create(serializer)
+            serializer.save()
             instance = Submission.objects.get(id=serializer.data['id'])
             response_serializer = GetSubmissionSerializer(instance)
             headers = self.get_success_headers(response_serializer.data)
