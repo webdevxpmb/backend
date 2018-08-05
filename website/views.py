@@ -209,7 +209,6 @@ class ElementWordList(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         self.permission_classes = (IsElemenOrAdmin, )
         data = request.data
-        data['author'] = request.user.id
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
@@ -277,17 +276,23 @@ class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class SubmissionList(generics.ListCreateAPIView):
-    permission_classes = (IsMabaOrAdmin,)
+    permission_classes = (permissions.AllowAny,)
     serializer_class = SubmissionSerializer
     parser_classes = (JSONParser,)
     filter_fields = ('task', )
 
     def get_queryset(self):
-        queryset = Submission.objects.filter(user=self.request.user).order_by('-updated_at', '-created_at').distinct('task')
-        return queryset
+        task_id_table = set()
+        queryset = Submission.objects.filter(user=self.request.user).order_by('-updated_at', '-created_at')
+        result = []
+        for q in queryset:
+            if q.task_id not in task_table:
+                result.append(q)
+                task_id_table.add(q.task_id)
+        return result
 
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
+        queryset = self.get_queryset()
         serializer = GetSubmissionSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -297,7 +302,6 @@ class SubmissionList(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         try:
             data = request.data
-            data['user'] = request.user.id
             serializer = self.get_serializer(data=data)
             serializer.is_valid(raise_exception=True)
             task = Task.objects.get(id=data['task'])
@@ -517,7 +521,6 @@ class VotingListCreate(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         try:
             data = request.data
-            data['user'] = request.user.id
             vote_option = VoteOption.objects.get(id=data['vote_option'])
             vote = vote_option.vote
             if vote.end_time < datetime.datetime.now():
