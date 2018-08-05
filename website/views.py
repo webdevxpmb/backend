@@ -209,6 +209,7 @@ class ElementWordList(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         self.permission_classes = (IsElemenOrAdmin, )
         data = request.data
+        data['author'] = request.user.id
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
@@ -296,6 +297,7 @@ class SubmissionList(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         try:
             data = request.data
+            data['user'] = request.user.id
             serializer = self.get_serializer(data=data)
             serializer.is_valid(raise_exception=True)
             task = Task.objects.get(id=data['task'])
@@ -515,6 +517,7 @@ class VotingListCreate(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         try:
             data = request.data
+            data['user'] = request.user.id
             vote_option = VoteOption.objects.get(id=data['vote_option'])
             vote = vote_option.vote
             if vote.end_time < datetime.datetime.now():
