@@ -21,7 +21,7 @@ class FileSerializer(serializers.ModelSerializer):
         filename = str(uuid.uuid4())
         dbx.files_upload(validated_data['file'].file.getvalue(), '/' + filename)
         result = dbx.sharing_create_shared_link('/' + filename)
-        validated_data['file'] = result.url + '&raw=1'
+        validated_data['file'] = result.url
         return validated_data
 
 class PostTypeSerializer(serializers.ModelSerializer):
