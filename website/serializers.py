@@ -18,7 +18,8 @@ class FileSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         dbx = Dropbox('bTgof9agI8AAAAAAAAAACqcCQi31fo9vEaDVqkuU3RkONXR_dbyoHE6difvZCU4i')
-        filename = str(uuid.uuid4())
+        filename = str(uuid.uuid4()) + '.' + validated_data['file'].name.split('.')[1]
+        print(filename)
         dbx.files_upload(validated_data['file'].file.getvalue(), '/' + filename)
         result = dbx.sharing_create_shared_link('/' + filename)
         validated_data['file'] = result.url
