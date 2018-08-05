@@ -9,11 +9,15 @@
 
 ## Installation
 
+[Back to sections](#sections)
+
 This API use Python 2.7
 
 Ini cara install di local
 * Pull repository backend
 * Cd ke folder backendnya
+* Uncomment di backend/cas_views.py untuk pakai library yg python 2.7
+  * So far sih ini aja, tp kalo nanti ada yang lain pasti ditandain '# For Python 2.7gii'
 * Buat virtual environment baru yang versi Python-nya 2.7
   * DI TERMINAL : pip2 install virtualenv
   * DI TERMINAL : virtualenv < your virtual environment folder > --python=python2.7
@@ -35,21 +39,48 @@ Ini cara install di local
 
 ## Endpoints
 
+[Back to sections](#sections)
+
 For now, liat di Models dulu details spesifikasinya
 
+### Endpoints List
+
+============================================================
+
+* [Authentication](#authentication)
+* [User Related](#user-related)
+* [Announcement and Post](#announcement-and-post)
+* [Task and Submission](#task-and-submission)
+
+============================================================
+
 * ### Authentication
-  * GET /pmb-api/login/
-  * GET /pmb-api/logout/
+  [Back to endpoints list](#endpoints-list)
+  * > GET **/pmb-api/login/**
+  * > GET **/pmb-api/logout/**
 
 * ### User Related
-  ============================================================  
+
+  [Back to endpoints list](#endpoints-list)
+  
+  ============================================================
+
   **Model used -> [User](#user)**
-  * GET POST /pmb-api/user/  
-  See below (Perbedaannya kalo disini jadi list aja)
-  * GET PUT PATCH DELETE /pmb-api/user/< id >/  
-  Probably yang bakal dipakai cuma GET, karena edit profile di endpoint lain  
-  **JSON**:
-    <pre>{
+
+  * > GET POST **/pmb-api/user/**
+
+    **Permission Classes:** IsPmbAdmin
+
+    JSON lihat dibawah (Perbedaannya kalo disini jadi list aja)
+
+  * > GET PUT PATCH DELETE **/pmb-api/user/{id-dari-usernya}/**
+
+    **Permission Classes:** IsPmbAdmin
+
+    Probably yang bakal dipakai cuma GET, karena edit profile di endpoint lain  
+    **JSON**:
+    ```json
+    {
       "id": 11,
       "username": "pande.ketut71",
       "profile": {
@@ -64,15 +95,33 @@ For now, liat di Models dulu details spesifikasinya
           "email": "pande.ketut71@ui.ac.id"
       }
     }
-    </pre>
+    ```
+
   ============================================================
-  * GET POST /pmb-api/user-profile/  
-  Kalo mau add user profile manual lewat sini  
-  See below (Perbedaannya kalo disini jadi list trus role dan angkatan cuma idnya aja)  
-  * GET PUT PATCH DELETE /pmb-api/user-profile/< id >  
-  Probably POST ga dipakai, karena user profile auto-generate pas user login  
-  **JSON**:
-    <pre>
+
+  **Model used => [UserProfile](#userprofile)**
+
+  * > GET POST **/pmb-api/user-profile/**
+
+    **Permission Classes:** IsAuthenticated
+
+    Kalo mau add user profile manual lewat sini  
+    JSON lihat dibawah (Perbedaannya kalo disini jadi list trus role dan angkatan cuma idnya aja)
+
+  * > GET PUT PATCH DELETE **/pmb-api/user-profile/{id-dari-userprofilenya}**
+
+    **Permission Classes:** IsAuthenticated (GET), IsOwner (PUT, PATCH, DELETE)
+
+    Probably POST ga dipakai, karena user profile auto-generate pas user login  
+    * Role auto diassign jadi maba (for maba obviously) dan elemen (untuk sisanya)  
+    * Role admin diassign manual
+    * Default assignment :
+      * photo, asal_sekolah, link_gdrive, line_id, phone_number, birth_place, birth_date diassign **null**
+      * about diassign **empty string**
+      * score diassign **0.0**
+
+    **JSON**:
+    ```json
     {
       "id": 4,
       "user": 11,
@@ -90,8 +139,9 @@ For now, liat di Models dulu details spesifikasinya
       "email": "pande.ketut71@ui.ac.id",
       "photo": null,
       "about": "",
-      "linkedin": null,
-      "facebook": null,
+      "asal_sekolah": null,
+      "link_gdrive": null,
+      "line_id": null,
       "phone_number": null,
       "birth_place": null,
       "birth_date": null,
@@ -99,56 +149,96 @@ For now, liat di Models dulu details spesifikasinya
       "created_at": "2018-07-02T23:54:20.976634",
       "updated_at": "2018-07-02T23:58:23.347770"
     }
-    </pre>
+    ```
 
   ============================================================
 
-  * GET POST /pmb-api/role/  
-  Role udah di seed jadi probably ga bakal POST manual  
-  See below (bedanya cuma disini jadi list)
-  * GET PUT PATCH DELETE /pmb-api/role/< id >/  
-  JSON:
-    <pre>
-    {
-      "id": 2,
-      "role_name": "admin"
-    }
-    </pre>
+  **Model used => [Role](#role)**
+
+  * > GET POST **/pmb-api/role/**
+
+    **Permission Classes:** IsPmbAdmin
+
+    Role udah di seed jadi probably ga bakal POST manual  
+    JSON lihat dibawah (bedanya cuma disini jadi list)
+
+  * > GET PUT PATCH DELETE **/pmb-api/role/{id-dari-rolenya}/**
+
+    **Permission Classes:** IsPmbAdmin
+  
+    **JSON**:
+    ```json
+      {
+        "id": 2,
+        "role_name": "admin"
+      }
+    ```
 
   ============================================================
 
-  * GET POST /pmb-api/angkatan/  
-  Angkatan udah di seed jadi probably ga bakal POST manual  
-  See below (bedanya cuma disini jadi list)
-  * GET PUT PATCH DELETE /pmb-api/angkatan/< id >/  
-  JSON:
-    <pre>
+  **Model used => [Angkatan](#angkatan)**
+
+  * > GET POST **/pmb-api/angkatan/**
+
+    **Permission Classes:** IsPmbAdmin
+
+    Angkatan udah di seed jadi probably ga bakal POST manual  
+    JSON lihat dibawah (bedanya cuma disini jadi list)
+
+  * > GET PUT PATCH DELETE **/pmb-api/angkatan/{id-dari-angkatannya}/**
+  
+    **JSON:**
+    ```json
     {
       "id": 26,
       "year": "2018",
       "name": "2018"
     }
-    </pre>
+    ```
 
   ============================================================
 
 * ### Announcement and Post
 
-  ============================================================  
-  Ini satu set mirip semua, perbedaannya cuma kalo announcement dia querynya cuma ngembaliin yang PostType-nya Pengumuman aja dan kalo mau add post baru apapun jenisnya, selalu lewat /pmb-api/post/  
+  [Back to endpoints list](#endpoints-list)
+
+  ============================================================
+
+  **Model used => [Post](#post)**
+
+  **Ini satu set mirip semua, perbedaannya cuma kalo announcement dia querynya cuma ngembaliin yang PostType-nya Pengumuman aja dan kalo mau add post baru apapun jenisnya, selalu lewat /pmb-api/post/**
   
-  Query String buat GET:  
-  post_type -> filter by type  
-  author__profile__angkatan -> filter by angkatan yang buat postnya  
+  **Query String buat GET:**
+
+  * post_type -> filter by type
+  * author__profile__angkatan -> filter by angkatan yang buat postnya
+
   Example:  
-  /pmb-api/post/?=post_type=pengumuman&author__profile__angkatan=tarung&page=1&page_size=2  
-  Ambil semua post bertipe pengumuman yang dibuat anak tarung, page pertama dmn tiap page 2 post aja yang diambil
-  * GET /pmb-api/announcement/  
-  See below (virtually sama, cuma kalo ini query yg pengumuman aja lalu dan post tetep lewat bawah)
-  * GET POST /pmb-api/post/  
-  JSON:  
-  Ini hasil dari "http://127.0.0.1:8000/pmb-api/announcement/",
-    <pre>
+  > **/pmb-api/post/?=post_type=pengumuman&author__profile__angkatan=tarung**
+
+  Ambil semua post bertipe pengumuman yang dibuat anak tarung
+
+  * > GET **/pmb-api/announcement/**
+
+    **Permission Classes:** IsAuthenticated
+  
+    *JSON lihat dibawah (virtually sama, cuma kalo ini query yg pengumuman aja lalu dan post tetep lewat bawah)
+
+  * > GET POST **/pmb-api/post/**
+
+    **Permission Classes:** IsAuthenticated (GET), IsPmbAdmin (POST)
+
+    Tetap kalo POST cuma single object
+    * Required : content dan post_type
+    * post_type itu id dari post_typenya
+    * title boleh null tapi ga boleh blank (empty string)
+    * cover_image_link, summary, attachment_link boleh null dan blank (empty string)
+    * author diambil dari request
+    * created_at, updated_at auto generated
+
+    JSON:  
+    Ini hasil dari **http://127.0.0.1:8000/pmb-api/announcement/**,
+    ```json
     [
       {
           "id": 1,
@@ -180,39 +270,195 @@ For now, liat di Models dulu details spesifikasinya
           "updated_at": "2018-07-04T17:22:08.119213"
       }
     ]
-    </pre>
+    ```
+
+    POST Kalo ngepost cukup kayak gini
+    ```json
+    {
+        "title": "PENGUMUMAN CAHYA",
+        "cover_image_link": null,
+        "summary": "cahya itu ganteng",
+        "content": "cahya ganteng banget",
+        "post_type": 1,
+        "attachment_link": null
+    }
+    ```
   
-  * GET PUT PATCH DELETE /pmb-api/post/< id >/  
-  See above, ambil satu object aja
+  * > GET PUT PATCH DELETE **/pmb-api/post/{id-dari-postnya}/**
+
+    **Permission Classes:** IsAuthenticated (GET), IsOwner (sisanya)
+
+    JSON lihat diatas (cuma satu object aja, bukan list, spesifikasi json sama)
 
   ============================================================
 
-  * GET POST /pmb-api/post-type/  
-  See below (as usual, bedanya cuma dia di list dan kalo add baru lewat sini)
-  * GET PUT PATCH DELETE /pmb-api/post-type/{id}/  
-  JSON:  
-    <pre>
+  **Model used => [PostType](#posttype)**
+
+  * > GET POST **/pmb-api/post-type/**
+
+    **Permission Classes:** IsPmbAdmin
+
+    JSON lihat bawah (as usual, bedanya cuma dia di list dan kalo add baru cuma satu object and lewat sini)
+
+  * > GET PUT PATCH DELETE **/pmb-api/post-type/{id-dari-posttypenya}/**
+
+    **Permission Classes:** IsPmbAdmin
+
+    JSON:  
+    ```json
     {
       "id": 1,
       "post_type": "pengumuman"
     }
-    </pre>
+    ```
+
+  ============================================================  
+
+* ### Task and Submission
+
+  [Back to endpoints list](#endpoints-list)
+
+  ============================================================
+
+  **Model used => [Task](#task)**
+
+  * > GET POST **/pmb-api/task/**
+
+    **Permission Classes:** IsAuthenticated (GET), IsPmbAdmin (POST)
+
+    JSON lihat bawah (as usual, bedanya cuma dia di list dan kalo add baru cuma satu object and lewat sini)
+
+  * > GET PUT PATCH DELETE **/pmb-api/task/{id-dari-tasknya}/**
+
+    **Permission Classes:** IsAuthenticated (GET), IsOwner (sisanya)
+
+    * Required: start_time and end_time
+    * name boleh null, tapi ga boleh blank (empty_string)
+    * sisanya boleh null, boleh blank, default null
+    * isKenalan auto false kalo ga diisi
+    * as usual, created_at and updated_at autogenerated
+
+    **JSON:**
+    ```json
+    {
+        "id": 1,
+        "name": "Task Cahyo",
+        "description": "Kumpulkan sebanyak mungkin merchandise Ice Bear",
+        "start_time": "2018-06-15T00:00:00",
+        "attachment_link": null,
+        "end_time": "2018-08-03T16:37:39",
+        "is_kenalan": false,
+        "expected_amount_omega": null,
+        "expected_amount_capung": null,
+        "expected_amount_orion": null,
+        "expected_amount_alumni": null,
+        "created_at": "2018-08-03T16:37:49.872308",
+        "updated_at": "2018-08-03T16:37:49.872326"
+    }
+    ```
+
+    Kalo POST kayak bisa gini (add other fields as needed, such as isKenalan kalo ini task Kenalan and so on) :
+    ```json
+    {
+        "name": "Task Cahyo",
+        "description": "Kumpulkan sebanyak mungkin merchandise Ice Bear",
+        "start_time": "2018-06-15T00:00:00",
+        "end_time": "2018-08-03T16:37:39"
+    }
+    ```
+
+  ============================================================
+
+  **Model used => [Submission](#submission)**
+
+  **Semua submission beserta semua fieldnya hanya ditampilkan  di django-admin**  
+  Kalo lewat API, yang bisa di GET cuma submission punya sendiri (walaupun kamu superuser, staff, pmbadmin, tetap cuma submission sendiri yang bisa di GET)  
+  Ada 2 additional field yang ga ditampilin kalau lewat API, yaitu is_checked and is_approved
+
+  * > GET POST **/pmb-api/submission/**
+
+    **Permission Classes:** IsMabaOrAdmin
+
+    JSON lihat bawah (as usual, bedanya cuma dia di list dan kalo add baru cuma satu object and lewat sini)
+
+  * > GET PUT PATCH DELETE **/pmb-api/submission/{id-dari-submissionnya}/**
+
+    **Permission Classes:** IsOwner
+
+    * user langsung diambil dari request
+    * user dan task bukan cuma id doang
+    * file_link boleh null (seriously boleh)
+
+    **JSON:**
+    ```json
+    {
+        "id": 2,
+        "user": {
+            "id": 11,
+            "username": "pande.ketut71",
+            "profile": {
+                "id": 4,
+                "name": "Pande Ketut Cahya Nugraha",
+                "npm": "1706028663",
+                "angkatan": {
+                    "id": 1,
+                    "year": "2017",
+                    "name": "tarung"
+                },
+                "email": "pande.ketut71@ui.ac.id"
+            }
+        },
+        "task": {
+            "id": 1,
+            "name": "Task Cahyo",
+            "description": "Kumpulkan sebanyak mungkin merchandise Ice Bear",
+            "start_time": "2018-06-15T00:00:00",
+            "attachment_link": null,
+            "end_time": "2018-08-03T16:37:39",
+            "is_kenalan": true,
+            "expected_amount_omega": null,
+            "expected_amount_capung": null,
+            "expected_amount_orion": null,
+            "expected_amount_alumni": null,
+            "created_at": "2018-08-03T16:37:49.872308",
+            "updated_at": "2018-08-03T16:47:59.146163"
+        },
+        "file_link": "www.miniso.com"
+    }
+    ```
+
+    Kalo POST kayak gini:
+    ```json
+    {
+      "task": 1,
+      "file_link": "www.miniso.com"
+    }
+    ```
 
   ============================================================
 
 ## Models
 
+[Back to sections](#sections)
+
 ### Daftar Models
 
-...............................  
-[User](#user)  
-[UserProfile](#userprofile)  
-[ShrinkedUserProfile](#shrinkeduserprofile)  
-[Post](#post)  
-[PostType](#posttype)  
-...............................  
+============================================================
+
+* [User](#user)
+* [UserProfile](#userprofile)
+* [ShrinkedUserProfile](#shrinkeduserprofile)
+* [Post](#post)
+* [PostType](#posttype)
+* [Task](#task)
+* [Submission](#submission)
+
+============================================================
 
 * ### User
+
+  [Back to Daftar Models](#daftar-models)
+
   Fields:
   * id
     * type: integer
@@ -225,6 +471,9 @@ For now, liat di Models dulu details spesifikasinya
     See [ShrinkedUserProfile](#shrinkeduserprofile)  
 
 * ### UserProfile  
+
+  [Back to Daftar Models](#daftar-models)
+
   Fields:
   * id:
     * type: integer
@@ -253,12 +502,15 @@ For now, liat di Models dulu details spesifikasinya
     * format: uri
   * about:
     * type: string
-  * linkedin:
+  * asal_sekolah:
     * type: string
-    * maxLength: 128
-  * facebook:
+    * maxLength: 100
+  * link_gdrive:
     * type: string
-    * maxLength: 128
+    * maxLength: 100
+  * line_id:
+    * type: string
+    * maxLength: 100
   * phone_number:
     * type: string
     * maxLength: 20
@@ -275,6 +527,9 @@ For now, liat di Models dulu details spesifikasinya
     * type: string date-time
 
 * ### ShrinkedUserProfile  
+
+  [Back to Daftar Models](#daftar-models)
+
   Fields:  
   * id:
     * type: integer
@@ -304,6 +559,9 @@ For now, liat di Models dulu details spesifikasinya
     * minLength: 1
 
 * ### Post  
+
+  [Back to Daftar Models](#daftar-models)
+
   Fields:
   * id  
     * type : integer
@@ -342,6 +600,9 @@ For now, liat di Models dulu details spesifikasinya
     * Tidak dibutuhkan saat POST, auto-generated
 
 * ### PostType  
+
+  [Back to Daftar Models](#daftar-models)
+  
   Fields:
   * id  
     * type : integer  
@@ -349,12 +610,68 @@ For now, liat di Models dulu details spesifikasinya
   * **post_type**  
     * type : string  
 
+* ### Task
+
+  [Back to Daftar Models](#daftar-models)
+
+  Fields:
+  * id
+    * type : integer
+    * auto-generated
+  * name
+    * type : string
+    * maxLength: 255
+    * minLength: 1
+  * description
+    * type : string
+  * **start_time**
+    * type : string date-time
+  * attachment_link
+    * type : string
+    * maxLength: 255
+  * **end_time**
+    * type : string date-time
+  * is_kenalan
+    * type : boolean
+  * expected_amount_omega
+    * type : integer
+  * expected_amount_capung
+    * type : integer
+  * expected_amount_orion
+    * type : integer
+  * expected_amount_alumni
+    * type : integer
+  * created_at
+    * type : string date-time
+  * updated_at
+    * type : string date-time
+
+* ### Submission
+
+  [Back to Daftar Models](#daftar-models)
+
+  Fields:
+  * id
+    * type: integer
+  * user
+    * type: integer
+    * expanded pas di GET
+  * **task**
+    * type: integer
+    * expanded pas di GET
+  * file_link
+    * type: string
+    * maxLength: 255
+    * minLength: 1
+
   Note:  
   Defaultnya ada dua PostType, yaitu Pengumuman dan Post Biasa  
   Untuk PostType Pengumuman, nama dari post_type nya adalah 'pengumuman'  
   Untuk PostBiasa, nama dari post_type nya adalah 'post biasa'
 
-### Login Explanation
+### Login Explaination
+
+[Back to sections](#sections)
 
 Karena kita login menggunakan SSO UI, loginnya agak ribet (?).  
 Basically stepsnya kayak gini:  
