@@ -286,7 +286,7 @@ class SubmissionList(generics.ListCreateAPIView):
         queryset = Submission.objects.filter(user=self.request.user).order_by('-updated_at', '-created_at')
         result = []
         for q in queryset:
-            if q.task_id not in task_table:
+            if q.task_id not in task_id_table:
                 result.append(q)
                 task_id_table.add(q.task_id)
         return result
