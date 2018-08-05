@@ -25,13 +25,13 @@ urlpatterns = format_suffix_patterns([
     url(r'/generate-token/$',
         utils.generate_token, name='generate-token'),
 
-    url(r'delete-expired-token/$',
+    url(r'/delete-expired-token/$',
         utils.delete_expired_token, name='delete-expired-token'),
 
-    url(r'create-kenalan/$',
+    url(r'/create-kenalan/$',
         utils.create_kenalan_by_token, name='create-kenalan'),
 
-    url(r'create-kenalan-non-sso/$',
+    url(r'/create-kenalan-non-sso/$',
         utils.create_kenalan_non_sso, name='create-kenalannonsso'),
 
 
