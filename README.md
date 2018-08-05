@@ -348,9 +348,9 @@ For now, liat di Models dulu details spesifikasinya
         "attachment_link": null,
         "end_time": "2018-08-03T16:37:39",
         "is_kenalan": false,
+        "expected_amount_tarung": null,
         "expected_amount_omega": null,
         "expected_amount_capung": null,
-        "expected_amount_orion": null,
         "expected_amount_alumni": null,
         "created_at": "2018-08-03T16:37:49.872308",
         "updated_at": "2018-08-03T16:37:49.872326"
@@ -416,9 +416,9 @@ For now, liat di Models dulu details spesifikasinya
             "attachment_link": null,
             "end_time": "2018-08-03T16:37:39",
             "is_kenalan": true,
+            "expected_amount_tarung": null,
             "expected_amount_omega": null,
             "expected_amount_capung": null,
-            "expected_amount_orion": null,
             "expected_amount_alumni": null,
             "created_at": "2018-08-03T16:37:49.872308",
             "updated_at": "2018-08-03T16:47:59.146163"
@@ -633,11 +633,11 @@ For now, liat di Models dulu details spesifikasinya
     * type : string date-time
   * is_kenalan
     * type : boolean
+  * expected_amount_tarung
+    * type : integer
   * expected_amount_omega
     * type : integer
   * expected_amount_capung
-    * type : integer
-  * expected_amount_orion
     * type : integer
   * expected_amount_alumni
     * type : integer
