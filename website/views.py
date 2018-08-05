@@ -299,7 +299,8 @@ class SubmissionList(APIView):
 
     def post(self, request, *args, **kwargs):
         try:
-            data = request.data
+            data = request.data.copy()
+            data['user'] = self.request.user
             serializer = SubmissionSerializer(data=data)
             serializer.is_valid(raise_exception=True)
             task = Task.objects.get(id=data['task'])
@@ -310,7 +311,6 @@ class SubmissionList(APIView):
             response_serializer = GetSubmissionSerializer(instance)
             return Response(response_serializer.data, status=201, headers=headers)
         except Exception as e:
-            print(e)
             return Response(status=400)
 
 
