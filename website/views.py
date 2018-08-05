@@ -300,7 +300,7 @@ class SubmissionList(APIView):
     def post(self, request, *args, **kwargs):
         try:
             data = request.data.copy()
-            data['user'] = self.request.user
+            data['user'] = self.request.user.id
             serializer = SubmissionSerializer(data=data)
             serializer.is_valid(raise_exception=True)
             task = Task.objects.get(id=data['task'])
