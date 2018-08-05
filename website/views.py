@@ -309,9 +309,8 @@ class SubmissionList(APIView):
             serializer.save()
             instance = Submission.objects.get(id=serializer.data['id'])
             response_serializer = GetSubmissionSerializer(instance)
-            return Response(response_serializer.data, status=201, headers=headers)
+            return Response(response_serializer.data, status=201)
         except Exception as e:
-            print(e)
             return Response(status=400)
 
 
