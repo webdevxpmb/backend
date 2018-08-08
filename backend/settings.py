@@ -241,10 +241,10 @@ TEMPLATE_DIRS = (
 
 # cloudinary settings
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'webdevxpmb',
-    'API_KEY': '412671288918363',
-    'API_SECRET': 'iHz7liAJx4dOH8HcXJFNCoUF7FE'
-}
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': 'webdevxpmb',
+#     'API_KEY': '412671288918363',
+#     'API_SECRET': 'iHz7liAJx4dOH8HcXJFNCoUF7FE'
+# }
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
