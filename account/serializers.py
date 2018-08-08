@@ -29,12 +29,17 @@ class UserProfileSerializer(serializers.ModelSerializer):
 class GetUserProfileSerializer(serializers.ModelSerializer):
     role = RoleSerializer()
     angkatan = AngkatanSerializer()
+    photo_url = serializers.SerializerMethodField()
     class Meta:
         model = UserProfile
         fields = ('id', 'user', 'name', 'role', 'npm', 'angkatan', 'email',
                   'photo', 'about', 'asal_sekolah', 'link_gdrive', 'line_id', 'phone_number',
-                  'birth_place', 'birth_date', 'score', 'created_at', 'updated_at')
+                  'birth_place', 'birth_date', 'score', 'created_at', 'updated_at', 'photo_url')
         read_only_fields = ('role', 'npm', 'angkatan', 'user')
+
+    def get_photo_url(self, user_profile):
+        photo_url = 'http://ristek.cs.ui.ac.id' + user_profile.photo.url
+        return photo_url
 
 
 class ShrinkedUserProfileSerializer(serializers.ModelSerializer):
