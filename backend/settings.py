@@ -218,7 +218,7 @@ JWT_AUTH = {
 
 
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
-STATIC_URL = '/pmb-api/static/'
+STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files.
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
@@ -227,8 +227,8 @@ STATICFILES_DIRS = (
 )
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'pmb-api/media')
-MEDIA_URL = '/pmb-api/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, '/media')
+MEDIA_URL = '/media/'
 
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
