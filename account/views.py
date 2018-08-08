@@ -75,12 +75,19 @@ class UserProfileDetail(generics.RetrieveUpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         try:
+            print('masuk sini 1')
             self.permission_classes = (IsOwner, )
+            print('masuk sini 2')
             partial = kwargs.pop('partial', False)
+            print('masuk sini 3')
             instance = self.get_object()
+            print('masuk sini 4')
             serializer = self.get_serializer(instance, data=request.data, partial=partial)
+            print('masuk sini 5')
             serializer.is_valid(raise_exception=True)
+            print('masuk sini 6')
             self.perform_update(serializer)
+            print('masuk sini 7')
         except Exception as e:
             print(e)
         return Response(GetUserProfileSerializer(instance).data)
