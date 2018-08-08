@@ -74,13 +74,15 @@ class UserProfileDetail(generics.RetrieveUpdateAPIView):
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
-        self.permission_classes = (IsOwner, )
-        partial = kwargs.pop('partial', False)
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-
+        try:
+            self.permission_classes = (IsOwner, )
+            partial = kwargs.pop('partial', False)
+            instance = self.get_object()
+            serializer = self.get_serializer(instance, data=request.data, partial=partial)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+        except Exception as e:
+            print(e)
         return Response(GetUserProfileSerializer(instance).data)
 
     def delete(self, request, *args, **kwargs):
