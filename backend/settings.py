@@ -30,7 +30,6 @@ SECRET_KEY = '3-$(qogu0ez1jrip7^x#@b)d&xtv#2g8ej8j)2a^p%*5e8!v!p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-
 ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_WHITELIST = (
     'localhost:3000',
@@ -102,6 +101,7 @@ CLIENT_HOST = 'http://localhost:3000'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 if IDENTIFIER == 'production':
+    HOST_URL = 'http://ristek.cs.ui.ac.id'
     CLIENT_HOST = 'http://pmb.cs.ui.ac.id'
     DATABASES = {
         'default': {
@@ -116,6 +116,7 @@ if IDENTIFIER == 'production':
     db_from_env = dj_database_url.config()
     DATABASES['default'].update(db_from_env)
 else:
+    HOST_URL = 'http://localhost:8000'
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
