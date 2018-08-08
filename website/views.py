@@ -1,7 +1,7 @@
 from rest_framework import generics, permissions, exceptions
 from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
+from rest_framework.parsers import JSONParser, MultiPartParser, FormParser, FileUploadParser
 from rest_framework.response import Response
 from django.db import IntegrityError
 from website.serializers import (
@@ -45,7 +45,7 @@ class FileView(APIView):
             file_serializer = FileSerializer(data=request.data)
             if file_serializer.is_valid():
                 result = file_serializer.save()
-                return Response(result, status=status.HTTP_201_CREATED)
+                return Response(file_serializer.data, status=status.HTTP_201_CREATED)
             else:
                 return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
