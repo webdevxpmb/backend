@@ -1,3 +1,4 @@
+import logging
 from django.contrib.auth.models import User
 from rest_framework import permissions
 from rest_framework.parsers import FileUploadParser, JSONParser
@@ -17,6 +18,7 @@ from account.permissions import(
     IsPmbAdmin,
 )
 
+logging.basicConfig(level=logging.DEBUG)
 
 class UserList(generics.ListAPIView):
     permission_classes = (IsPmbAdmin,)
@@ -75,21 +77,21 @@ class UserProfileDetail(generics.RetrieveUpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         try:
-            print('masuk sini 1')
+            logging.debug('masuk sini 1')
             self.permission_classes = (IsOwner, )
-            print('masuk sini 2')
+            logging.debug('masuk sini 2')
             partial = kwargs.pop('partial', False)
-            print('masuk sini 3')
+            logging.debug('masuk sini 3')
             instance = self.get_object()
-            print('masuk sini 4')
+            logging.debug('masuk sini 4')
             serializer = self.get_serializer(instance, data=request.data, partial=partial)
-            print('masuk sini 5')
+            logging.debug('masuk sini 5')
             serializer.is_valid(raise_exception=True)
-            print('masuk sini 6')
+            logging.debug('masuk sini 6')
             self.perform_update(serializer)
-            print('masuk sini 7')
+            logging.debug('masuk sini 7')
         except Exception as e:
-            print(e)
+            logging.debug(e)
         return Response(GetUserProfileSerializer(instance).data)
 
     def delete(self, request, *args, **kwargs):
