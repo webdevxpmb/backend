@@ -4,6 +4,8 @@ from account.models import (
     Role, Angkatan, UserProfile,
 )
 
+from backend.settings import HOST_URL
+
 
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
@@ -38,7 +40,7 @@ class GetUserProfileSerializer(serializers.ModelSerializer):
         read_only_fields = ('role', 'npm', 'angkatan', 'user')
 
     def get_photo_url(self, user_profile):
-        photo_url = 'http://ristek.cs.ui.ac.id' + user_profile.photo.url
+        photo_url = HOST_URL + user_profile.photo.url
         return photo_url
 
 
