@@ -51,10 +51,6 @@ def login(request, next_page=None, required=False):
     if not next_page:
         next_page = get_redirect_url(request)
 
-    if request.method == 'POST' and request.POST.get('logoutRequest'):
-        clean_sessions(client, request)
-        return HttpResponseRedirect(next_page)
-
     if request.user.is_authenticated():
         if settings.CAS_LOGGED_MSG is not None:
             message = settings.CAS_LOGGED_MSG % request.user.get_username()
