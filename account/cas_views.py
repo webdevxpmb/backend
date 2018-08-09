@@ -59,7 +59,24 @@ def login(request, next_page=None, required=False):
         if settings.CAS_LOGGED_MSG is not None:
             message = settings.CAS_LOGGED_MSG % request.user.get_username()
             messages.success(request, message)
-        return render(request, 'index.html')
+        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
+        payload = jwt_payload_handler(request.user)
+        token = jwt_encode_handler(payload)
+
+        user_profile = UserProfile.objects.get(user=request.user)
+        profile_id = user_profile.id
+        name = user_profile.name
+        npm = user_profile.npm
+        email = user_profile.email
+        role = user_profile.role.role_name
+        angkatan = user_profile.angkatan.name
+
+        data = {'user_id': request.user.id, 'user': request.user.username, 'token': token,
+                'profile_id': profile_id,
+                'name': name, 'npm': npm, 'email': email, 'role': role, 'angkatan': angkatan}
+        return render(request, 'index.html', data)
 
     ticket = request.GET.get('ticket')
     if ticket:
