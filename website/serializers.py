@@ -6,7 +6,8 @@ from website.models import (
     PostType,
     Album, EventStatistic,
     TaskStatistic, UserStatistic,
-    Vote, VoteOption, Voting, File
+    Vote, VoteOption, Voting, File,
+    QnA
 )
 from account.serializers import UserSerializer
 from dropbox import Dropbox
@@ -53,7 +54,6 @@ class GetCommentsSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ('id', 'post', 'author', 'comment', 'created_at', 'updated_at')
 
-
 class ElementWordSerializer(serializers.ModelSerializer):
     class Meta:
         model = ElementWord
@@ -75,6 +75,18 @@ class TaskSerializer(serializers.ModelSerializer):
                   'expected_amount_omega', 'expected_amount_capung',
                   'expected_amount_alumni', 'created_at', 'updated_at')
 
+class QnASerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QnA
+        fields = ('id', 'task', 'author', 'comment', 'created_at', 'updated_at')
+
+class GetQnASerializer(serializers.ModelSerializer):
+    task = TaskSerializer()
+    author = UserSerializer()
+
+    class Meta:
+        model = QnA
+        fields = ('id', 'task', 'author', 'comment', 'created_at', 'updated_at')
 
 class SubmissionSerializer(serializers.ModelSerializer):
     class Meta:
