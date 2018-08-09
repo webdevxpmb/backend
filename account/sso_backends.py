@@ -48,8 +48,8 @@ class CASBackend(ModelBackend):
             })
             if created:
                 user = self.configure_user(user)
-            if settings.CAS_APPLY_ATTRIBUTES_TO_USER and attributes:
-                self.configure_user_profile(user, attributes)
+            # if settings.CAS_APPLY_ATTRIBUTES_TO_USER and attributes:
+            self.configure_user_profile(user, attributes)
         else:
             created = False
             try:
