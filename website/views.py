@@ -12,7 +12,7 @@ from website.serializers import (
     UserStatisticSerializer, GetPostSerializer, GetCommentsSerializer,
     GetElementWordSerializer, GetSubmissionSerializer, GetEventStatisticSerializer,
     VoteSerializer, GetVoteSerializer, VoteOptionSerializer, GetVoteOptionSerializer,
-    VotingSerializer, GetVotingSerializer, FileSerializer
+    VotingSerializer, GetVotingSerializer, FileSerializer, QnASerializer, GetQnASerializer
 )
 
 from account import permissions as account_permissions
@@ -24,7 +24,7 @@ from website.models import (
     Event,
     Album, TaskStatistic,
     UserStatistic, EventStatistic,
-    Vote, VoteOption, Voting,
+    Vote, VoteOption, Voting, QnA,
 )
 from account.permissions import (
     IsPmbAdmin,
@@ -194,7 +194,6 @@ class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
 
         return Response(GetCommentsSerializer(instance).data)
 
-
 class ElementWordList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, )
     queryset = ElementWord.objects.all()
@@ -277,6 +276,53 @@ class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
         else:
             raise exceptions.PermissionDenied
 
+class QnAList(generics.ListCreateAPIView):
+    permission_classes = (permissions.IsAuthenticated, )
+    queryset = QnA.objects.all()
+    serializer_class = QnASerializer
+    filter_fields = ('task', )
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = GetQnASerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        data['author'] = request.user.id
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        instance = QnA.objects.get(id=serializer.data['id'])
+        response_serializer = GetQnASerializer(instance)
+        headers = self.get_success_headers(response_serializer.data)
+        return Response(response_serializer.data, status=201, headers=headers)
+
+class QnADetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsOwner, )
+    queryset = QnA.objects.all()
+    serializer_class = QnASerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = GetQnASerializer(instance)
+        return Response(serializer.data)
+
+    def perform_update(self, serializer):
+        serializer.save(author=self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        task = instance.task
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(GetQnASerializer(instance).data)
 
 class SubmissionList(APIView):
     permission_classes = (permissions.AllowAny,)

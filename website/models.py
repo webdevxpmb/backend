@@ -48,7 +48,6 @@ class Comment(models.Model):
     class Meta:
         pass
 
-
 class ElementWord(models.Model):
     """
     Description: Model Description
@@ -80,6 +79,19 @@ class Task(models.Model):
     expected_amount_omega = models.SmallIntegerField(blank=True, null=True)
     expected_amount_capung = models.SmallIntegerField(blank=True, null=True)
     expected_amount_alumni = models.SmallIntegerField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        pass
+
+class QnA(models.Model):
+    """
+    Description: Model Description
+    """
+    task = models.ForeignKey(Task, related_name="qna")
+    author = models.ForeignKey(User, related_name="qna")
+    comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

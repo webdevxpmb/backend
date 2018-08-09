@@ -20,6 +20,11 @@ urlpatterns = format_suffix_patterns([
     url(r'/comment/(?P<pk>[0-9]+)/$',
         views.CommentDetail.as_view(), name='comment-detail'),
 
+    url(r'/qna/$',
+        views.QnAList.as_view(), name='qna-correct'),
+    url(r'/qna/(?P<pk>[0-9]+)/$',
+        views.QnADetail.as_view(), name='qna-detail'),
+
     url(r'/element-word/$',
         views.ElementWordList.as_view(), name='elementword-list'),
     url(r'/element-word/(?P<pk>[0-9]+)/$',
