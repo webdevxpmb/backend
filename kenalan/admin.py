@@ -9,17 +9,20 @@ from account.models import Angkatan
 
 from django.utils.translation import ugettext_lazy as _
 
+from account.utils import load_data
+from django.conf import settings
+
 # data_angkatan.json harus berisi hanya 6 elemen,
 # dimana 2 define maba, 1 define alumni, dan 3 define angkatan aktif
 lookup_data = []
 
 def fill_lookup_data():
-    daftar_angkatan = Angkatan.objects.all()
-    tahun_pmb = int(Angkatan.objects.get(year='maba').name)
-    for angkatan in daftar_angkatan:
-        if ((angkatan.year.isdigit() and angkatan.name.isdigit() == False)
-            or ('--' in angkatan.year)):
-            lookup_data.append((angkatan.year, angkatan.name))
+    daftar_angkatan = load_data(settings.BASE_DIR + "/account/" + 'data_angkatan.json')
+    tahun_pmb = int(daftar_angkatan['maba'])
+    for year, name in daftar_angkatan.items():
+        if ((year.isdigit() and name.isdigit() == False)
+            or ('--' in year)):
+            lookup_data.append((year, name))
 
 class KenalanListFilter(admin.SimpleListFilter):
     # Human-readable title which will be displayed in the

@@ -47,8 +47,8 @@ class CASBackend(ModelBackend):
             })
             if created:
                 user = self.configure_user(user)
-                if settings.CAS_APPLY_ATTRIBUTES_TO_USER and attributes:
-                    self.configure_user_profile(user, attributes)
+            if settings.CAS_APPLY_ATTRIBUTES_TO_USER and attributes:
+                self.configure_user_profile(user, attributes)
         else:
             created = False
             try:
@@ -130,13 +130,13 @@ class CASBackend(ModelBackend):
                 angkatan = Angkatan.objects.get(name='alumni')
                 role = Role.objects.get(role_name=get_role_by_angkatan(angkatan.name))
 
-            UserProfile.objects.create(user = user,
-                                       name = name,
-                                       npm = npm,
-                                       email = email,
-                                       angkatan = angkatan,
-                                       role = role,
-                                       )
+            UserProfile.objects.get_or_create(user = user,
+                                              name = name,
+                                              npm = npm,
+                                              email = email,
+                                              angkatan = angkatan,
+                                              role = role,
+                                             )
         except Exception as e:
             raise PermissionDenied
 
