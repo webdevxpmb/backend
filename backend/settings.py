@@ -218,7 +218,7 @@ JWT_AUTH = {
 }
 
 
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 STATIC_URL = '/pmb-api/static/'
 
 # Extra places for collectstatic to find static files.
