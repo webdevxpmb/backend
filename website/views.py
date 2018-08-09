@@ -70,7 +70,7 @@ class PostTypeDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class AnnouncementList(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated, )
-    queryset = Post.objects.filter(post_type__post_type='pengumuman')
+    queryset = Post.objects.filter(post_type__post_type='pengumuman').order_by('-created_at')
     filter_fields = ('post_type', 'author__profile__angkatan', )
     parser_classes = (JSONParser, )
     serializer_class = PostSerializer
@@ -83,7 +83,7 @@ class AnnouncementList(generics.ListAPIView):
 
 class PostList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, )
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('-created_at')
     filter_fields = ('post_type', 'author__profile__angkatan', )
     parser_classes = (JSONParser, )
     serializer_class = PostSerializer
@@ -147,7 +147,7 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class CommentList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, )
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.all().order_by('-created_at')
     serializer_class = CommentsSerializer
     filter_fields = ('post', )
 
@@ -196,7 +196,7 @@ class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class ElementWordList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, )
-    queryset = ElementWord.objects.all()
+    queryset = ElementWord.objects.all().order_by('-created_at')
     serializer_class = ElementWordSerializer
     parser_classes = (JSONParser, )
 
@@ -243,7 +243,7 @@ class ElementWordDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class TaskList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, )
-    queryset = Task.objects.all()
+    queryset = Task.objects.all().order_by('-created_at')
     serializer_class = TaskSerializer
     parser_classes = (JSONParser,)
 
@@ -279,7 +279,7 @@ class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class QnAList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, )
-    queryset = QnA.objects.all()
+    queryset = QnA.objects.all().order_by('-created_at')
     serializer_class = QnASerializer
     filter_fields = ('task', )
 
@@ -391,7 +391,7 @@ class SubmissionDetail(generics.RetrieveUpdateAPIView):
 
 class EventList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    queryset = Event.objects.all()
+    queryset = Event.objects.all().order_by('-created_at')
     serializer_class = EventSerializer
     parser_classes = (JSONParser,)
 
