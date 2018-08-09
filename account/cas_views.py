@@ -1,5 +1,4 @@
 """CAS login/logout replacement views"""
-
 from __future__ import absolute_import
 from __future__ import unicode_literals
 from urlparse import urlunparse # For python 2.7
@@ -24,6 +23,7 @@ from django.views.decorators.http import require_http_methods
 
 from importlib import import_module
 
+import logging
 
 from datetime import timedelta
 
@@ -115,6 +115,7 @@ def login(request, next_page=None, required=False):
                         'name': name, 'npm': npm, 'email': email, 'role': role, 'angkatan': angkatan}
                 return render(request, 'index.html', data)
             except Exception as e:
+                logging.debug(e)
                 raise
         elif settings.CAS_RETRY_LOGIN or required:
             return HttpResponseRedirect(client.get_login_url())
