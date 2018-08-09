@@ -23,68 +23,41 @@ class CASBackend(ModelBackend):
     """CAS authentication backend"""
 
     def authenticate(self, request, ticket, service):
-        try:
-            """Verifies CAS ticket and gets or creates User object"""
-            client = get_cas_client(service_url=service)
-            username, attributes, pgtiou = client.verify_ticket(ticket)
-            if attributes and request:
-                request.session['attributes'] = attributes
+        """Verifies CAS ticket and gets or creates User object"""
+        client = get_cas_client(service_url=service)
+        username, attributes, pgtiou = client.verify_ticket(ticket)
+        if attributes and request:
+            request.session['attributes'] = attributes
 
-            if not username:
-                return None
-            user = None
-            username = self.clean_username(username)
+        if not username:
+            return None
+        user = None
+        username = self.clean_username(username)
 
-            UserModel = get_user_model()
-            allowed_org = load_data(settings.BASE_DIR + "/account/" + 'data.json')
+        UserModel = get_user_model()
+        allowed_org = load_data(settings.BASE_DIR + "/account/" + 'data.json')
 
-            if attributes['kd_org'] not in allowed_org['allowed_org']:
-                return None
-            # Note that this could be accomplished in one try-except clause, but
-            # instead we use get_or_create when creating unknown users since it has
-            # built-in safeguards for multiple threads.
-            if settings.CAS_CREATE_USER:
-                user, created = UserModel._default_manager.get_or_create(**{
-                    UserModel.USERNAME_FIELD: username
-                })
-                if created:
-                    user = self.configure_user(user)
-                    if settings.CAS_APPLY_ATTRIBUTES_TO_USER and attributes:
-                        self.configure_user_profile(user, attributes)
-            else:
-                created = False
-                try:
-                    user = UserModel._default_manager.get_by_natural_key(username)
-                except UserModel.DoesNotExist:
-                    pass
+        if attributes['kd_org'] not in allowed_org['allowed_org']:
+            return None
+        # Note that this could be accomplished in one try-except clause, but
+        # instead we use get_or_create when creating unknown users since it has
+        # built-in safeguards for multiple threads.
+        if settings.CAS_CREATE_USER:
+            user, created = UserModel._default_manager.get_or_create(**{
+                UserModel.USERNAME_FIELD: username
+            })
+            if created:
+                user = self.configure_user(user)
+            if settings.CAS_APPLY_ATTRIBUTES_TO_USER and attributes:
+                self.configure_user_profile(user, attributes)
+        else:
+            created = False
+            try:
+                user = UserModel._default_manager.get_by_natural_key(username)
+            except UserModel.DoesNotExist:
+                pass
 
-            if not self.user_can_authenticate(user):
-                return None
-
-            if pgtiou and settings.CAS_PROXY_CALLBACK and request:
-                request.session['pgtiou'] = pgtiou
-
-            
-                # If we are receiving None for any values which cannot be NULL
-                # in the User model, set them to an empty string instead.
-                # Possibly it would be desirable to let these throw an error
-                # and push the responsibility to the CAS provider or remove
-                # them from the dictionary entirely instead. Handling these
-                # is a little ambiguous.
-
-            # send the `cas_user_authenticated` signal
-            cas_user_authenticated.send(
-                sender=self,
-                user=user,
-                created=created,
-                attributes=attributes,
-                ticket=ticket,
-                service=service,
-                request=request
-            )
-            return user
-        except Exception as e:
-            logging.debug(e)
+        if not self.user_can_authenticate(user):
             return None
 
     # ModelBackend has a `user_can_authenticate` method starting from Django
@@ -135,13 +108,13 @@ class CASBackend(ModelBackend):
                 angkatan = Angkatan.objects.get(name='alumni')
                 role = Role.objects.get(role_name=get_role_by_angkatan(angkatan.name))
 
-            UserProfile.objects.create(user = user,
-                                       name = name,
-                                       npm = npm,
-                                       email = email,
-                                       angkatan = angkatan,
-                                       role = role,
-                                       )
+            UserProfile.objects.get_or_create(user = user,
+                                              name = name,
+                                              npm = npm,
+                                              email = email,
+                                              angkatan = angkatan,
+                                              role = role,
+                                             )
         except Exception as e:
             logging.debug(e)
             raise PermissionDenied

@@ -211,6 +211,7 @@ class ElementWordList(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         self.permission_classes = (IsElemenOrAdmin, )
         data = request.data
+        data['author'] = request.user.id
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)

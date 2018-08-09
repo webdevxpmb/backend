@@ -13,7 +13,8 @@ class Command(BaseCommand):
 
         data_angkatan = load_data(settings.BASE_DIR + "/account/" + 'data_angkatan.json')
         for tahun, nama in data_angkatan.iteritems():
-            angkatan, created = Angkatan.objects.get_or_create(year=tahun)
-            angkatan.name = nama
-            angkatan.save()
+            if tahun != 'maba':
+                angkatan, created = Angkatan.objects.get_or_create(year=tahun)
+                angkatan.name = nama
+                angkatan.save()
             
