@@ -43,7 +43,7 @@ class UserProfile(models.Model):
     photo = models.ImageField(upload_to='images/', blank=True, null=True)
     about = models.TextField(blank=True, null=True)
     asal_sekolah = models.CharField(max_length=100, null=True)
-    link_gdrive = models.CharField(max_length=100, null=True)
+    link_gdrive = models.CharField(max_length=100, null=True, blank=True)
     line_id = models.CharField(max_length=100, null=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     birth_place = models.CharField(max_length=100, blank=True, null=True)
