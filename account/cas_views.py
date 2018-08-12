@@ -135,6 +135,7 @@ def login(request, next_page=None, required=False):
             return HttpResponseRedirect(client.get_login_url())
     except Exception as e:
         logging.debug(e)
+        return HttpResponseRedirect(client.get_login_url())
 
 
 @require_http_methods(["GET"])
