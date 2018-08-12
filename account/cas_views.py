@@ -41,76 +41,25 @@ jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 @csrf_exempt
 @require_http_methods(["GET", "POST"])
 def login(request, next_page=None, required=False):
-    """Forwards to CAS login URL or verifies CAS ticket"""
-    service_url = get_service_url(request, next_page)
-    client = get_cas_client(service_url=service_url)
+    try:
+        """Forwards to CAS login URL or verifies CAS ticket"""
+        service_url = get_service_url(request, next_page)
+        client = get_cas_client(service_url=service_url)
 
-    if not next_page and settings.CAS_STORE_NEXT and 'CASNEXT' in request.session:
-        next_page = request.session['CASNEXT']
-        del request.session['CASNEXT']
+        if not next_page and settings.CAS_STORE_NEXT and 'CASNEXT' in request.session:
+            next_page = request.session['CASNEXT']
+            del request.session['CASNEXT']
 
-    if not next_page:
-        next_page = get_redirect_url(request)
+        if not next_page:
+            next_page = get_redirect_url(request)
 
-    if request.user.is_authenticated():
-        if settings.CAS_LOGGED_MSG is not None:
-            message = settings.CAS_LOGGED_MSG % request.user.get_username()
-            messages.success(request, message)
-            user = request.user
-            payload = jwt_payload_handler(user)
-            token = jwt_encode_handler(payload)
-            user_profile = UserProfile.objects.get(user=user)
-            profile_id = user_profile.id
-            name = user_profile.name
-            npm = user_profile.npm
-            email = user_profile.email
-            role = user_profile.role.role_name
-            angkatan = user_profile.angkatan.name
-
-            data = {'user_id': user.id, 'user': user.username, 'token': token,
-                    'profile_id': profile_id,
-                    'name': name, 'npm': npm, 'email': email, 'role': role, 'angkatan': angkatan}
-            return render(request, 'index.html', data)
-        return render(request, 'index.html')
-
-    ticket = request.GET.get('ticket')
-    if ticket:
-        user = authenticate(ticket=ticket,
-                            service=service_url,
-                            request=request)
-        pgtiou = request.session.get("pgtiou")
-        if user is not None:
-            if not request.session.exists(request.session.session_key):
-                request.session.create()
-            auth_login(request, user)
-            SessionTicket.objects.create(
-                session_key=request.session.session_key,
-                ticket=ticket
-            )
-            if pgtiou and settings.CAS_PROXY_CALLBACK:
-                # Delete old PGT
-                ProxyGrantingTicket.objects.filter(
-                    user=user,
-                    session_key=request.session.session_key
-                ).delete()
-                # Set new PGT ticket
-                try:
-                    pgt = ProxyGrantingTicket.objects.get(pgtiou=pgtiou)
-                    pgt.user = user
-                    pgt.session_key = request.session.session_key
-                    pgt.save()
-                except ProxyGrantingTicket.DoesNotExist:
-                    pass
-
-            if settings.CAS_LOGIN_MSG is not None:
-                name = user.get_username()
-                message = settings.CAS_LOGIN_MSG % name
+        if request.user.is_authenticated():
+            if settings.CAS_LOGGED_MSG is not None:
+                message = settings.CAS_LOGGED_MSG % request.user.get_username()
                 messages.success(request, message)
-
-            try:
+                user = request.user
                 payload = jwt_payload_handler(user)
                 token = jwt_encode_handler(payload)
-
                 user_profile = UserProfile.objects.get(user=user)
                 profile_id = user_profile.id
                 name = user_profile.name
@@ -123,15 +72,69 @@ def login(request, next_page=None, required=False):
                         'profile_id': profile_id,
                         'name': name, 'npm': npm, 'email': email, 'role': role, 'angkatan': angkatan}
                 return render(request, 'index.html', data)
-            except Exception as e:
-                logging.debug(e)
-                raise
-        elif settings.CAS_RETRY_LOGIN or required:
-            return HttpResponseRedirect(client.get_login_url())
+            return render(request, 'index.html')
+
+        ticket = request.GET.get('ticket')
+        if ticket:
+            user = authenticate(ticket=ticket,
+                                service=service_url,
+                                request=request)
+            pgtiou = request.session.get("pgtiou")
+            if user is not None:
+                if not request.session.exists(request.session.session_key):
+                    request.session.create()
+                auth_login(request, user)
+                SessionTicket.objects.create(
+                    session_key=request.session.session_key,
+                    ticket=ticket
+                )
+                if pgtiou and settings.CAS_PROXY_CALLBACK:
+                    # Delete old PGT
+                    ProxyGrantingTicket.objects.filter(
+                        user=user,
+                        session_key=request.session.session_key
+                    ).delete()
+                    # Set new PGT ticket
+                    try:
+                        pgt = ProxyGrantingTicket.objects.get(pgtiou=pgtiou)
+                        pgt.user = user
+                        pgt.session_key = request.session.session_key
+                        pgt.save()
+                    except ProxyGrantingTicket.DoesNotExist:
+                        pass
+
+                if settings.CAS_LOGIN_MSG is not None:
+                    name = user.get_username()
+                    message = settings.CAS_LOGIN_MSG % name
+                    messages.success(request, message)
+
+                try:
+                    payload = jwt_payload_handler(user)
+                    token = jwt_encode_handler(payload)
+
+                    user_profile = UserProfile.objects.get(user=user)
+                    profile_id = user_profile.id
+                    name = user_profile.name
+                    npm = user_profile.npm
+                    email = user_profile.email
+                    role = user_profile.role.role_name
+                    angkatan = user_profile.angkatan.name
+
+                    data = {'user_id': user.id, 'user': user.username, 'token': token,
+                            'profile_id': profile_id,
+                            'name': name, 'npm': npm, 'email': email, 'role': role, 'angkatan': angkatan}
+                    return render(request, 'index.html', data)
+                except Exception as e:
+                    logging.debug(e)
+                    raise
+            elif settings.CAS_RETRY_LOGIN or required:
+                return HttpResponseRedirect(client.get_login_url())
+            else:
+                raise PermissionDenied(_('Login failed.'))
         else:
-            raise PermissionDenied(_('Login failed.'))
-    else:
-        return HttpResponseRedirect(client.get_login_url())
+            return HttpResponseRedirect(client.get_login_url())
+    except Exception as e:
+        logging.debug(e)
 
 
 @require_http_methods(["GET"])
