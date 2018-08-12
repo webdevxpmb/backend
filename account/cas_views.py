@@ -125,7 +125,6 @@ def login(request, next_page=None, required=False):
                             'name': name, 'npm': npm, 'email': email, 'role': role, 'angkatan': angkatan}
                     return render(request, 'index.html', data)
                 except Exception as e:
-                    logging.debug(user)
                     logging.debug(e)
                     raise
             elif settings.CAS_RETRY_LOGIN or required:
@@ -135,6 +134,7 @@ def login(request, next_page=None, required=False):
         else:
             return HttpResponseRedirect(client.get_login_url())
     except Exception as e:
+        logging.debug(request.user)
         logging.debug(e)
         print(e)
         return HttpResponseRedirect(client.get_login_url())
