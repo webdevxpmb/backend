@@ -35,7 +35,8 @@ from django_cas_ng.utils import (get_cas_client, get_service_url,
 
 SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 __all__ = ['login', 'logout', 'callback']
-
+jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
 @csrf_exempt
 @require_http_methods(["GET", "POST"])
@@ -55,6 +56,21 @@ def login(request, next_page=None, required=False):
         if settings.CAS_LOGGED_MSG is not None:
             message = settings.CAS_LOGGED_MSG % request.user.get_username()
             messages.success(request, message)
+            user = request.user
+            payload = jwt_payload_handler(user)
+            token = jwt_encode_handler(payload)
+            user_profile = UserProfile.objects.get(user=user)
+            profile_id = user_profile.id
+            name = user_profile.name
+            npm = user_profile.npm
+            email = user_profile.email
+            role = user_profile.role.role_name
+            angkatan = user_profile.angkatan.name
+
+            data = {'user_id': user.id, 'user': user.username, 'token': token,
+                    'profile_id': profile_id,
+                    'name': name, 'npm': npm, 'email': email, 'role': role, 'angkatan': angkatan}
+            return render(request, 'index.html', data)
         return render(request, 'index.html')
 
     ticket = request.GET.get('ticket')
@@ -92,9 +108,6 @@ def login(request, next_page=None, required=False):
                 messages.success(request, message)
 
             try:
-                jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-                jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-
                 payload = jwt_payload_handler(user)
                 token = jwt_encode_handler(payload)
 
