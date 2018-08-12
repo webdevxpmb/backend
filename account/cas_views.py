@@ -138,18 +138,15 @@ def login(request, next_page=None, required=False):
 def logout(request, next_page=None):
     """Redirects to CAS logout page"""
     # try to find the ticket matching current session for logout signal
-    try:
-        st = SessionTicket.objects.get(session_key=request.session.session_key)
-        ticket = st.ticket
-    except SessionTicket.DoesNotExist:
-        ticket = None
+    sts = SessionTicket.objects.filter(session_key=request.session.session_key)
     # send logout signal
-    cas_user_logout.send(
-        sender="manual",
-        user=request.user,
-        session=request.session,
-        ticket=ticket,
-    )
+    for st in sts:
+        cas_user_logout.send(
+            sender="manual",
+            user=request.user,
+            session=request.session,
+            ticket=st.ticket,
+        )
     auth_logout(request)
     # clean current session ProxyGrantingTicket and SessionTicket
     ProxyGrantingTicket.objects.filter(session_key=request.session.session_key).delete()
@@ -162,7 +159,6 @@ def logout(request, next_page=None):
         # This is in most cases pointless if not CAS_RENEW is set. The user will
         # simply be logged in again on next request requiring authorization.
         return render(request, 'index.html')
-
 
 @csrf_exempt
 @require_http_methods(["GET", "POST"])
