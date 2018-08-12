@@ -136,6 +136,7 @@ def login(request, next_page=None, required=False):
     except Exception as e:
         logging.debug(request.user)
         logging.debug(e)
+        print(request.user)
         print(e)
         return HttpResponseRedirect(client.get_login_url())
 
