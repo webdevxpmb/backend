@@ -1,10 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+import uuid
+import os
+
+def get_file_path(instance, filename):
+    ext = filename.split('.')[-1]
+    new_filename = "%s.%s" % (uuid.uuid4(), ext)
+    return new_filename
 
 # Create your models here.
 class File(models.Model):
-    file = models.FileField(blank=False, null=False)
+    file = models.FileField(upload_to=get_file_path, blank=False, null=False)
     timestamp = models.DateTimeField(auto_now_add=True)
 
 class PostType(models.Model):
