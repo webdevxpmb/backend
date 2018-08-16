@@ -232,6 +232,9 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'pmb-api/media')
 MEDIA_URL = '/pmb-api/media/'
 
+FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880
+FILE_UPLOAD_PERMISSIONS = 0o644
+
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
