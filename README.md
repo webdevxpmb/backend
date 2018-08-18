@@ -95,7 +95,8 @@ For now, liat di Models dulu details spesifikasinya
               "year": "2017",
               "name": "tarung"
           },
-          "email": "pande.ketut71@ui.ac.id"
+          "email": "pande.ketut71@ui.ac.id",
+          "photo": "http://ristek.cs.ui.ac.id/pmb-api/media/ice_bear"
       }
     }
     ```
@@ -258,7 +259,8 @@ For now, liat di Models dulu details spesifikasinya
                       "year": "2017",
                       "name": "tarung"
                   },
-                  "email": "pande.ketut71@ui.ac.id"
+                  "email": "pande.ketut71@ui.ac.id",
+                  "photo": "http://ristek.cs.ui.ac.id/pmb-api/media/ice_bear"
               }
           },
           "cover_image_link": null,
@@ -423,7 +425,8 @@ For now, liat di Models dulu details spesifikasinya
                   "year": "2017",
                   "name": "tarung"
               },
-              "email": "pande.ketut71@ui.ac.id"
+              "email": "pande.ketut71@ui.ac.id",
+              "photo": "http://ristek.cs.ui.ac.id/pmb-api/media/ice_bear"
           }
       },
       "comment": "Waduh kok unreasonable tasknya kak?",
@@ -478,7 +481,8 @@ For now, liat di Models dulu details spesifikasinya
                     "year": "2017",
                     "name": "tarung"
                 },
-                "email": "pande.ketut71@ui.ac.id"
+                "email": "pande.ketut71@ui.ac.id",
+                "photo": "http://ristek.cs.ui.ac.id/pmb-api/media/ice_bear"
             }
         },
         "task": {
@@ -601,7 +605,8 @@ For now, liat di Models dulu details spesifikasinya
                     "year": "2017",
                     "name": "tarung"
                 },
-                "email": "pande.ketut71@ui.ac.id"
+                "email": "pande.ketut71@ui.ac.id",
+                "photo": "http://ristek.cs.ui.ac.id/pmb-api/media/ice_bear"
             }
         },
         "testimony": "PMB mantap",
@@ -746,6 +751,8 @@ For now, liat di Models dulu details spesifikasinya
     * type: string
     * maxLength: 128
     * minLength: 1
+  * photo
+    * type: string
 
 * ### Post  
 

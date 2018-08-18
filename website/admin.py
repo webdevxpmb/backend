@@ -7,7 +7,7 @@ from website.models import (
     PostType,
     Album, TaskStatistic,
     EventStatistic, UserStatistic,
-    Vote, VoteOption, Voting,
+    Vote, VoteOption, Voting, QnA,
 )
 
 
@@ -309,7 +309,26 @@ class VoteModelAdmin(admin.ModelAdmin):
     class Meta:
         model = Vote
 
+class QnAModelAdmin(admin.ModelAdmin):
+    list_display = ('author', 'comment')
 
+    def has_change_permission(self, request, obj=None):
+        if request.user.is_superuser == True:
+            return True
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        if request.user.is_superuser == True:
+            return True
+        return False
+
+    def has_add_permission(self, request):
+        if request.user.is_superuser == True:
+            return True
+        return False
+
+    class Meta:
+        model = QnA
 
 
 admin.site.register(ElementWord, ElementWordModelAdmin)
@@ -325,3 +344,4 @@ admin.site.register(EventStatistic, EventStatisticModelAdmin)
 admin.site.register(UserStatistic, UserStatisticModelAdmin)
 admin.site.register(Vote, VoteModelAdmin)
 admin.site.register(Voting)
+admin.site.register(QnA, QnAModelAdmin)
