@@ -49,6 +49,7 @@ class GetUserProfileSerializer(serializers.ModelSerializer):
 
 class ShrinkedUserProfileSerializer(serializers.ModelSerializer):
     angkatan = AngkatanSerializer()
+    photo_url = serializers.SerializerMethodField()
 
     class Meta:
         model = UserProfile
