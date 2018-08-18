@@ -52,7 +52,14 @@ class ShrinkedUserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ('id', 'name', 'npm', 'angkatan', 'email', 'photo')
+        fields = ('id', 'name', 'npm', 'angkatan', 'email', 'photo', 'photo_url')
+
+    def get_photo_url(self, user_profile):
+        if user_profile.photo:
+            photo_url = HOST_URL + user_profile.photo.url
+            return photo_url
+        else:
+            return None
 
 
 class UserSerializer(serializers.ModelSerializer):
