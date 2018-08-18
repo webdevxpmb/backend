@@ -52,7 +52,7 @@ class ShrinkedUserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ('id', 'name', 'npm', 'angkatan', 'email')
+        fields = ('id', 'name', 'npm', 'angkatan', 'email', 'photo')
 
 
 class UserSerializer(serializers.ModelSerializer):

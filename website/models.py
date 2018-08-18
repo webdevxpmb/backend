@@ -96,7 +96,8 @@ class QnA(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        pass
+        verbose_name = 'Question and Answer'
+        verbose_name_plural = 'Question and Answer'
 
 
 class Submission(models.Model):
