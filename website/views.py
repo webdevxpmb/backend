@@ -277,6 +277,24 @@ class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
         else:
             raise exceptions.PermissionDenied
 
+class TaskLatestSubmission(generics.RetrieveAPIView):
+    permission_classes = (permissions.IsAuthenticated, )
+    serializer_class = SubmissionSerializer
+
+    def get_queryset(self):
+        queryset = Submission.objects.filter(user=self.request.user, task=self.kwargs['pk'])
+        return queryset
+
+    def get_object(self):
+        queryset = self.filter_queryset(self.get_queryset())
+        obj = queryset.latest('updated_at')
+        return obj
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = GetSubmissionSerializer(instance)
+        return Response(serializer.data)
+
 class QnAList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, )
     queryset = QnA.objects.all().order_by('-created_at')
@@ -387,7 +405,6 @@ class SubmissionDetail(generics.RetrieveUpdateAPIView):
         self.perform_update(serializer)
 
         return Response(GetSubmissionSerializer(instance).data)
-
 
 class EventList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
