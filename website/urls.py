@@ -39,6 +39,8 @@ urlpatterns = format_suffix_patterns([
         views.TaskList.as_view(), name="task-list"),
     url(r'/task/(?P<pk>[0-9]+)/$',
         views.TaskDetail.as_view(), name='task-detail'),
+    url(r'/task/(?P<pk>[0-9]+)/last-submission/$',
+        views.TaskLatestSubmission.as_view(), name='task-detail'),
 
     url(r'/event/$',
         views.EventList.as_view(), name="event-list"),
