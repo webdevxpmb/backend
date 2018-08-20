@@ -297,7 +297,7 @@ class TaskLatestSubmission(generics.RetrieveAPIView):
 
 class QnAList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, )
-    queryset = QnA.objects.all().order_by('-created_at')
+    queryset = QnA.objects.all().order_by('created_at')
     serializer_class = QnASerializer
     filter_fields = ('task', )
 
