@@ -628,6 +628,165 @@ For now, liat di Models dulu details spesifikasinya
   [Back to endpoints list](#endpoints-list)
 
   ============================================================
+
+  Alur:
+  * Si Elemen GET **/pmb-api/generate-token/** (Gw lihatnya kalo tahun lalu dia di homepage langsung nembak ini)
+  * Si Maba POST **/pmb-api/create-kenalan/** dengan data {"token": "token-elemennya"}
+  * API bakal balikin objek detail kenalannya, yang trus diedit pakai PATCH
+
+  * > GET **/pmb-api/generate-token/**
+
+    **Permission Classes:** IsElemen
+
+    Ngebalikin JSON ini
+    **JSON**
+    ```json
+    {
+      "token": "016377",
+      "user": {
+          "id": 2,
+          "username": "pande.ketut71",
+          "profile": {
+              "id": 1,
+              "name": "Pande Ketut Cahya Nugraha",
+              "npm": "1706028663",
+              "angkatan": {
+                  "id": 4,
+                  "year": "2017",
+                  "name": "tarung"
+              },
+              "email": "pande.ketut71@ui.ac.id",
+              "photo": null,
+              "photo_url": null
+          }
+      },
+      "start_time": "2018-08-20T22:19:55.661427",
+      "end_time": "2018-08-20T22:24:55.661427",
+      "created_at": "2018-08-20T22:19:55.661427",
+      "updated_at": "2018-08-20T22:19:55.661427"
+    }
+    ```
+  
+  * > GET **/pmb-api/create-kenalan/**
+
+    **Permission Classes:** IsMaba
+
+    Request Bodynya ini:
+    ```json
+    {
+      "token": "016377"
+    }
+    ```
+
+    Ngebalikin ini:
+    * Note that user_elemen sama user_maba itu seharusnya pasangan unik
+    * Status -> 1: Accepted, 2: Pending, 3: Rejected
+    * Nanti abis edit tembaknya ke **/pmb-api/detail-kenalan/{id-detail-kenalannya}/**
+    ```json
+    {
+      "detail_kenalan": {
+          "id": 4,
+          "name": "Pande Ketut Cahya Nugraha",
+          "phone_number": null,
+          "birth_place": null,
+          "birth_date": null,
+          "asal_sma": null,
+          "story": null,
+          "created_at": "2018-08-20T22:20:19.656012",
+          "angkatan": null,
+          "link_photo": null,
+          "updated_at": "2018-08-20T22:20:19.656012"
+      },
+      "id": 4,
+      "user_elemen": {
+          "id": 2,
+          "username": "pande.ketut71",
+          "profile": {
+              "id": 1,
+              "user": 2,
+              "name": "Pande Ketut Cahya Nugraha",
+              "role": {
+                  "id": 2,
+                  "role_name": "elemen"
+              },
+              "npm": "1706028663",
+              "angkatan": {
+                  "id": 4,
+                  "year": "2017",
+                  "name": "tarung"
+              },
+              "email": "pande.ketut71@ui.ac.id",
+              "photo": null,
+              "about": null,
+              "asal_sekolah": null,
+              "link_gdrive": null,
+              "line_id": null,
+              "phone_number": null,
+              "birth_place": null,
+              "birth_date": null,
+              "score": 0,
+              "created_at": "2018-07-22T20:52:13.990834",
+              "updated_at": "2018-07-22T20:52:13.990859",
+              "photo_url": null
+          }
+      },
+      "user_maba": {
+          "id": 2,
+          "username": "pande.ketut71",
+          "profile": {
+              "id": 1,
+              "user": 2,
+              "name": "Pande Ketut Cahya Nugraha",
+              "role": {
+                  "id": 2,
+                  "role_name": "elemen"
+              },
+              "npm": "1706028663",
+              "angkatan": {
+                  "id": 4,
+                  "year": "2017",
+                  "name": "tarung"
+              },
+              "email": "pande.ketut71@ui.ac.id",
+              "photo": null,
+              "about": null,
+              "asal_sekolah": null,
+              "link_gdrive": null,
+              "line_id": null,
+              "phone_number": null,
+              "birth_place": null,
+              "birth_date": null,
+              "score": 0,
+              "created_at": "2018-07-22T20:52:13.990834",
+              "updated_at": "2018-07-22T20:52:13.990859",
+              "photo_url": null
+          }
+      },
+      "status": {
+          "id": 2,
+          "status": "pending"
+      },
+      "notes": null,
+      "created_at": "2018-08-20T22:20:19.536696",
+      "updated_at": "2018-08-20T22:20:19.536696"
+    }
+    ```
+
+    * > GET POST **/pmb-api/detail-kenalan/**
+
+    **Permission Classes:** IsAuthenticated
+
+    JSON lihat diatas (as usual, bedanya cuma dia di list dan kalo add baru cuma satu object and lewat sini)  
+    Oh, and setiap user cuma bisa ngelist detail kenalan punyanya dia sendiri
+
+    * > GET PUT PATCH DELETE **/pmb-api/detail-kenalan/{id-detail-kenalannya}/**
+
+    **Permission Classes:** IsDetailKenalanOwner
+
+    JSON lihat diatas.
+    
+    ============================================================
+
 ## Models
 
 [Back to sections](#sections)
