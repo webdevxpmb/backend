@@ -54,6 +54,7 @@ For now, liat di Models dulu details spesifikasinya
 * [Event](#event-endpoints)
 * [Apa Kata Elemen](#apa-kata-elemen)
 * [Kenalan, Token, and Friends](#kenalan,-token,-and-friends)
+* [Statistics](#statistics)
 
 ============================================================
 
@@ -629,6 +630,8 @@ For now, liat di Models dulu details spesifikasinya
 
   ============================================================
 
+  Buat yang mau test di local, inget **python manage.py seed_kenalan_status**
+
   Alur:
   * Si Elemen GET **/pmb-api/generate-token/** (Gw lihatnya kalo tahun lalu dia di homepage langsung nembak ini)
   * Si Maba POST **/pmb-api/create-kenalan/** dengan data {"token": "token-elemennya"}
@@ -667,7 +670,7 @@ For now, liat di Models dulu details spesifikasinya
     }
     ```
   
-  * > GET **/pmb-api/create-kenalan/**
+  * > POST **/pmb-api/create-kenalan/**
 
     **Permission Classes:** IsMaba
 
@@ -786,6 +789,123 @@ For now, liat di Models dulu details spesifikasinya
     JSON lihat diatas.
     
     ============================================================
+
+* ### Statistics
+
+  [Back to endpoints list](#endpoints-list)
+
+  ============================================================
+
+  * > GET **/pmb-api/task-statistic/**
+
+    **Permission Classes:** IsAuthenticated (GET)
+
+    Sepertinya amount itu intendednya buat di set sama PMB Admin buat nunjukin berapa orang 
+    yang udah submit atau belom
+
+    **json**
+    ```json
+    [
+      {
+        "id": 3,
+        "task": {
+          "id": 3,
+          "name": "Kenalan",
+          "description": "Perlukan saya teriak 666 setiap jam 12 malem supaya backendnya tidak bermasalah aneh?",
+          "start_time": "2018-08-27T14:52:43",
+          "attachment_link": null,
+          "end_time": "2018-08-31T14:52:45",
+          "is_kenalan": true,
+          "expected_amount_tarung": 15,
+          "expected_amount_omega": 15,
+          "expected_amount_capung": 15,
+          "expected_amount_alumni": 15,
+          "created_at": "2018-08-27T14:52:50.794702",
+          "updated_at": "2018-08-27T14:52:50.794745"
+        },
+        "amount": 0,
+        "created_at": "2018-08-27T14:52:50.831091",
+        "updated_at": "2018-08-27T14:52:50.831159"
+      }
+    ]
+    ```
+
+    * > GET **/pmb-api/user-statistic/**
+
+    **Permission Classes:** IsAuthenticated (GET)
+
+    So, kalo ada bikin task kenalan, ntar tiap maba dibuatin object user statistic
+    yang ngetrack jumlah kenalan dia.
+
+    **json**
+    ```json
+    [
+      {
+        "id": 1,
+        "user": 2,
+        "name": "Kenalan statistic",
+        "task": {
+            "id": 3,
+            "name": "Kenalan",
+            "description": "Perlukan saya teriak 666 setiap jam 12 malem supaya backendnya tidak bermasalah aneh?",
+            "start_time": "2018-08-27T14:52:43",
+            "attachment_link": null,
+            "end_time": "2018-08-31T14:52:45",
+            "is_kenalan": true,
+            "expected_amount_tarung": 15,
+            "expected_amount_omega": 15,
+            "expected_amount_capung": 15,
+            "expected_amount_alumni": 15,
+            "created_at": "2018-08-27T14:52:50.794702",
+            "updated_at": "2018-08-27T14:52:50.794745"
+        },
+        "amount_omega": 0,
+        "amount_capung": 0,
+        "amount_orion": 0,
+        "amount_alumni": 0,
+        "amount_approved_omega": 0,
+        "amount_approved_capung": 0,
+        "amount_approved_orion": 0,
+        "amount_approved_alumni": 0
+      }
+    ]
+    ```
+
+    * > GET **/pmb-api/event-statistic/**
+    
+    **Permission Classes:** IsAuthenticated (GET)
+
+    Dibuat manual sama PMB Admin
+
+    **json**
+    ```json
+    [
+      {
+        "id": 1,
+        "event": {
+            "id": 1,
+            "name": "Berdoa agar website baik-baik saja",
+            "description": "Seminggu pengen main game nih",
+            "location": "Rumah Masing-Masing",
+            "start_time": "2018-08-27T00:00:00",
+            "end_time": "2018-12-31T00:00:00",
+            "expected_attendee": 11,
+            "attachment_link": null,
+            "created_at": "2018-08-27T15:07:17.218986",
+            "updated_at": "2018-08-27T15:07:17.219048"
+        },
+        "attendee": 11,
+        "on_time": 11,
+        "late": 0,
+        "permission": 0,
+        "absent": 0,
+        "created_at": "2018-08-27T15:07:26.435946",
+        "updated_at": "2018-08-27T15:07:26.436005"
+      }
+    ]
+    ```
+
+  ============================================================
 
 ## Models
 
