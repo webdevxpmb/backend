@@ -54,6 +54,7 @@ For now, liat di Models dulu details spesifikasinya
 * [Event](#event-endpoints)
 * [Apa Kata Elemen](#apa-kata-elemen)
 * [Kenalan, Token, and Friends](#kenalan,-token,-and-friends)
+* [Statistics](#statistics)
 
 ============================================================
 
@@ -629,10 +630,104 @@ For now, liat di Models dulu details spesifikasinya
 
   ============================================================
 
-  Alur:
+  Buat yang mau test di local, inget **python manage.py seed_kenalan_status**
+
+  Alur Kenalan:
   * Si Elemen GET **/pmb-api/generate-token/** (Gw lihatnya kalo tahun lalu dia di homepage langsung nembak ini)
   * Si Maba POST **/pmb-api/create-kenalan/** dengan data {"token": "token-elemennya"}
-  * API bakal balikin objek detail kenalannya, yang trus diedit pakai PATCH
+  * API bakal balikin objek ~~detail~~ kenalannya (RALAT), yang isinya like this (DEFAULT STATUSNYA ITU 4: SAVED) 
+    ```json
+    {
+      "detail_kenalan": {
+        "id": 5,
+        "name": "Pande Ketut Cahya Nugraha",
+        "phone_number": null,
+        "birth_place": null,
+        "birth_date": null,
+        "asal_sma": null,
+        "story": null,
+        "created_at": "2018-08-28T15:30:40.205635",
+        "angkatan": null,
+        "link_photo": null,
+        "updated_at": "2018-08-28T15:30:40.205696"
+      },
+      "id": 5,
+      "user_elemen": {
+        "id": 2,
+        "username": "pande.ketut71",
+        "profile": {
+          "id": 2,
+          "user": 2,
+          "name": "Pande Ketut Cahya Nugraha",
+          "role": {
+              "id": 2,
+              "role_name": "elemen"
+          },
+          "npm": "1706028663",
+          "angkatan": {
+              "id": 6,
+              "year": "2018",
+              "name": "2018"
+          },
+          "email": "pande.ketut71@ui.ac.id",
+          "photo": null,
+          "about": "",
+          "asal_sekolah": "SMAN 3 Denpasar",
+          "link_gdrive": null,
+          "line_id": "SSS",
+          "phone_number": "81999749715",
+          "birth_place": null,
+          "birth_date": null,
+          "score": 0,
+          "created_at": "2018-08-27T14:51:16.184388",
+          "updated_at": "2018-08-27T14:51:16.184453",
+          "photo_url": null
+        }
+      },
+      "user_maba": {
+        "id": 2,
+        "username": "pande.ketut71",
+        "profile": {
+          "id": 2,
+          "user": 2,
+          "name": "Pande Ketut Cahya Nugraha",
+          "role": {
+              "id": 2,
+              "role_name": "elemen"
+          },
+          "npm": "1706028663",
+          "angkatan": {
+              "id": 6,
+              "year": "2018",
+              "name": "2018"
+          },
+          "email": "pande.ketut71@ui.ac.id",
+          "photo": null,
+          "about": "",
+          "asal_sekolah": "SMAN 3 Denpasar",
+          "link_gdrive": null,
+          "line_id": "SSS",
+          "phone_number": "81999749715",
+          "birth_place": null,
+          "birth_date": null,
+          "score": 0,
+          "created_at": "2018-08-27T14:51:16.184388",
+          "updated_at": "2018-08-27T14:51:16.184453",
+          "photo_url": null
+        }
+      },
+      "status": {
+        "id": 4,
+        "status": "saved"
+      },
+      "notes": null,
+      "created_at": "2018-08-28T15:30:39.758627",
+      "updated_at": "2018-08-28T15:30:39.758653"
+    }
+    ```
+  * Yang diedit bagian detail_kenalan pakai PATCH ke **/pmb-api/detail-kenalan/{id-detail-kenalannya}/**
+  
+  Endpoints
 
   * > GET **/pmb-api/generate-token/**
 
@@ -667,7 +762,7 @@ For now, liat di Models dulu details spesifikasinya
     }
     ```
   
-  * > GET **/pmb-api/create-kenalan/**
+  * > POST **/pmb-api/create-kenalan/**
 
     **Permission Classes:** IsMaba
 
@@ -680,8 +775,11 @@ For now, liat di Models dulu details spesifikasinya
 
     Ngebalikin ini:
     * Note that user_elemen sama user_maba itu seharusnya pasangan unik
-    * Status -> 1: Accepted, 2: Pending, 3: Rejected
-    * Nanti abis edit tembaknya ke **/pmb-api/detail-kenalan/{id-detail-kenalannya}/**
+    * Status -> 1: Accepted, 2: Pending, 3: Rejected, 4: Saved
+    * Nanti abis edit detail_kenalan tembaknya ke **/pmb-api/detail-kenalan/{id-detail-kenalannya}/**
+    * NOTE : Ini object kenalan yang dibalikinnya, kalo detail kenalan itu cuma yang di field
+    "detail_kenalan"
+    * NOTE : Ga bisa langsung edit di **/pmb-api/kenalan/{id-kenalan}** karena detail_kenalan kalo POST cuma nerima id doang
     ```json
     {
       "detail_kenalan": {
@@ -776,16 +874,169 @@ For now, liat di Models dulu details spesifikasinya
 
     **Permission Classes:** IsAuthenticated
 
-    JSON lihat diatas (as usual, bedanya cuma dia di list dan kalo add baru cuma satu object and lewat sini)  
-    Oh, and setiap user cuma bisa ngelist detail kenalan punyanya dia sendiri
+    JSON lihat dibawah (as usual, bedanya cuma dia di list dan kalo add baru cuma satu object and lewat sini)  
+    Oh, and setiap user cuma bisa ngelist detail kenalan punyanya dia sendiri  
+    List Detail kenalan sepertinya tidak intended buat di GET samsek
 
     * > GET PUT PATCH DELETE **/pmb-api/detail-kenalan/{id-detail-kenalannya}/**
 
     **Permission Classes:** IsDetailKenalanOwner
 
-    JSON lihat diatas.
+    **json**
+    ```json
+    {
+        "id": 5,
+        "kenalan": {
+            "id": 5,
+            "user_elemen": 2,
+            "user_maba": 2,
+            "status": 2,
+            "notes": null
+        },
+        "name": "Pande Ketut Cahya Nugraha",
+        "phone_number": null,
+        "birth_place": null,
+        "angkatan": null,
+        "link_photo": null,
+        "birth_date": null,
+        "asal_sma": null,
+        "story": null,
+        "created_at": "2018-08-28T15:30:40.205635",
+        "updated_at": "2018-08-28T15:30:40.205696"
+    }
+    ```
+
+    * > GET POST **/pmb-api/kenalan/**
+
+    **Permission Classes:** IsAuthenticated
+
+    JSONnya sama kayak yang dibalikin sama **/pmb-api/create-kenalan/**, cuma kalo disini list  
+    Kalo Maba yang nge GET, ngebalikin semua kenalan, tapi kalo Elemen yang nge GET, ngebalikin kenalan yang statusnya bukan 4 (Saved) alias non-draft  
+    
+    * > GET PATCH PUT DELETE **/pmb-api/kenalan/{id-kenalan}**
+
+    **Permission Classes:** IsKenalanOwner
+
+    Kalo mau ubah status, tembak ke sini, kalo ubah detail kenalan (kayak nama, nomer hp, story, etc.) itu tembak ke **/pmb-api/detail-kenalan/{idnya}**
     
     ============================================================
+
+* ### Statistics
+
+  [Back to endpoints list](#endpoints-list)
+
+  ============================================================
+
+  * > GET **/pmb-api/task-statistic/**
+
+    **Permission Classes:** IsAuthenticated (GET)
+
+    Sepertinya amount itu intendednya buat di set sama PMB Admin buat nunjukin berapa orang 
+    yang udah submit atau belom
+
+    **json**
+    ```json
+    [
+      {
+        "id": 3,
+        "task": {
+          "id": 3,
+          "name": "Kenalan",
+          "description": "Perlukan saya teriak 666 setiap jam 12 malem supaya backendnya tidak bermasalah aneh?",
+          "start_time": "2018-08-27T14:52:43",
+          "attachment_link": null,
+          "end_time": "2018-08-31T14:52:45",
+          "is_kenalan": true,
+          "expected_amount_tarung": 15,
+          "expected_amount_omega": 15,
+          "expected_amount_capung": 15,
+          "expected_amount_alumni": 15,
+          "created_at": "2018-08-27T14:52:50.794702",
+          "updated_at": "2018-08-27T14:52:50.794745"
+        },
+        "amount": 0,
+        "created_at": "2018-08-27T14:52:50.831091",
+        "updated_at": "2018-08-27T14:52:50.831159"
+      }
+    ]
+    ```
+
+    * > GET **/pmb-api/user-statistic/**
+
+    **Permission Classes:** IsAuthenticated (GET)
+
+    So, kalo ada bikin task kenalan, ntar tiap maba dibuatin object user statistic
+    yang ngetrack jumlah kenalan dia.
+
+    **json**
+    ```json
+    [
+      {
+        "id": 1,
+        "user": 2,
+        "name": "Kenalan statistic",
+        "task": {
+            "id": 3,
+            "name": "Kenalan",
+            "description": "Perlukan saya teriak 666 setiap jam 12 malem supaya backendnya tidak bermasalah aneh?",
+            "start_time": "2018-08-27T14:52:43",
+            "attachment_link": null,
+            "end_time": "2018-08-31T14:52:45",
+            "is_kenalan": true,
+            "expected_amount_tarung": 15,
+            "expected_amount_omega": 15,
+            "expected_amount_capung": 15,
+            "expected_amount_alumni": 15,
+            "created_at": "2018-08-27T14:52:50.794702",
+            "updated_at": "2018-08-27T14:52:50.794745"
+        },
+        "amount_omega": 0,
+        "amount_capung": 0,
+        "amount_orion": 0,
+        "amount_alumni": 0,
+        "amount_approved_omega": 0,
+        "amount_approved_capung": 0,
+        "amount_approved_orion": 0,
+        "amount_approved_alumni": 0
+      }
+    ]
+    ```
+
+    * > GET **/pmb-api/event-statistic/**
+    
+    **Permission Classes:** IsAuthenticated (GET)
+
+    Dibuat manual sama PMB Admin
+
+    **json**
+    ```json
+    [
+      {
+        "id": 1,
+        "event": {
+            "id": 1,
+            "name": "Berdoa agar website baik-baik saja",
+            "description": "Seminggu pengen main game nih",
+            "location": "Rumah Masing-Masing",
+            "start_time": "2018-08-27T00:00:00",
+            "end_time": "2018-12-31T00:00:00",
+            "expected_attendee": 11,
+            "attachment_link": null,
+            "created_at": "2018-08-27T15:07:17.218986",
+            "updated_at": "2018-08-27T15:07:17.219048"
+        },
+        "attendee": 11,
+        "on_time": 11,
+        "late": 0,
+        "permission": 0,
+        "absent": 0,
+        "created_at": "2018-08-27T15:07:26.435946",
+        "updated_at": "2018-08-27T15:07:26.436005"
+      }
+    ]
+    ```
+
+  ============================================================
 
 ## Models
 

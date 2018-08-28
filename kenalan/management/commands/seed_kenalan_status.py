@@ -20,5 +20,10 @@ class Command(BaseCommand):
         rejected.id = 3
         rejected.status = 'rejected'
         rejected.save()
+
+        saved = KenalanStatus()
+        saved.id = 4
+        saved.status = 'saved'
+        saved.save()
         
             

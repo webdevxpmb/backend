@@ -33,6 +33,9 @@ from account.permissions import(
 Kenalan Views
 '''
 
+DRAFT_STATUS = 'saved'
+DRAFT_STATUS_ID = 4
+
 
 class KenalanList(generics.ListCreateAPIView):
     serializer_class = KenalanSerializer
@@ -43,7 +46,7 @@ class KenalanList(generics.ListCreateAPIView):
         if is_maba(self.request.user):
             queryset = Kenalan.objects.all().filter(user_maba=self.request.user).order_by('-status', '-updated_at')
         elif is_elemen(self.request.user):
-            queryset = Kenalan.objects.all().filter(user_elemen=self.request.user).order_by('-status', '-updated_at')
+            queryset = Kenalan.objects.all().filter(user_elemen=self.request.user).exclude(status=DRAFT_STATUS_ID).order_by('-status', '-updated_at')
         else:
             queryset = Kenalan.objects.all()
         return queryset
@@ -165,5 +168,5 @@ class FriendList(generics.ListAPIView):
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        serializer = GetDetailKenalanSerializer(queryset, many=True)
+        serializer = GetKenalanSerializer(queryset, many=True)
         return Response(serializer.data)
