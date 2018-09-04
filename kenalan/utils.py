@@ -10,6 +10,7 @@ from rest_framework.decorators import api_view, permission_classes
 
 import datetime
 PENDING_STATUS = 'pending'
+DRAFT_STATUS = 'saved'
 
 
 @api_view(['GET'])
@@ -63,7 +64,7 @@ def create_kenalan_by_token(request):
             user_maba = request.user
             elemen_profile = UserProfile.objects.get(user=user_elemen)
 
-            kenalan_status = KenalanStatus.objects.get(status=PENDING_STATUS)
+            kenalan_status = KenalanStatus.objects.get(status=DRAFT_STATUS)
             kenalan = Kenalan.objects.create(user_elemen=user_elemen, 
                                              user_maba=user_maba, 
                                              status=kenalan_status)
