@@ -65,22 +65,24 @@ def create_kenalan_by_token(request):
             elemen_profile = UserProfile.objects.get(user=user_elemen)
 
             kenalan_status = KenalanStatus.objects.get(status=DRAFT_STATUS)
-            kenalan = Kenalan.objects.create(user_elemen=user_elemen, 
-                                             user_maba=user_maba, 
+            kenalan = Kenalan.objects.create(user_elemen=user_elemen,
+                                             user_maba=user_maba,
                                              status=kenalan_status)
             # create initial detail
             DetailKenalan.objects.create(kenalan=kenalan, name=elemen_profile.name)
             content = GetKenalanSerializer(kenalan, context={'request': request})
             return Response(content.data, status=201)
-            
+
         else:
             return Response({'data': 'token is invalid or expired'}, status=400)
 
     except IntegrityError:
-        kenalan = Kenalan.objects.get(user_maba=request.user)
+        token = Token.objects.get(token=request.data["token"])
+        user_elemen = token.user
+        kenalan, created = Kenalan.objects.get_or_create(user_maba=request.user, user_elemen=user_elemen)
         content = GetKenalanSerializer(kenalan, context={'request': request})
         return Response(content.data, status=200)
-    except Exception :
+    except Exception as e:
         return Response(status=400)
 
 
@@ -97,7 +99,6 @@ def create_kenalan_non_sso(request):
         DetailKenalan.objects.create(kenalan=kenalan)
         content = GetKenalanSerializer(kenalan, context={'request': request})
         return Response(content.data, status=201)
-
 
     except IntegrityError:
         kenalan = Kenalan.objects.get(user_maba=request.user)
