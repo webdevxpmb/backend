@@ -87,6 +87,9 @@ class KenalanDetail(generics.RetrieveUpdateAPIView):
             instance = self.get_object()
             if instance.status.status == 'rejected' or instance.status.status == 'saved':
                 data = request.data
+                status = KenalanStatus.objects.get(id=data['status'])	
+                if status.status != 'pending':	
+                    raise PermissionDenied
                 serializer = self.get_serializer(instance, data=request.data, partial=partial)
                 serializer.is_valid(raise_exception=True)
                 self.perform_update(serializer)
