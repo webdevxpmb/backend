@@ -16,8 +16,8 @@
         // For Chrome, the origin property is in the event.originalEvent object.
         var origin = event.origin || event.originalEvent.origin;
         var allowedDomain = 'http://pmb.cs.ui.ac.id';
-        var allowedStgDomain = 'http://pmb-stg.herokuapp.com',
-        var allowedSecureStgDomain = 'https://pmb-stg.herokuapp.com',
+        var allowedStgDomain = 'http://pmb-stg.herokuapp.com';
+        var allowedSecureStgDomain = 'https://pmb-stg.herokuapp.com';
         var allowedLocalDomain = 'http://localhost:3000';
         console.log(origin);
         // MAKE SURE FUNCTION CALLER ORIGIN IS FROM ALLOWED DOMAIN! SECURITY PURPOSES.
