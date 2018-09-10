@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_WHITELIST = (
     'localhost:3000',
     'pmb.cs.ui.ac.id',
+    'pmb-stg.herokuapp.com',
 )
 
 
