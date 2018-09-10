@@ -16,11 +16,13 @@
         // For Chrome, the origin property is in the event.originalEvent object.
         var origin = event.origin || event.originalEvent.origin;
         var allowedDomain = 'http://pmb.cs.ui.ac.id';
+        var allowedStgDomain = 'http://pmb-stg.herokuapp.com',
+        var allowedSecureStgDomain = 'https://pmb-stg.herokuapp.com',
         var allowedLocalDomain = 'http://localhost:3000';
         console.log(origin);
         // MAKE SURE FUNCTION CALLER ORIGIN IS FROM ALLOWED DOMAIN! SECURITY PURPOSES.
         // DELETE ALLOWEDLOCALDOMAIN UPON PRODUCTION (TAR AJA KALO DAH DEPLOY)
-        if (origin === allowedDomain || origin === allowedLocalDomain) {
+        if (origin === allowedDomain || origin === allowedStgDomain || origin === allowedSecureStgDomain || origin === allowedLocalDomain) {
             // call postMessage function from the window caller
             event.source.postMessage(user, origin);
             // close window
