@@ -79,6 +79,7 @@ class Task(models.Model):
     expected_amount_omega = models.SmallIntegerField(blank=True, null=True)
     expected_amount_capung = models.SmallIntegerField(blank=True, null=True)
     expected_amount_alumni = models.SmallIntegerField(blank=True, null=True)
+    expected_amount_bebas = models.SmallIntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
