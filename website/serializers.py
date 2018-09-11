@@ -73,7 +73,7 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'description', 'start_time', 'attachment_link',
                   'end_time', 'is_kenalan', 'expected_amount_tarung',
                   'expected_amount_omega', 'expected_amount_capung',
-                  'expected_amount_alumni', 'created_at', 'updated_at')
+                  'expected_amount_alumni', 'expected_amount_bebas', 'created_at', 'updated_at')
 
 class QnASerializer(serializers.ModelSerializer):
     class Meta:
