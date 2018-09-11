@@ -1,3 +1,4 @@
+import logging
 from rest_framework import permissions
 from account.models import UserProfile
 
@@ -105,8 +106,10 @@ class IsKenalanOwner(permissions.BasePermission):
                     request.user == obj.user_elemen:
                 return True
             else:
+                logging.debug(user)
                 return False
         except Exception as e:
+            logging.debug(e)
             return False
 
 
