@@ -166,11 +166,13 @@ class DetailKenalanListFilter(admin.SimpleListFilter):
         human-readable name for the option that will appear
         in the right sidebar.
         """
+        if not lookup_data:
+            fill_lookup_data()
         return (
-            ('2016', _('omega')),
-            ('2015', _('capung')),
-            ('2014', _('orion')),
-            ('2013--', _('alumni'))
+            (lookup_data[0][0], _(lookup_data[0][1])),
+            (lookup_data[1][0], _(lookup_data[1][1])),
+            (lookup_data[2][0], _(lookup_data[2][1])),
+            (lookup_data[3][0], _(lookup_data[3][1]))
         )
 
     def queryset(self, request, queryset):
@@ -181,14 +183,16 @@ class DetailKenalanListFilter(admin.SimpleListFilter):
         """
         # Compare the requested value (either '80s' or '90s')
         # to decide how to filter the queryset.
-        if self.value() == '2016':
-            return queryset.filter(kenalan__user_elemen__profile__angkatan__name='omega')
-        if self.value() == '2015':
-            return queryset.filter(kenalan__user_elemen__profile__angkatan__name='capung')
-        if self.value() == '2014':
-            return queryset.filter(kenalan__user_elemen__profile__angkatan__name='orion')
-        if self.value() == '2013--':
-            return queryset.filter(kenalan__user_elemen__profile__angkatan__name='alumni')
+        if not lookup_data:
+            fill_lookup_data()
+        if self.value() == lookup_data[0][0]:
+            return queryset.filter(kenalan__user_elemen__profile__angkatan__name=lookup_data[0][1])
+        if self.value() == lookup_data[1][0]:
+            return queryset.filter(kenalan__user_elemen__profile__angkatan__name=lookup_data[1][1])
+        if self.value() == lookup_data[2][0]:
+            return queryset.filter(kenalan__user_elemen__profile__angkatan__name=lookup_data[2][1])
+        if self.value() == lookup_data[3][0]:
+            return queryset.filter(kenalan__user_elemen__profile__angkatan__name=lookup_data[3][1])
 
 
 class DetailKenalanModelAdmin(admin.ModelAdmin):
