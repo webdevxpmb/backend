@@ -13,6 +13,8 @@ from kenalan.serializers import(
 
 
 from rest_framework import generics, permissions
+from rest_framework.views import APIView
+from django.http import Http404
 from account.permissions import(
     IsPmbAdmin,
     IsDetailKenalanOwner,
@@ -57,45 +59,75 @@ class KenalanList(generics.ListCreateAPIView):
         return Response(serializer.data)
 
 
-class KenalanDetail(generics.RetrieveUpdateAPIView):
-    serializer_class = KenalanSerializer
+class KenalanDetail(APIView):
     permission_classes = (IsKenalanOwner,)
-    queryset = Kenalan.objects.all()
 
-    def retrieve(self, request, *args, **kwargs):
-        if is_pmb_admin(request.user):
-            self.permission_classes = (IsPmbAdmin,)
-        instance = self.get_object()
+    def get_object(self, pk):
+        try:
+            return Kenalan.objects.get(id=pk)
+        except Kenalan.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, *args, **kwargs):
+        instance = self.get_object(pk)
         serializer = GetKenalanSerializer(instance)
         return Response(serializer.data)
-
-    def update(self, request, *args, **kwargs):
-        if is_pmb_admin(request.user):
-            self.permission_classes = (IsPmbAdmin,)
+    
+    def put(self, request, pk, *args, **kwargs):
         if is_elemen(request.user):
             partial = kwargs.pop('partial', False)
-            instance = self.get_object()
+            instance = self.get_object(pk)
             if instance.status.status == 'pending':
-                serializer = self.get_serializer(instance, data=request.data, partial=partial)
+                serializer = KenalanSerializer(instance, data=request.data, partial=partial)
                 serializer.is_valid(raise_exception=True)
-                self.perform_update(serializer)
+                serializer.save()
                 return Response(GetKenalanSerializer(instance).data)
             else:
                 raise PermissionDenied
         elif is_maba(request.user):
             partial = kwargs.pop('partial', False)
-            instance = self.get_object()
+            instance = self.get_object(pk)
             if instance.status.status == 'rejected' or instance.status.status == 'saved':
                 data = request.data
                 status = KenalanStatus.objects.get(id=data['status'])	
                 if status.status != 'pending' and status.status != 'saved':	
                     raise PermissionDenied
-                serializer = self.get_serializer(instance, data=request.data, partial=partial)
+                serializer = KenalanSerializer(instance, data=request.data, partial=partial)
                 serializer.is_valid(raise_exception=True)
-                self.perform_update(serializer)
+                serializer.save()
                 return Response(GetKenalanSerializer(instance).data)
             else:
                 raise PermissionDenied
+        else:
+            raise PermissionDenied
+    
+    def patch(self, request, pk, *args, **kwargs):
+        if is_elemen(request.user):
+            partial = True
+            instance = self.get_object(pk)
+            if instance.status.status == 'pending':
+                serializer = KenalanSerializer(instance, data=request.data, partial=partial)
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+                return Response(GetKenalanSerializer(instance).data)
+            else:
+                raise PermissionDenied
+        elif is_maba(request.user):
+            partial = True
+            instance = self.get_object(pk)
+            if instance.status.status == 'rejected' or instance.status.status == 'saved':
+                data = request.data
+                status = KenalanStatus.objects.get(id=data['status'])	
+                if status.status != 'pending' and status.status != 'saved':	
+                    raise PermissionDenied
+                serializer = KenalanSerializer(instance, data=request.data, partial=partial)
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+                return Response(GetKenalanSerializer(instance).data)
+            else:
+                raise PermissionDenied
+        else:
+            raise PermissionDenied
 
 
 class KenalanStatusList(generics.ListCreateAPIView):
