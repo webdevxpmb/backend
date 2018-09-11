@@ -1,3 +1,4 @@
+import logging
 from django.core.exceptions import PermissionDenied
 from rest_framework.response import Response
 from kenalan.models import (
@@ -81,6 +82,7 @@ class KenalanDetail(generics.RetrieveUpdateAPIView):
                 self.perform_update(serializer)
                 return Response(GetKenalanSerializer(instance).data)
             else:
+                logging.debug('Masuk sini')
                 raise PermissionDenied
         elif is_maba(request.user):
             partial = kwargs.pop('partial', False)
