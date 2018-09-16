@@ -1,11 +1,12 @@
 """CAS login/logout replacement views"""
+
 from __future__ import absolute_import
 from __future__ import unicode_literals
-# from urlparse import urlunparse # For python 2.7
-from urllib.parse import urlparse # For python 3.4
-from account.models import UserProfile
-from django.shortcuts import render
-from rest_framework_jwt.settings import api_settings
+
+import sys
+import types
+
+from django.utils.six.moves import urllib_parse
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
@@ -23,7 +24,7 @@ from django.views.decorators.http import require_http_methods
 
 from importlib import import_module
 
-import logging
+SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 
 from datetime import timedelta
 
@@ -33,111 +34,122 @@ from django_cas_ng.utils import (get_cas_client, get_service_url,
                     get_protocol, get_redirect_url,
                     get_user_from_session)
 
-SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
-__all__ = ['login', 'logout', 'callback']
+from account.models import UserProfile
+from django.shortcuts import render
+from rest_framework_jwt.settings import api_settings
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
+__all__ = ['login', 'logout', 'callback']
+
 
 @csrf_exempt
 @require_http_methods(["GET", "POST"])
 def login(request, next_page=None, required=False):
-    try:
-        """Forwards to CAS login URL or verifies CAS ticket"""
-        service_url = get_service_url(request, next_page)
-        client = get_cas_client(service_url=service_url)
+    """Forwards to CAS login URL or verifies CAS ticket"""
+    service_url = get_service_url(request, next_page)
+    client = get_cas_client(service_url=service_url, request=request)
 
-        if not next_page and settings.CAS_STORE_NEXT and 'CASNEXT' in request.session:
-            next_page = request.session['CASNEXT']
-            del request.session['CASNEXT']
+    if not next_page and settings.CAS_STORE_NEXT and 'CASNEXT' in request.session:
+        next_page = request.session['CASNEXT']
+        del request.session['CASNEXT']
 
-        if not next_page:
-            next_page = get_redirect_url(request)
+    if not next_page:
+        next_page = get_redirect_url(request)
 
-        if request.user.is_authenticated():
-            if settings.CAS_LOGGED_MSG is not None:
-                message = settings.CAS_LOGGED_MSG % request.user.get_username()
-                messages.success(request, message)
-                user = request.user
-                payload = jwt_payload_handler(user)
-                token = jwt_encode_handler(payload)
-                user_profile = UserProfile.objects.get(user=user)
-                profile_id = user_profile.id
-                name = user_profile.name
-                npm = user_profile.npm
-                email = user_profile.email
-                role = user_profile.role.role_name
-                angkatan = user_profile.angkatan.name
+    if request.method == 'POST' and request.POST.get('logoutRequest'):
+        clean_sessions(client, request)
+        return HttpResponseRedirect(next_page)
 
-                data = {'user_id': user.id, 'user': user.username, 'token': token,
-                        'profile_id': profile_id,
-                        'name': name, 'npm': npm, 'email': email, 'role': role, 'angkatan': angkatan}
-                return render(request, 'index.html', data)
-            return render(request, 'index.html')
+    # backward compability for django < 2.0
+    is_user_authenticated = False
 
-        ticket = request.GET.get('ticket')
-        if ticket:
-            user = authenticate(ticket=ticket,
-                                service=service_url,
-                                request=request)
-            pgtiou = request.session.get("pgtiou")
-            if user is not None:
-                if not request.session.exists(request.session.session_key):
-                    request.session.create()
-                auth_login(request, user)
-                SessionTicket.objects.create(
-                    session_key=request.session.session_key,
-                    ticket=ticket
-                )
-                if pgtiou and settings.CAS_PROXY_CALLBACK:
-                    # Delete old PGT
-                    ProxyGrantingTicket.objects.filter(
-                        user=user,
-                        session_key=request.session.session_key
-                    ).delete()
-                    # Set new PGT ticket
-                    try:
-                        pgt = ProxyGrantingTicket.objects.get(pgtiou=pgtiou)
-                        pgt.user = user
-                        pgt.session_key = request.session.session_key
-                        pgt.save()
-                    except ProxyGrantingTicket.DoesNotExist:
-                        pass
+    if sys.version_info >= (3, 0):
+        bool_type = bool
+    else:
+        bool_type = types.BooleanType
 
-                if settings.CAS_LOGIN_MSG is not None:
-                    name = user.get_username()
-                    message = settings.CAS_LOGIN_MSG % name
-                    messages.success(request, message)
+    if isinstance(request.user.is_authenticated, bool_type):
+        is_user_authenticated = request.user.is_authenticated
+    else:
+        is_user_authenticated = request.user.is_authenticated()
 
+    if is_user_authenticated:
+        if settings.CAS_LOGGED_MSG is not None:
+            message = settings.CAS_LOGGED_MSG % request.user.get_username()
+            user = request.user
+            payload = jwt_payload_handler(user)
+            token = jwt_encode_handler(payload)
+            user_profile = UserProfile.objects.get(user=user)
+            profile_id = user_profile.id
+            name = user_profile.name
+            npm = user_profile.npm
+            email = user_profile.email
+            role = user_profile.role.role_name
+            angkatan = user_profile.angkatan.name
+
+            data = {'user_id': user.id, 'user': user.username, 'token': token,
+                    'profile_id': profile_id,
+                    'name': name, 'npm': npm, 'email': email, 'role': role, 'angkatan': angkatan}
+        return render(request, 'index.html')
+
+    ticket = request.GET.get('ticket')
+    if ticket:
+        user = authenticate(ticket=ticket,
+                            service=service_url,
+                            request=request)
+        pgtiou = request.session.get("pgtiou")
+        if user is not None:
+            if not request.session.exists(request.session.session_key):
+                request.session.create()
+            auth_login(request, user)
+            SessionTicket.objects.create(
+                session_key=request.session.session_key,
+                ticket=ticket
+            )
+
+            if pgtiou and settings.CAS_PROXY_CALLBACK:
+                # Delete old PGT
+                ProxyGrantingTicket.objects.filter(
+                    user=user,
+                    session_key=request.session.session_key
+                ).delete()
+                # Set new PGT ticket
                 try:
-                    payload = jwt_payload_handler(user)
-                    token = jwt_encode_handler(payload)
+                    pgt = ProxyGrantingTicket.objects.get(pgtiou=pgtiou)
+                    pgt.user = user
+                    pgt.session_key = request.session.session_key
+                    pgt.save()
+                except ProxyGrantingTicket.DoesNotExist:
+                    pass
 
-                    user_profile = UserProfile.objects.get(user=user)
-                    profile_id = user_profile.id
-                    name = user_profile.name
-                    npm = user_profile.npm
-                    email = user_profile.email
-                    role = user_profile.role.role_name
-                    angkatan = user_profile.angkatan.name
+            if settings.CAS_LOGIN_MSG is not None:
+                name = user.get_username()
+                message = settings.CAS_LOGIN_MSG % name
+                messages.success(request, message)
+            
+            payload = jwt_payload_handler(user)
+            token = jwt_encode_handler(payload)
 
-                    data = {'user_id': user.id, 'user': user.username, 'token': token,
-                            'profile_id': profile_id,
-                            'name': name, 'npm': npm, 'email': email, 'role': role, 'angkatan': angkatan}
-                    return render(request, 'index.html', data)
-                except Exception as e:
-                    logging.debug(e)
-                    raise
-            elif settings.CAS_RETRY_LOGIN or required:
-                return HttpResponseRedirect(client.get_login_url())
-            else:
-                raise PermissionDenied(_('Login failed.'))
-        else:
+            user_profile = UserProfile.objects.get(user=user)
+            profile_id = user_profile.id
+            name = user_profile.name
+            npm = user_profile.npm
+            email = user_profile.email
+            role = user_profile.role.role_name
+            angkatan = user_profile.angkatan.name
+
+            data = {'user_id': user.id, 'user': user.username, 'token': token,
+                    'profile_id': profile_id,
+                    'name': name, 'npm': npm, 'email': email, 'role': role, 'angkatan': angkatan}
+            return render(request, 'index.html', data)
+        elif settings.CAS_RETRY_LOGIN or required:
             return HttpResponseRedirect(client.get_login_url())
-    except Exception as e:
-        logging.debug(request.user)
-        logging.debug(e)
-        print(request.user)
-        print(e)
+        else:
+            raise PermissionDenied(_('Login failed.'))
+    else:
+        if settings.CAS_STORE_NEXT:
+            request.session['CASNEXT'] = next_page
         return HttpResponseRedirect(client.get_login_url())
 
 
@@ -145,34 +157,43 @@ def login(request, next_page=None, required=False):
 def logout(request, next_page=None):
     """Redirects to CAS logout page"""
     # try to find the ticket matching current session for logout signal
-    sts = SessionTicket.objects.filter(session_key=request.session.session_key)
+    try:
+        st = SessionTicket.objects.get(session_key=request.session.session_key)
+        ticket = st.ticket
+    except SessionTicket.DoesNotExist:
+        ticket = None
     # send logout signal
-    for st in sts:
-        cas_user_logout.send(
-            sender="manual",
-            user=request.user,
-            session=request.session,
-            ticket=st.ticket,
-        )
+    cas_user_logout.send(
+        sender="manual",
+        user=request.user,
+        session=request.session,
+        ticket=ticket,
+    )
     auth_logout(request)
     # clean current session ProxyGrantingTicket and SessionTicket
     ProxyGrantingTicket.objects.filter(session_key=request.session.session_key).delete()
     SessionTicket.objects.filter(session_key=request.session.session_key).delete()
+    next_page = next_page or get_redirect_url(request)
     if settings.CAS_LOGOUT_COMPLETELY:
-        client = get_cas_client()
-
-        return HttpResponseRedirect(client.get_logout_url(settings.CLIENT_HOST))
+        protocol = get_protocol(request)
+        host = request.get_host()
+        redirect_url = urllib_parse.urlunparse(
+            (protocol, host, next_page, '', '', ''),
+        )
+        client = get_cas_client(request=request)
+        return HttpResponseRedirect(client.get_logout_url(redirect_url))
     else:
         # This is in most cases pointless if not CAS_RENEW is set. The user will
         # simply be logged in again on next request requiring authorization.
         return render(request, 'index.html')
+
 
 @csrf_exempt
 @require_http_methods(["GET", "POST"])
 def callback(request):
     """Read PGT and PGTIOU sent by CAS"""
     if request.method == 'POST' and request.POST.get('logoutRequest'):
-        clean_sessions(get_cas_client(), request)
+        clean_sessions(get_cas_client(request=request), request)
         return HttpResponse("{0}\n".format(_('ok')), content_type="text/plain")
     elif request.method == 'GET':
         pgtid = request.GET.get('pgtId')
