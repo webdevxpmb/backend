@@ -21,9 +21,9 @@ def get_angkatan_by_npm(npm):
         angkatan = '20' + suffix
         
         return ANGKATAN[angkatan]
-
     except Exception as e:
-        return ANGKATAN['2013--']
+        ALUMNI = load_data(settings.BASE_DIR + "/account/" + 'data_alumni.json')
+        return ANGKATAN[ALUMNI['alumni']]
 
 
 def get_role_by_angkatan(angkatan):
@@ -33,7 +33,6 @@ def get_role_by_angkatan(angkatan):
             return "mahasiswa baru"
         else:
             return "elemen"
-
     except Exception as e:
         return "elemen"
 
