@@ -43,8 +43,6 @@ class CASBackend(ModelBackend):
 
         UserModel = get_user_model()
 
-        if attributes['kd_org'] not in allowed_org['allowed_org']:
-            return None
         # Note that this could be accomplished in one try-except clause, but
         # instead we use get_or_create when creating unknown users since it has
         # built-in safeguards for multiple threads.
