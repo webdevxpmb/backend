@@ -181,7 +181,7 @@ def logout(request, next_page=None):
             (protocol, host, next_page, '', '', ''),
         )
         client = get_cas_client(request=request)
-        return HttpResponseRedirect(client.get_logout_url(redirect_url))
+        return HttpResponseRedirect(settings.CLIENT_HOST)
     else:
         # This is in most cases pointless if not CAS_RENEW is set. The user will
         # simply be logged in again on next request requiring authorization.
