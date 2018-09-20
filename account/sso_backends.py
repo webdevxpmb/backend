@@ -158,6 +158,7 @@ class CASBackend(ModelBackend):
             raise ImproperlyConfigured(
                 "Invalid value for the CAS_FORCE_CHANGE_USERNAME_CASE setting. "
                 "Valid values are `'lower'`, `'upper'`, and `None`.")
+        username = username.strip()
         return username
 
     def configure_user(self, user):
