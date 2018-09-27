@@ -8,6 +8,7 @@ from website.models import (
     Album, TaskStatistic,
     EventStatistic, UserStatistic,
     Vote, VoteOption, Voting, QnA,
+    TaskScore,
 )
 
 
@@ -77,6 +78,32 @@ class TaskModelAdmin(admin.ModelAdmin):
 
     class Meta:
         model = Task
+
+
+class TaskScoreModelAdmin(admin.ModelAdmin):
+    list_display = ('user_profile', 'name', 'task', 'score')
+    search_fields = ('user__profile__name',)
+
+    def user_profile(self, obj):
+        return obj.user.profile.name
+
+    def has_change_permission(self, request, obj=None):
+        if request.user.is_superuser == True:
+            return True
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        if request.user.is_superuser == True:
+            return True
+        return False
+
+    def has_add_permission(self, request):
+        if request.user.is_superuser == True:
+            return True
+        return False
+
+    class Meta:
+        model = TaskScore
 
 
 class PostModelAdmin(admin.ModelAdmin):
@@ -330,10 +357,10 @@ class QnAModelAdmin(admin.ModelAdmin):
     class Meta:
         model = QnA
 
-
 admin.site.register(ElementWord, ElementWordModelAdmin)
 admin.site.register(Event, EventModelAdmin)
 admin.site.register(Task, TaskModelAdmin)
+admin.site.register(TaskScore, TaskScoreModelAdmin)
 admin.site.register(Submission, SubmissionModelAdmin)
 admin.site.register(Post, PostModelAdmin)
 admin.site.register(Comment, CommentModelAdmin)

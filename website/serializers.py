@@ -7,7 +7,7 @@ from website.models import (
     Album, EventStatistic,
     TaskStatistic, UserStatistic,
     Vote, VoteOption, Voting, File,
-    QnA
+    QnA, TaskScore,
 )
 from account.serializers import UserSerializer
 from dropbox import Dropbox
@@ -74,6 +74,13 @@ class TaskSerializer(serializers.ModelSerializer):
                   'end_time', 'is_kenalan', 'expected_amount_tarung',
                   'expected_amount_omega', 'expected_amount_capung',
                   'expected_amount_alumni', 'expected_amount_bebas', 'created_at', 'updated_at')
+
+class TaskScoreSerializer(serializers.ModelSerializer):
+    task = TaskSerializer()
+
+    class Meta:
+        model = TaskScore
+        fields = ('id', 'user', 'name', 'task', 'score',)
 
 class QnASerializer(serializers.ModelSerializer):
     class Meta:

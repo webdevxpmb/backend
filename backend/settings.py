@@ -194,8 +194,8 @@ CAS_REDIRECT_URL = '/pmb-api/'
 CAS_FORCE_CHANGE_USERNAME_CASE = 'lower'
 
 CRONJOBS = [
-    ('* * * * *', 'kenalan.utils.delete_all_expired_token')
-    ('* 0 * * *', 'website.utils.update_all_kenalan')
+    ('* * * * *', 'kenalan.utils.delete_all_expired_token'),
+    ('* 0 * * *', 'website.utils.update_all_user_statistic'),
 ]
 
 

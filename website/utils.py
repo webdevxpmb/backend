@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from website.models import (
     Task, Submission,
     TaskStatistic, UserStatistic,
+    TaskScore,
     )
 from kenalan.models import Kenalan
 from account.models import UserProfile
@@ -33,17 +34,18 @@ class StandardResultsSetPagination(PageNumberPagination):
 @receiver(post_save, sender=Task)
 def task_create_or_update(sender, created, instance, **kwargs):
     try:
-        if created:
-            task = instance
-            TaskStatistic.objects.create(task=task, amount=0)
-            if instance.is_kenalan:
-                user_profile_maba = UserProfile.objects.filter(role__role_name=ROLE_MABA)
+        task = instance
+        TaskStatistic.objects.get_or_create(task=task, amount=0)
+        if instance.is_kenalan or instance.is_scored:
+            user_profile_maba = UserProfile.objects.filter(role__role_name=ROLE_MABA)
 
-                for user_profile in user_profile_maba:
-                    user = user_profile.user
-                    UserStatistic.objects.create(user=user, task=task, name=task.name + ' statistic')
-        else:
-            pass
+            for user_profile in user_profile_maba:
+                user = user_profile.user
+
+                if instance.is_kenalan:
+                    obj_us, created_us = UserStatistic.objects.get_or_create(user=user, task=task, name=task.name + ' statistic')
+                if instance.is_scored:
+                    obj_ts, created_ts = TaskScore.objects.get_or_create(user=user, task=task, name=task.name + ' score')
     except Exception:
         raise
 
