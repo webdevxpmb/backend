@@ -1036,6 +1036,41 @@ For now, liat di Models dulu details spesifikasinya
     ]
     ```
 
+    * > GET **/pmb-api/task-score/**
+
+    **Permission Classes:** IsAuthenticated (GET)
+
+    Untuk setiap task yang di-set ke is_scored, dibuatin taskScore
+
+    **json**
+    ```json
+    [
+      {
+        "id": 1,
+        "user": 2,
+        "name": "Kenalan score",
+        "task": {
+          "id": 3,
+          "name": "Kenalan",
+          "description": "Perlukan saya teriak 666 setiap jam 12 malem supaya backendnya tidak bermasalah aneh?",
+          "start_time": "2018-09-12T07:05:59",
+          "attachment_link": null,
+          "end_time": "2018-11-30T23:55:00",
+          "is_kenalan": true,
+          "expected_amount_tarung": 0,
+          "expected_amount_omega": 15,
+          "expected_amount_capung": 15,
+          "expected_amount_alumni": 15,
+          "expected_amount_bebas": null,
+          "created_at": "2018-08-27T14:52:50.794702",
+          "updated_at": "2018-09-27T19:47:09.819184"
+        },
+        "score": 0,
+        "comment": "Bagus sekali"
+      }
+    ]
+    ```
+
   ============================================================
 
 ## Models

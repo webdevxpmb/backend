@@ -75,6 +75,7 @@ class Task(models.Model):
     end_time = models.DateTimeField()
     attachment_link = models.CharField(max_length=255, blank=True, null=True)
     is_kenalan = models.BooleanField(default=False)
+    is_scored = models.BooleanField(default=False)
     expected_amount_tarung = models.SmallIntegerField(blank=True, null=True)
     expected_amount_omega = models.SmallIntegerField(blank=True, null=True)
     expected_amount_capung = models.SmallIntegerField(blank=True, null=True)
@@ -85,6 +86,18 @@ class Task(models.Model):
 
     class Meta:
         pass
+
+
+class TaskScore(models.Model):
+    name = models.CharField(max_length=255)
+    user = models.ForeignKey(User)
+    task = models.ForeignKey(Task)
+    score = models.SmallIntegerField(default=0)
+    comment = models.TextField(default='')
+
+    def __str__(self):
+        return self.name
+
 
 class QnA(models.Model):
     """

@@ -12,7 +12,8 @@ from website.serializers import (
     UserStatisticSerializer, GetPostSerializer, GetCommentsSerializer,
     GetElementWordSerializer, GetSubmissionSerializer, GetEventStatisticSerializer,
     VoteSerializer, GetVoteSerializer, VoteOptionSerializer, GetVoteOptionSerializer,
-    VotingSerializer, GetVotingSerializer, FileSerializer, QnASerializer, GetQnASerializer
+    VotingSerializer, GetVotingSerializer, FileSerializer, QnASerializer, GetQnASerializer,
+    TaskScoreSerializer,
 )
 
 from account import permissions as account_permissions
@@ -25,6 +26,7 @@ from website.models import (
     Album, TaskStatistic,
     UserStatistic, EventStatistic,
     Vote, VoteOption, Voting, QnA,
+    TaskScore,
 )
 from account.permissions import (
     IsPmbAdmin,
@@ -294,6 +296,20 @@ class TaskLatestSubmission(generics.RetrieveAPIView):
         instance = self.get_object()
         serializer = GetSubmissionSerializer(instance)
         return Response(serializer.data)
+
+class TaskScoreList(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = TaskScoreSerializer
+
+    def get_queryset(self):
+        queryset = TaskScore.objects.filter(user=self.request.user)
+        return queryset
+
+
+class TaskScoreDetail(generics.RetrieveAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = TaskScore.objects.all()
+    serializer_class = TaskScoreSerializer
 
 class QnAList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated, )
