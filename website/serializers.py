@@ -80,7 +80,7 @@ class TaskScoreSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TaskScore
-        fields = ('id', 'user', 'name', 'task', 'score',)
+        fields = ('id', 'user', 'name', 'task', 'score', "comment")
 
 class QnASerializer(serializers.ModelSerializer):
     class Meta:

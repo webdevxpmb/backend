@@ -1065,7 +1065,8 @@ For now, liat di Models dulu details spesifikasinya
           "created_at": "2018-08-27T14:52:50.794702",
           "updated_at": "2018-09-27T19:47:09.819184"
         },
-        "score": 0
+        "score": 0,
+        "comment": "Bagus sekali"
       }
     ]
     ```

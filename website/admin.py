@@ -81,7 +81,7 @@ class TaskModelAdmin(admin.ModelAdmin):
 
 
 class TaskScoreModelAdmin(admin.ModelAdmin):
-    list_display = ('user_profile', 'name', 'task', 'score')
+    list_display = ('user_profile', 'name', 'task', 'score', 'comment')
     search_fields = ('user__profile__name',)
 
     def user_profile(self, obj):

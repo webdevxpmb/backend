@@ -93,6 +93,7 @@ class TaskScore(models.Model):
     user = models.ForeignKey(User)
     task = models.ForeignKey(Task)
     score = models.SmallIntegerField(default=0)
+    comment = models.TextField(default='')
 
     def __str__(self):
         return self.name

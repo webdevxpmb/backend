@@ -167,7 +167,7 @@ def get_server_time(request):
     now = datetime.datetime.now()
     return Response({'server_time': now})
 
-def update_all_kenalan():
+def update_all_user_statistic():
     try:
         user_statistics = UserStatistic.objects.all()
         for user_statistic in user_statistics:
